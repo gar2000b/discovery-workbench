@@ -9,10 +9,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.onlineinteract.core.processor.DeviceInputProcessor;
+import com.onlineinteract.core.render.WorkspaceRenderer;
 import com.onlineinteract.core.workbench.Template;
+import com.onlineinteract.core.workbench.WorkbenchItem;
 import com.onlineinteract.core.workbench.WorkbenchOutline;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Workspace extends ScreenAdapter {
 
@@ -34,7 +40,10 @@ public class Workspace extends ScreenAdapter {
     private Template microserviceTemplate;
     private Template infrastructureTemplate;
     private Template scriptTemplate;
-
+    private WorkspaceRenderer workspaceRenderer;
+    private List<WorkbenchItem> workbenchItems = new ArrayList<WorkbenchItem>();
+    private List<Template> templateInstances = new ArrayList<Template>();
+    private DeviceInputProcessor deviceInputProcessor;
 
     private boolean toggleFSFlag = false;
 
@@ -44,14 +53,25 @@ public class Workspace extends ScreenAdapter {
         this.worldHeight = worldHeight;
 
         camera = new OrthographicCamera();
-        viewport = new FitViewport(worldWidth, worldHeight, camera);
+        viewport = new ScreenViewport(camera);
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
 
-        this.workbenchOutline = new WorkbenchOutline(worldWidth, worldHeight, shapeRenderer, camera);
-        this.microserviceTemplate = new Template(shapeRenderer, batch, font, camera, worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST, Color.FOREST, "µicroservice");
-        this.infrastructureTemplate = new Template(shapeRenderer, batch, font, camera, worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL, Color.CORAL, "Infrastructure");
-        this.scriptTemplate = new Template(shapeRenderer, batch, font, camera, worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY, "Scripts");
+        instantiateTemplates(worldWidth, worldHeight);
+        setupInputProcessor();
+        workspaceRenderer = new WorkspaceRenderer(this);
+    }
+
+    private void setupInputProcessor() {
+        deviceInputProcessor = new DeviceInputProcessor(this);
+        Gdx.input.setInputProcessor(deviceInputProcessor);
+    }
+
+    private void instantiateTemplates(int worldWidth, int worldHeight) {
+        workbenchItems.add(workbenchOutline = new WorkbenchOutline(worldWidth, worldHeight, shapeRenderer, camera));
+        workbenchItems.add(new Template(shapeRenderer, batch, font, camera, worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST, Color.FOREST, "µicroservice"));
+        workbenchItems.add(new Template(shapeRenderer, batch, font, camera, worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL, Color.CORAL, "Infrastructure"));
+        workbenchItems.add(new Template(shapeRenderer, batch, font, camera, worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY, "Scripts"));
     }
 
     @Override
@@ -83,25 +103,98 @@ public class Workspace extends ScreenAdapter {
 
     private void update(float delta) {
         fullScreenToggle();
+        cameraZoom();
+        updateCameraPan();
     }
 
     private void draw() {
-        camera.update();
-        workbenchOutline.draw();
-        microserviceTemplate.draw();
-        infrastructureTemplate.draw();
-        scriptTemplate.draw();
+        workspaceRenderer.draw();
     }
 
     private void fullScreenToggle() {
         Input input = Gdx.input;
         if (input.isKeyPressed(Input.Keys.F)) {
             if (toggleFSFlag)
-                Gdx.graphics.setWindowedMode(1920, 1080);
-            else
+                Gdx.graphics.setWindowedMode(worldWidth, worldHeight);
+            else {
                 Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+            }
             toggleFSFlag = !toggleFSFlag;
         }
     }
 
+    private void cameraZoom() {
+        Input input = Gdx.input;
+        if (input.isKeyPressed(Input.Keys.X)) {
+            camera.zoom += 0.02;
+        }
+
+        if (input.isKeyPressed(Input.Keys.Z)) {
+            camera.zoom -= 0.02;
+        }
+
+        if (input.isKeyPressed(Input.Keys.R)) {
+            camera.zoom = 1;
+        }
+    }
+
+    private void updateCameraPan() {
+        Input input = Gdx.input;
+        if (input.isKeyPressed(Input.Keys.LEFT))
+            camera.position.x = camera.position.x - 10;
+        if (input.isKeyPressed(Input.Keys.RIGHT))
+            camera.position.x = camera.position.x + 10;
+        if (input.isKeyPressed(Input.Keys.UP))
+            camera.position.y = camera.position.y + 10;
+        if (input.isKeyPressed(Input.Keys.DOWN))
+            camera.position.y = camera.position.y - 10;
+    }
+
+    public int getWorldWidth() {
+        return worldWidth;
+    }
+
+    public int getWorldHeight() {
+        return worldHeight;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public Template getMicroserviceTemplate() {
+        return microserviceTemplate;
+    }
+
+    public Template getInfrastructureTemplate() {
+        return infrastructureTemplate;
+    }
+
+    public Template getScriptTemplate() {
+        return scriptTemplate;
+    }
+
+    public WorkbenchOutline getWorkbenchOutline() {
+        return workbenchOutline;
+    }
+
+    public List<WorkbenchItem> getWorkbenchItems() {
+        return workbenchItems;
+    }
+
+    public List<Template> getTemplateInstances() {
+        return templateInstances;
+    }
+
+    public ShapeRenderer getShapeRenderer() {
+        return shapeRenderer;
+    }
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    public BitmapFont getFont() {
+        return font;
+    }
 }

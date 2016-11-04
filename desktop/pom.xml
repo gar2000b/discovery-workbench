@@ -13,7 +13,7 @@
 	<name>Application desktop</name>
 
 	<properties>
-		<mainClass>com.onlineinteract.java.ApplicationDesktop</mainClass>
+		<mainClass>com.onlineinteract.java.DesktopLauncher</mainClass>
 	</properties>
 
 	<dependencies>
