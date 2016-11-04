@@ -1,4 +1,4 @@
-# µicroservice Orchestrator
+# µicroservice orchestrator
 
 The scope of this project is to orchestrate and run all aspects of a local/dev copy of a distributed system (typically microservice/cloud native applications although this need not be restricted to this architecture pattern).
 
