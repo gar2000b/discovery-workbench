@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>ms-orchestrator-android</artifactId>
-	<packaging>apk</packaging>
+	<!-- <packaging>apk</packaging> -->
 	<name>Application Android</name>
 
 	<properties>
@@ -78,7 +78,7 @@
 			</plugin>
 
 			<!-- responsible for being able to compile for Android -->
-			<plugin>
+<!-- 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
 				<version>${android.maven.version}</version>
@@ -106,7 +106,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 

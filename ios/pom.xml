@@ -21,10 +21,10 @@
 		</dependency>
 
 		<!-- requires robovm upgrades -->
-		<dependency>
+<!-- 		<dependency>
 			<groupId>com.badlogic.gdx</groupId>
 			<artifactId>gdx-backend-ios</artifactId>
-		</dependency>
+		</dependency> -->
 	</dependencies>
 
 	<build>
