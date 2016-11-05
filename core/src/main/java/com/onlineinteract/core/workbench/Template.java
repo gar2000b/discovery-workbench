@@ -26,6 +26,9 @@ public class Template implements WorkbenchItem {
     private Color color2;
     private String label;
 
+    private float instanceOffsetX;
+    private float instanceOffsetY;
+
     public Template(ShapeRenderer shapeRenderer, SpriteBatch batch, BitmapFont font, OrthographicCamera camera, float y, Color color1, Color color2, String label) {
         this.shapeRenderer = shapeRenderer;
         this.batch = batch;
@@ -70,7 +73,8 @@ public class Template implements WorkbenchItem {
         float clickY = coordinates.y;
 
         if (clickX >= x && clickX <= (x + BOX_WIDTH) && clickY >= y && clickY <= (y + BOX_HEIGHT)) {
-            System.out.println("Click is within template: " + label + " boundary");
+            instanceOffsetX = clickX - x;
+            instanceOffsetY = clickY - y;
             return true;
         }
 
@@ -79,5 +83,29 @@ public class Template implements WorkbenchItem {
 
     public String getLabel() {
         return label;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getInstanceOffsetX() {
+        return instanceOffsetX;
+    }
+
+    public float getInstanceOffsetY() {
+        return instanceOffsetY;
     }
 }

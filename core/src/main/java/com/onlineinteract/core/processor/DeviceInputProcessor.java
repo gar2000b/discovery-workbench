@@ -14,9 +14,15 @@ import com.onlineinteract.core.workbench.WorkbenchOutline;
 import java.util.List;
 
 public class DeviceInputProcessor implements InputProcessor {
+    private static final int DOUBLE_CLICK_RANGE = 400;
+
     private Workspace workspace;
     private List<Template> retainedTemplateList;
     private List<Template> templateInstances;
+    private boolean instanceDragFlag = false;
+    private Template currentInstanceItem;
+
+    private long previousTimeMillis = 0;
 
     public DeviceInputProcessor(Workspace workspace) {
         this.workspace = workspace;
@@ -47,18 +53,18 @@ public class DeviceInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchUp(int x, int y, int pointer, int button) {
-        if (button == Input.Buttons.LEFT) {
-            // System.out.println("mouse up @ " + x + ", " + invertY(y));
-            // Determinate if template has been clicked on
-            // If so, set dragFlag to false and remove instance type of template.
-            return true;
-        }
-        return false;
+        return processTouchUp(button);
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        System.out.println("Dragged getting called with - " + pointer);
+        Vector3 coordinates = workspace.getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+        if (instanceDragFlag) {
+            currentInstanceItem.setX(coordinates.x - currentInstanceItem.getInstanceOffsetX());
+            currentInstanceItem.setY(coordinates.y - currentInstanceItem.getInstanceOffsetY());
+            return true;
+        }
+
         return false;
     }
 
@@ -77,12 +83,42 @@ public class DeviceInputProcessor implements InputProcessor {
     private boolean processTouchDown(int button) {
         if (button == Input.Buttons.LEFT) {
             Vector3 coordinates = workspace.getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            detectClickTemplateList(coordinates);
+            detectClickTemplateInstances(coordinates);
+            return true;
+        }
+        return false;
+    }
 
-            for (Template templateItem : retainedTemplateList) {
-                if (templateItem.isClickWithinBoundary(coordinates))
-                    createTemplateInstance(templateItem);
+    private void detectClickTemplateList(Vector3 coordinates) {
+        for (Template templateItem : retainedTemplateList) {
+            if (templateItem.isClickWithinBoundary(coordinates))
+                createTemplateInstance(templateItem);
+        }
+    }
+
+    private void detectClickTemplateInstances(Vector3 coordinates) {
+        for (Template instanceItem : templateInstances) {
+            if (instanceItem.isClickWithinBoundary(coordinates)) {
+                instanceDragFlag = true;
+                detectAndProcessDoubleClick(instanceItem);
             }
+        }
+    }
 
+    private void detectAndProcessDoubleClick(Template instanceItem) {
+        currentInstanceItem = instanceItem;
+        long currentTimeMillis = System.currentTimeMillis();
+        if (currentTimeMillis - previousTimeMillis < DOUBLE_CLICK_RANGE) {
+            System.out.println("*** Double click detected");
+        }
+        previousTimeMillis = currentTimeMillis;
+    }
+
+    private boolean processTouchUp(int button) {
+        if (button == Input.Buttons.LEFT) {
+            instanceDragFlag = false;
+            currentInstanceItem = null;
             return true;
         }
         return false;

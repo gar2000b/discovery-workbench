@@ -15,9 +15,8 @@ public class ListTypeRetainer {
         List<S> returnList = new ArrayList<S>();
 
         for (T item : list) {
-            if (retainedType.equals(item.getClass())) {
+            if (retainedType.equals(item.getClass()))
                 returnList.add((S) item);
-            }
         }
 
         return returnList;
