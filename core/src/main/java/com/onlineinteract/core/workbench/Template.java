@@ -32,6 +32,7 @@ public class Template implements WorkbenchItem {
 	private Color color1;
 	private Color color2;
 	private String label;
+	private String startupCommand;
 	private ServiceDialog serviceDialog;
 	private Skin skin;
 	private Stage stage;
@@ -94,7 +95,11 @@ public class Template implements WorkbenchItem {
 	public void renderServiceDialog() {
 		Gdx.input.setInputProcessor(stage);
 		serviceDialog = new ServiceDialog("Service Configuration", skin, workspace, this);
-		serviceDialog.getTextField().setText(label);
+		if (label.equals("µicroservice"))
+			serviceDialog.getLabelTextField().setText("New Service");
+		else
+			serviceDialog.getLabelTextField().setText(label);
+		serviceDialog.getStartupCommandTextField().setText(startupCommand);
 		stage.act();
 		serviceDialog.show(stage);
 	}
@@ -137,5 +142,13 @@ public class Template implements WorkbenchItem {
 
 	public void setPreviousTimeMillis(long previousTimeMillis) {
 		this.previousTimeMillis = previousTimeMillis;
+	}
+
+	public String getStartupCommand() {
+		return startupCommand;
+	}
+
+	public void setStartupCommand(String startupCommand) {
+		this.startupCommand = startupCommand;
 	}
 }

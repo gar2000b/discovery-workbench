@@ -14,9 +14,9 @@ public class ServiceDialog extends Dialog {
 	private Workspace workspace;
 	private Template template;
 	TextField labelTextField;
-	TextField anotherTextField;
+	TextField startupCommandTextField;
 	Label serviceNameLabel;
-	Label anotherLabel;
+	Label startupCommandLabel;
 
 	public ServiceDialog(String title, Skin skin, String windowStyleName) {
 		super(title, skin, windowStyleName);
@@ -33,14 +33,10 @@ public class ServiceDialog extends Dialog {
 	}
 
 	{
-//		setModal(true);
-//		setResizable(true);
-//		setPosition(300, 300);
 		labelTextField = new TextField("", getSkin());
-		anotherTextField = new TextField("", getSkin());
+		startupCommandTextField = new TextField("", getSkin());
 		serviceNameLabel = new Label("Service Name: ", getSkin());
-		anotherLabel = new Label("Another: ", getSkin());
-		// text("Service Configuration");
+		startupCommandLabel = new Label("Startup Command: ", getSkin());
 		button("Update", true).padBottom(10);
 		button("Cancel", false).padBottom(10);
 		key(Input.Keys.ENTER, true);
@@ -49,29 +45,25 @@ public class ServiceDialog extends Dialog {
 		getContentTable().add(serviceNameLabel).padTop(20);
 		getContentTable().add(labelTextField).padTop(20).width(200);
 		getContentTable().row();
-		getContentTable().add(anotherLabel).padBottom(10);
-		getContentTable().add(anotherTextField).padBottom(10).width(200);
+		getContentTable().add(startupCommandLabel).padBottom(10);
+		getContentTable().add(startupCommandTextField).padBottom(10).width(200);
 	}
-	
-//	@Override
-//    public float getPrefWidth() {
-//        return 600;
-//    }
-//
-//    @Override
-//    public float getPrefHeight() {
-//        return 600;
-//    }
 
 	@Override
 	protected void result(Object object) {
-		if (object.getClass().getSimpleName().equals("Boolean") && object == Boolean.TRUE)
+		if (object.getClass().getSimpleName().equals("Boolean") && object == Boolean.TRUE) {
 			template.setLabel(labelTextField.getText());
+			template.setStartupCommand(startupCommandTextField.getText());
+		}
 
 		Gdx.input.setInputProcessor(workspace.getDeviceInputProcessor());
 	}
 
-	public TextField getTextField() {
+	public TextField getLabelTextField() {
 		return labelTextField;
+	}
+
+	public TextField getStartupCommandTextField() {
+		return startupCommandTextField;
 	}
 }
