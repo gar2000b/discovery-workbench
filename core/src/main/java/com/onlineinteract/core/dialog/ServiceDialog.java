@@ -1,6 +1,7 @@
 package com.onlineinteract.core.dialog;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -28,13 +29,28 @@ public class ServiceDialog extends Dialog {
 	}
 
 	{
+		setModal(true);
+		setResizable(true);
+		setPosition(300, 300);
 		textField = new TextField("", getSkin());
 		text("Service Configuration");
 		button("Update", true);
 		button("Cancel", false);
+		key(Input.Keys.ENTER, true);
+		key(Input.Keys.ESCAPE, false);
 		getContentTable().row();
-		getContentTable().add(textField).width(135);
+		getContentTable().add(textField).width(400);
 	}
+	
+//	@Override
+//    public float getPrefWidth() {
+//        return 600;
+//    }
+//
+//    @Override
+//    public float getPrefHeight() {
+//        return 600;
+//    }
 
 	@Override
 	protected void result(Object object) {
@@ -42,5 +58,9 @@ public class ServiceDialog extends Dialog {
 			template.setLabel(textField.getText());
 
 		Gdx.input.setInputProcessor(workspace.getDeviceInputProcessor());
+	}
+
+	public TextField getTextField() {
+		return textField;
 	}
 }
