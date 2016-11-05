@@ -1,5 +1,7 @@
 package com.onlineinteract.core.processor;
 
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -11,18 +13,13 @@ import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.WorkbenchItem;
 import com.onlineinteract.core.workbench.WorkbenchOutline;
 
-import java.util.List;
-
 public class DeviceInputProcessor implements InputProcessor {
-	private static final int DOUBLE_CLICK_RANGE = 400;
 
 	private Workspace workspace;
 	private List<Template> retainedTemplateList;
 	private List<Template> templateInstances;
 	private boolean instanceDragFlag = false;
 	private Template currentInstanceItem;
-
-	private long previousTimeMillis = -DOUBLE_CLICK_RANGE - 1;
 
 	public DeviceInputProcessor(Workspace workspace) {
 		this.workspace = workspace;
@@ -99,20 +96,25 @@ public class DeviceInputProcessor implements InputProcessor {
 		for (Template instanceItem : templateInstances) {
 			if (instanceItem.isClickWithinBoundary(coordinates)) {
 				instanceDragFlag = true;
-				detectAndProcessDoubleClick(instanceItem);
+				if (detectAndProcessDoubleClick(instanceItem))
+					break;
 			}
 		}
 	}
 
-	private void detectAndProcessDoubleClick(Template instanceItem) {
+	private boolean detectAndProcessDoubleClick(Template instanceItem) {
 		currentInstanceItem = instanceItem;
 		long currentTimeMillis = System.currentTimeMillis();
-		if (currentTimeMillis - previousTimeMillis < DOUBLE_CLICK_RANGE && !workspace.isToggleFSFlag()) {
+		if (currentTimeMillis - currentInstanceItem.getPreviousTimeMillis() < Template.DOUBLE_CLICK_RANGE
+				&& !workspace.isToggleFSFlag()) {
 			System.out.println("*** Double click detected");
 			currentInstanceItem.renderServiceDialog();
 			instanceDragFlag = false;
+			currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
+			return true;
 		}
-		previousTimeMillis = currentTimeMillis;
+		currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
+		return false;
 	}
 
 	private boolean processTouchUp(int button) {

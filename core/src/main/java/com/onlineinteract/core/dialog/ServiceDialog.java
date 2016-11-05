@@ -3,6 +3,7 @@ package com.onlineinteract.core.dialog;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.onlineinteract.core.Workspace;
@@ -12,7 +13,10 @@ public class ServiceDialog extends Dialog {
 
 	private Workspace workspace;
 	private Template template;
-	TextField textField;
+	TextField labelTextField;
+	TextField anotherTextField;
+	Label serviceNameLabel;
+	Label anotherLabel;
 
 	public ServiceDialog(String title, Skin skin, String windowStyleName) {
 		super(title, skin, windowStyleName);
@@ -29,17 +33,24 @@ public class ServiceDialog extends Dialog {
 	}
 
 	{
-		setModal(true);
-		setResizable(true);
-		setPosition(300, 300);
-		textField = new TextField("", getSkin());
-		text("Service Configuration");
-		button("Update", true);
-		button("Cancel", false);
+//		setModal(true);
+//		setResizable(true);
+//		setPosition(300, 300);
+		labelTextField = new TextField("", getSkin());
+		anotherTextField = new TextField("", getSkin());
+		serviceNameLabel = new Label("Service Name: ", getSkin());
+		anotherLabel = new Label("Another: ", getSkin());
+		// text("Service Configuration");
+		button("Update", true).padBottom(10);
+		button("Cancel", false).padBottom(10);
 		key(Input.Keys.ENTER, true);
 		key(Input.Keys.ESCAPE, false);
 		getContentTable().row();
-		getContentTable().add(textField).width(400);
+		getContentTable().add(serviceNameLabel).padTop(20);
+		getContentTable().add(labelTextField).padTop(20).width(200);
+		getContentTable().row();
+		getContentTable().add(anotherLabel).padBottom(10);
+		getContentTable().add(anotherTextField).padBottom(10).width(200);
 	}
 	
 //	@Override
@@ -55,12 +66,12 @@ public class ServiceDialog extends Dialog {
 	@Override
 	protected void result(Object object) {
 		if (object.getClass().getSimpleName().equals("Boolean") && object == Boolean.TRUE)
-			template.setLabel(textField.getText());
+			template.setLabel(labelTextField.getText());
 
 		Gdx.input.setInputProcessor(workspace.getDeviceInputProcessor());
 	}
 
 	public TextField getTextField() {
-		return textField;
+		return labelTextField;
 	}
 }
