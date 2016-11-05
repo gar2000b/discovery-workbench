@@ -1,5 +1,8 @@
 package com.onlineinteract.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
@@ -19,9 +22,6 @@ import com.onlineinteract.core.render.WorkspaceRenderer;
 import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.WorkbenchItem;
 import com.onlineinteract.core.workbench.WorkbenchOutline;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Workspace extends ScreenAdapter {
 
@@ -63,13 +63,13 @@ public class Workspace extends ScreenAdapter {
 		shapeRenderer = new ShapeRenderer();
 		batch = new SpriteBatch();
 
+		skin = new Skin(Gdx.files.internal("uiskin.json"));
 		instantiateTemplates(worldWidth, worldHeight);
 		setupInputProcessor();
 		workspaceRenderer = new WorkspaceRenderer(this);
 		stage = new Stage();
-		
+
 		Gdx.input.setInputProcessor(stage);
-		skin = new Skin(Gdx.files.internal("uiskin.json"));
 		exitDialog = new ExitDialog("Confirm Exit", skin, this);
 		exitDialog.show(stage);
 	}
@@ -81,12 +81,12 @@ public class Workspace extends ScreenAdapter {
 
 	private void instantiateTemplates(int worldWidth, int worldHeight) {
 		workbenchItems.add(workbenchOutline = new WorkbenchOutline(worldWidth, worldHeight, shapeRenderer, camera));
-		workbenchItems.add(new Template(shapeRenderer, batch, font, camera,
-				worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST, Color.FOREST, "µicroservice"));
-		workbenchItems.add(new Template(shapeRenderer, batch, font, camera,
-				worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL, Color.CORAL, "Infrastructure"));
-		workbenchItems.add(new Template(shapeRenderer, batch, font, camera,
-				worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY, "Scripts"));
+		workbenchItems.add(new Template(this, worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST,
+				Color.FOREST, "µicroservice"));
+		workbenchItems.add(new Template(this, worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL,
+				Color.CORAL, "Infrastructure"));
+		workbenchItems.add(
+				new Template(this, worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY, "Scripts"));
 	}
 
 	@Override
@@ -223,8 +223,12 @@ public class Workspace extends ScreenAdapter {
 	public ExitDialog getExitDialog() {
 		return exitDialog;
 	}
-	
+
 	public DeviceInputProcessor getDeviceInputProcessor() {
 		return deviceInputProcessor;
+	}
+
+	public Skin getSkin() {
+		return skin;
 	}
 }

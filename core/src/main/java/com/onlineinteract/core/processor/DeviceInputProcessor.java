@@ -111,6 +111,7 @@ public class DeviceInputProcessor implements InputProcessor {
         long currentTimeMillis = System.currentTimeMillis();
         if (currentTimeMillis - previousTimeMillis < DOUBLE_CLICK_RANGE) {
             System.out.println("*** Double click detected");
+            
         }
         previousTimeMillis = currentTimeMillis;
     }
@@ -132,10 +133,10 @@ public class DeviceInputProcessor implements InputProcessor {
         float y = workbenchOutline.getBoxHeight() - Template.BOX_HEIGHT;
 
         if (templateItem.getLabel().equals("µicroservice"))
-            templateInstances.add(new Template(workspace.getShapeRenderer(), workspace.getBatch(), workspace.getFont(), workspace.getCamera(), x, y, Color.FOREST, Color.FOREST, "µicroservice"));
+            templateInstances.add(new Template(workspace, x, y, Color.FOREST, Color.FOREST, "µicroservice"));
         if (templateItem.getLabel().equals("Infrastructure"))
-            templateInstances.add(new Template(workspace.getShapeRenderer(), workspace.getBatch(), workspace.getFont(), workspace.getCamera(), x, y, Color.CORAL, Color.CORAL, "Infrastructure"));
+            templateInstances.add(new Template(workspace, x, y, Color.CORAL, Color.CORAL, "Infrastructure"));
         if (templateItem.getLabel().equals("Scripts"))
-            templateInstances.add(new Template(workspace.getShapeRenderer(), workspace.getBatch(), workspace.getFont(), workspace.getCamera(), x, y, Color.BLUE, Color.GRAY, "Scripts"));
+            templateInstances.add(new Template(workspace, x, y, Color.BLUE, Color.GRAY, "Scripts"));
     }
 }
