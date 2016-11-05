@@ -56,7 +56,7 @@ public class Template implements WorkbenchItem {
 		this.color1 = color1;
 		this.color2 = color2;
 		this.label = label;
-		serviceDialog = new ServiceDialog("Confirm Exit", skin, workspace);
+		serviceDialog = new ServiceDialog("Service Configuration", skin, workspace, this);
 	}
 
 	public void draw() {
@@ -94,6 +94,10 @@ public class Template implements WorkbenchItem {
 
 	public String getLabel() {
 		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	public float getX() {
