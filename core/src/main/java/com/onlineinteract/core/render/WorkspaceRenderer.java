@@ -23,12 +23,12 @@ public class WorkspaceRenderer {
 		for (WorkbenchItem workbenchItem : workspace.getWorkbenchItems()) {
 			workbenchItem.draw();
 		}
-		
+
 		/**
 		 * Render template instances in reverse order
 		 */
-		for (ListIterator<Template> iterator = workspace.getTemplateInstances()
-				.listIterator(workspace.getTemplateInstances().size()); iterator.hasPrevious();) {
+		for (ListIterator<Template> iterator = workspace.getServiceListComponent().getTemplateInstances().listIterator(
+				workspace.getServiceListComponent().getTemplateInstances().size()); iterator.hasPrevious();) {
 			final Template templateInstance = iterator.previous();
 			templateInstance.draw();
 		}

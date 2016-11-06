@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.UUID;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -20,6 +21,8 @@ import com.onlineinteract.core.type.ServiceStatus;
 import com.onlineinteract.core.type.TemplateType;
 
 public class Template implements WorkbenchItem {
+
+	UUID uuid;
 
 	public static final int DOUBLE_CLICK_RANGE = 400;
 	private static float BOX_OFFEST_X = 20;
@@ -58,12 +61,13 @@ public class Template implements WorkbenchItem {
 	public Template() {
 	}
 
-	public Template(Workspace workspace, float y, Color color1, Color color2, String label, TemplateType type) {
-		this(workspace, BOX_OFFEST_X, y, color1, color2, label, type);
+	public Template(Workspace workspace, float y, Color color1, Color color2, String label, TemplateType type,
+			UUID uuid) {
+		this(workspace, BOX_OFFEST_X, y, color1, color2, label, type, uuid);
 	}
 
-	public Template(Workspace workspace, float x, float y, Color color1, Color color2, String label,
-			TemplateType type) {
+	public Template(Workspace workspace, float x, float y, Color color1, Color color2, String label, TemplateType type,
+			UUID uuid) {
 		this.workspace = workspace;
 		this.shapeRenderer = workspace.getShapeRenderer();
 		this.batch = workspace.getBatch();
@@ -77,6 +81,7 @@ public class Template implements WorkbenchItem {
 		this.color2 = color2;
 		this.label = label;
 		this.type = type;
+		this.uuid = (uuid != null) ? uuid : UUID.randomUUID();
 		runtime = Runtime.getRuntime();
 	}
 
@@ -84,16 +89,18 @@ public class Template implements WorkbenchItem {
 		shapeRenderer.begin(ShapeType.Line);
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.setColor(color1);
+		Gdx.gl.glLineWidth(2);
 		shapeRenderer.rect(x, y, BOX_WIDTH, BOX_HEIGHT);
 		shapeRenderer.end();
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.BLACK);
-		shapeRenderer.rect(x, y + 1, BOX_WIDTH - 1, BOX_HEIGHT - 1);
+		shapeRenderer.rect(x + 1, y + 1, BOX_WIDTH - 2, BOX_HEIGHT - 2);
 		drawServiceStatus();
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		font.setColor(color2);
+		font.getData().setScale(1);
 		font.draw(batch, label, x + LABEL_OFFSET_X, y + LABEL_OFFSET_Y);
 		batch.end();
 	}
@@ -311,5 +318,9 @@ public class Template implements WorkbenchItem {
 
 	public void setType(TemplateType type) {
 		this.type = type;
+	}
+
+	public UUID getUuid() {
+		return uuid;
 	}
 }
