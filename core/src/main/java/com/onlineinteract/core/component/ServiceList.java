@@ -11,27 +11,19 @@ import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.workbench.Template;
 
 public class ServiceList {
-	
+
+	@SuppressWarnings("unused")
+	private Workspace workspace;
 	private com.badlogic.gdx.scenes.scene2d.ui.List<String> serviceList;
 	private List<String> orderedServiceList;
 	ScrollPane scrollPane;
-	@SuppressWarnings("unused")
-	private Workspace workspace;
+	private List<Template> templateInstances = new ArrayList<Template>();
 
 	public ServiceList(Workspace workspace) {
 		this.workspace = workspace;
 		serviceList = new com.badlogic.gdx.scenes.scene2d.ui.List<String>(workspace.getSkin());
 		orderedServiceList = new ArrayList<>();
 
-		for (Template instance : getTemplateInstances()) {
-			orderedServiceList.add(instance.getLabel());
-		}
-		
-		// TODO: add each new template instance to the list from orderedList.
-		
-		 for (int i = 0; i < 20; i++) {
-		 orderedServiceList.add("String: " + i);
-		 }
 		serviceList.setItems(orderedServiceList.toArray(new String[orderedServiceList.size()]));
 		scrollPane = new ScrollPane(serviceList);
 		scrollPane.setBounds(10, 10, 200, 200);
@@ -57,9 +49,26 @@ public class ServiceList {
 
 		workspace.getStage().addActor(scrollPane);
 	}
-	
-	private List<Template> templateInstances = new ArrayList<Template>();
-	
+
+	public void addTemplateInstance(Template instance) {
+		templateInstances.add(instance);
+		if (instance.getLabel().equals("µicroservice"))
+			orderedServiceList.add("New Service (UUID = " + instance.getUuid() + ")");
+		else
+			orderedServiceList.add(instance.getLabel() + " (UUID = " + instance.getUuid() + ")");
+		serviceList.clearItems();
+		serviceList.setItems(orderedServiceList.toArray(new String[orderedServiceList.size()]));
+	}
+
+	public void updateServiceList(Template instance) {
+		for (int i = 0; i < orderedServiceList.size(); i++) {
+			if (orderedServiceList.get(i).contains(instance.getUuid().toString()))
+				orderedServiceList.set(i, instance.getLabel() + " (UUID = " + instance.getUuid() + ")");
+		}
+		serviceList.clearItems();
+		serviceList.setItems(orderedServiceList.toArray(new String[orderedServiceList.size()]));
+	}
+
 	public List<Template> getTemplateInstances() {
 		return templateInstances;
 	}

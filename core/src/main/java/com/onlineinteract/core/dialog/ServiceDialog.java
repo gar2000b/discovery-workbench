@@ -10,7 +10,6 @@ import com.onlineinteract.core.workbench.Template;
 
 public class ServiceDialog extends Dialog {
 
-	@SuppressWarnings("unused")
 	private Workspace workspace;
 	private Template template;
 	TextField labelTextField;
@@ -70,6 +69,7 @@ public class ServiceDialog extends Dialog {
 			template.setStartupCommand(startupCommandTextField.getText());
 			template.setRunningClause(runningClauseTextField.getText());
 			template.setServicePortNo(servicePortNoTextField.getText());
+			workspace.getServiceListComponent().updateServiceList(template);
 		}
 
 		// Gdx.input.setInputProcessor(workspace.getDeviceInputProcessor());
