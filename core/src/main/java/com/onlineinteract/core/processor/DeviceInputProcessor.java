@@ -95,17 +95,23 @@ public class DeviceInputProcessor implements InputProcessor {
 	private void detectClickTemplateInstances(Vector3 coordinates) {
 		for (Template instanceItem : templateInstances) {
 			if (instanceItem.isClickWithinBoundary(coordinates)) {
+				putInstanceToBeginningOfList(instanceItem);
 				instanceDragFlag = true;
 				instanceItem.startStopService(coordinates);
-				if (detectAndProcessDoubleClick(instanceItem)) {
-					break;
-				}
+				currentInstanceItem = instanceItem;
+				detectAndProcessDoubleClick(instanceItem);
+				break;
 			}
 		}
 	}
 
-	private boolean detectAndProcessDoubleClick(Template instanceItem) {
-		currentInstanceItem = instanceItem;
+	private void putInstanceToBeginningOfList(Template instanceItem) {
+		int index = templateInstances.indexOf(instanceItem);
+		templateInstances.remove(index);
+		templateInstances.add(0, instanceItem);
+	}
+
+	private void detectAndProcessDoubleClick(Template instanceItem) {
 		long currentTimeMillis = System.currentTimeMillis();
 		if (currentTimeMillis - currentInstanceItem.getPreviousTimeMillis() < Template.DOUBLE_CLICK_RANGE
 				&& !workspace.isToggleFSFlag()) {
@@ -113,18 +119,17 @@ public class DeviceInputProcessor implements InputProcessor {
 			currentInstanceItem.renderServiceDialog();
 			instanceDragFlag = false;
 			currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
-			return true;
 		}
 		currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
-		return false;
 	}
-	
-//	private void detectClickStartStopInstances(Vector3 coordinates, Template instanceItem) {
-//		if (instanceItem.isClickWithinStartStopBoundary(coordinates)) {
-//			
-//		}
-//		
-//	}
+
+	// private void detectClickStartStopInstances(Vector3 coordinates,
+	// Template instanceItem) {
+	// if (instanceItem.isClickWithinStartStopBoundary(coordinates)) {
+	//
+	// }
+	//
+	// }
 
 	private boolean processTouchUp(int button) {
 		if (button == Input.Buttons.LEFT) {
