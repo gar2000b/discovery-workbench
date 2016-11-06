@@ -12,12 +12,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.onlineinteract.core.processor.DeviceInputProcessor;
 import com.onlineinteract.core.render.WorkspaceRenderer;
+import com.onlineinteract.core.type.TemplateType;
 import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.WorkbenchItem;
 import com.onlineinteract.core.workbench.WorkbenchOutline;
@@ -46,6 +50,8 @@ public class Workspace extends ScreenAdapter {
 	private List<WorkbenchItem> workbenchItems = new ArrayList<WorkbenchItem>();
 	private List<Template> templateInstances = new ArrayList<Template>();
 	private DeviceInputProcessor deviceInputProcessor;
+	com.badlogic.gdx.scenes.scene2d.ui.List<String> serviceList;
+	ScrollPane scrollPane;
 
 	private boolean toggleFSFlag = false;
 	private Skin skin;
@@ -66,6 +72,41 @@ public class Workspace extends ScreenAdapter {
 		setupInputProcessor();
 		workspaceRenderer = new WorkspaceRenderer(this);
 		stage = new Stage();
+
+		createServiceList();
+	}
+
+	private void createServiceList() {
+		serviceList = new com.badlogic.gdx.scenes.scene2d.ui.List<String>(skin);
+		List<String> stringList = new ArrayList<>();
+		for (int i = 0; i < 20; i++) {
+			stringList.add("String: " + i);
+		}
+		serviceList.setItems(stringList.toArray(new String[stringList.size()]));
+		scrollPane = new ScrollPane(serviceList);
+		scrollPane.setBounds(10, 10, 200, 200);
+		scrollPane.setSmoothScrolling(true);
+		scrollPane.setPosition(worldWidth - 280, 20);
+		scrollPane.setTransform(true);
+		scrollPane.setScale(1);
+		serviceList.setColor(Color.CYAN);
+		serviceList.getSelection().setMultiple(true);
+		serviceList.getSelection().setRequired(false);
+		serviceList.setSelected(null);
+		serviceList.setSelectedIndex(1);
+		serviceList.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				if (serviceList.getSelectedIndex() == 3) {
+					serviceList.clearItems();
+					stringList.remove(3);
+					serviceList.setItems(stringList.toArray(new String[stringList.size()]));
+					serviceList.setSelectedIndex(4);
+				}
+			}
+		});
+		stage.addActor(scrollPane);
+		// Gdx.input.setInputProcessor(stage);
 	}
 
 	private void setupInputProcessor() {
@@ -76,11 +117,11 @@ public class Workspace extends ScreenAdapter {
 	private void instantiateTemplates(int worldWidth, int worldHeight) {
 		workbenchItems.add(workbenchOutline = new WorkbenchOutline(worldWidth, worldHeight, shapeRenderer, camera));
 		workbenchItems.add(new Template(this, worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST,
-				Color.FOREST, "µicroservice"));
+				Color.FOREST, "µicroservice", TemplateType.MICROSERVICE));
 		workbenchItems.add(new Template(this, worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL,
-				Color.CORAL, "Infrastructure"));
-		workbenchItems.add(
-				new Template(this, worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY, "Scripts"));
+				Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE));
+		workbenchItems.add(new Template(this, worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY,
+				"Scripts", TemplateType.SCRIPT));
 	}
 
 	@Override
@@ -115,7 +156,7 @@ public class Workspace extends ScreenAdapter {
 	private void update(float delta) {
 		Input input = Gdx.input;
 		if (input.getInputProcessor().getClass().getSimpleName().equals("DeviceInputProcessor")) {
-			fullScreenToggle();
+			// fullScreenToggle();
 			cameraZoom();
 			updateCameraPan();
 		}
@@ -125,6 +166,7 @@ public class Workspace extends ScreenAdapter {
 		workspaceRenderer.draw();
 	}
 
+	@SuppressWarnings("unused")
 	private void fullScreenToggle() {
 		Input input = Gdx.input;
 		if (input.isKeyPressed(Input.Keys.F)) {
