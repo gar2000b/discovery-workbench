@@ -14,16 +14,15 @@ public class WorkspaceRenderer {
 		this.workspace = workspace;
 	}
 
+	/**
+	 * Render all workbench items and template instances
+	 */
 	public void draw() {
 		workspace.getCamera().update();
 
 		for (WorkbenchItem workbenchItem : workspace.getWorkbenchItems()) {
 			workbenchItem.draw();
 		}
-
-//		for (Template templateInstance : workspace.getTemplateInstances()) {
-//			templateInstance.draw();
-//		}
 		
 		/**
 		 * Render template instances in reverse order

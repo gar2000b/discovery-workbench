@@ -1,6 +1,5 @@
 package com.onlineinteract.core.dialog;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -11,6 +10,7 @@ import com.onlineinteract.core.workbench.Template;
 
 public class ServiceDialog extends Dialog {
 
+	@SuppressWarnings("unused")
 	private Workspace workspace;
 	private Template template;
 	TextField labelTextField;
@@ -72,7 +72,7 @@ public class ServiceDialog extends Dialog {
 			template.setServicePortNo(servicePortNoTextField.getText());
 		}
 
-		Gdx.input.setInputProcessor(workspace.getDeviceInputProcessor());
+		// Gdx.input.setInputProcessor(workspace.getDeviceInputProcessor());
 	}
 
 	public TextField getLabelTextField() {

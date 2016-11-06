@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.onlineinteract.core.Workspace;
@@ -63,7 +62,8 @@ public class Template implements WorkbenchItem {
 		this(workspace, BOX_OFFEST_X, y, color1, color2, label, type);
 	}
 
-	public Template(Workspace workspace, float x, float y, Color color1, Color color2, String label, TemplateType type) {
+	public Template(Workspace workspace, float x, float y, Color color1, Color color2, String label,
+			TemplateType type) {
 		this.workspace = workspace;
 		this.shapeRenderer = workspace.getShapeRenderer();
 		this.batch = workspace.getBatch();
@@ -120,24 +120,24 @@ public class Template implements WorkbenchItem {
 		shapeRenderer.end();
 	}
 
-	public boolean isClickWithinBoundary(Vector3 coordinates) {
-		float clickX = coordinates.x;
-		float clickY = coordinates.y;
+	public boolean isClickWithinBoundary(float x, float y) {
+		float clickX = x;
+		float clickY = y;
 
-		if (clickX >= x && clickX <= (x + BOX_WIDTH) && clickY >= y && clickY <= (y + BOX_HEIGHT)) {
-			instanceOffsetX = clickX - x;
-			instanceOffsetY = clickY - y;
+		if (clickX >= this.x && clickX <= (this.x + BOX_WIDTH) && clickY >= this.y && clickY <= (this.y + BOX_HEIGHT)) {
+			instanceOffsetX = clickX - this.x;
+			instanceOffsetY = clickY - this.y;
 			return true;
 		}
 
 		return false;
 	}
 
-	public void startStopService(Vector3 coordinates) {
-		float clickX = coordinates.x;
-		float clickY = coordinates.y;
+	public void startStopService(float x, float y) {
+		float clickX = x;
+		float clickY = y;
 
-		if (clickX >= x + 10 && clickX <= (x + 30) && clickY >= y + 10 && clickY <= (y + 30))
+		if (clickX >= this.x + 10 && clickX <= (this.x + 30) && clickY >= this.y + 10 && clickY <= (this.y + 30))
 			determineStartStop();
 	}
 
@@ -191,7 +191,7 @@ public class Template implements WorkbenchItem {
 			}
 		}).start();
 	}
-	
+
 	private void processErrorStream() {
 		new Thread(() -> {
 			try {
@@ -207,13 +207,13 @@ public class Template implements WorkbenchItem {
 			}
 		}).start();
 	}
-	
+
 	private void destroyServiceInstance() {
 		exec.destroy();
 		System.out.println("Process destroyed, exiting.");
 		serviceStatus = ServiceStatus.SHUTDOWN;
 	}
-	
+
 	protected String replaceEnvVars(String startupCommand) {
 		String launchCommand = startupCommand;
 		while (launchCommand.indexOf("%") != -1) {
