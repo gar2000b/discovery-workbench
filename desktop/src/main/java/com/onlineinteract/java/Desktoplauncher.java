@@ -1,5 +1,6 @@
 package com.onlineinteract.java;
 
+import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -26,6 +27,8 @@ public class DesktopLauncher {
 		config.width = (int) width;
 		config.height = (int) height;
 		config.resizable = false;
+		config.title = "µicroservice Orchestrator";
+		config.addIcon("assets/icon-32.png", FileType.Internal);
 
 		// System.out.println("config.width: " + config.width);
 		// System.out.println("config.height: " + config.height);
