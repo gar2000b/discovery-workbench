@@ -98,6 +98,20 @@ public class Template implements WorkbenchItem {
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rect(x + 1, y + 1, BOX_WIDTH - 2, BOX_HEIGHT - 2);
         drawServiceStatus();
+        
+        if (serviceStatus == ServiceStatus.RUNNING) {
+        	shapeRenderer.begin(ShapeType.Line);
+        	shapeRenderer.setColor(color1);
+        	shapeRenderer.rect(x + 60, y + 110, 120, 25);
+        	shapeRenderer.line(x + 120, y + 100, x + 120, y + 110);
+        	shapeRenderer.end();
+            batch.setProjectionMatrix(camera.combined);
+            batch.begin();
+            font.setColor(Color.FOREST);
+            font.getData().setScale(1);
+            font.draw(batch, "Running", x + 90, y + 130);
+            batch.end();
+        }
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
