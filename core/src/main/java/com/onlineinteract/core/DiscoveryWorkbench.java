@@ -6,13 +6,13 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
-public class MsOrchestrator extends Game {
+public class DiscoveryWorkbench extends Game {
 
     private final AssetManager assetManager = new AssetManager();
     private int worldWidth;
     private int worldHeight;
 
-    public MsOrchestrator(int worldWidth, int worldHeight) {
+    public DiscoveryWorkbench(int worldWidth, int worldHeight) {
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;
     }

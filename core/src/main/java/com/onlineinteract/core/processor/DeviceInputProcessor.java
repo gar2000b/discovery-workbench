@@ -69,10 +69,8 @@ public class DeviceInputProcessor {
 
     private void removeTemplateInstance(float x, float y) {
         for (Template instanceItem : templateInstances) {
-            if (instanceItem.isClickWithinBoundary(x, y)) {
-                System.out.println("Removing: " + instanceItem.getLabel());
+            if (instanceItem.isClickWithinBoundary(x, y))
                 instanceItem.renderDeleteServiceDialog();
-            }
         }
     }
 
@@ -85,7 +83,6 @@ public class DeviceInputProcessor {
     private void detectAndProcessDoubleClick(Template instanceItem) {
         long currentTimeMillis = System.currentTimeMillis();
         if (currentTimeMillis - currentInstanceItem.getPreviousTimeMillis() < Template.DOUBLE_CLICK_RANGE && !workspace.isToggleFSFlag() && !workspace.isDialogToggleFlag()) {
-            System.out.println("*** Double click detected");
             currentInstanceItem.renderServiceDialog();
             instanceDragFlag = false;
             currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
@@ -106,10 +103,6 @@ public class DeviceInputProcessor {
             workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.CORAL, Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
         if (templateItem.getLabel().equals("Scripts"))
             workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.BLUE, Color.GRAY, "Scripts", TemplateType.SCRIPT, UUID.randomUUID()));
-
-        for (Template instance : templateInstances) {
-            System.out.println("UUID: " + instance.getUuid());
-        }
     }
 
     protected void processTouchUp(InputEvent evt) {
@@ -124,5 +117,13 @@ public class DeviceInputProcessor {
             currentInstanceItem.setX(evt.getStageX() - currentInstanceItem.getInstanceOffsetX());
             currentInstanceItem.setY(evt.getStageY() - currentInstanceItem.getInstanceOffsetY());
         }
+    }
+
+    public List<Template> getTemplateInstances() {
+        return templateInstances;
+    }
+
+    public void setTemplateInstances(List<Template> templateInstances) {
+        this.templateInstances = templateInstances;
     }
 }

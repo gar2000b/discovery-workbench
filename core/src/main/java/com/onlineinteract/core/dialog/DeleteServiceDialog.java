@@ -28,16 +28,9 @@ public class DeleteServiceDialog extends Dialog {
     @Override
     protected void result(Object object) {
         if (object.getClass().getSimpleName().equals("Boolean") && object == Boolean.TRUE) {
-            /*
-             * template.setLabel(labelTextField.getText()); template.setStartupCommand(startupCommandTextField.getText()); template.setRunningClause(runningClauseTextField.getText());
-             * template.setServicePortNo(servicePortNoTextField.getText()); workspace.getServiceListComponent().updateServiceList(template);
-             */
-            System.out.println("Deleting MS from workspace");
             workspace.getServiceListComponent().removeTemplateInstance(template);
 
         }
-
-        // Gdx.input.setInputProcessor(workspace.getDeviceInputProcessor());
     }
 
 }

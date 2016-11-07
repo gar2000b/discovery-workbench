@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.onlineinteract</groupId>
-		<artifactId>ms-orchestrator</artifactId>
+		<artifactId>discovery-workbench</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>ms-orchestrator-desktop</artifactId>
+	<artifactId>discovery-workbench-desktop</artifactId>
 	<packaging>jar</packaging>
 	<name>Application desktop</name>
 
@@ -19,7 +19,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.onlineinteract</groupId>
-			<artifactId>ms-orchestrator-core</artifactId>
+			<artifactId>discovery-workbench-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
