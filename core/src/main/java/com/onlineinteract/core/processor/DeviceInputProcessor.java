@@ -97,8 +97,8 @@ public class DeviceInputProcessor {
         float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
         float y = workbenchOutline.getBoxHeight() - Template.BOX_HEIGHT;
 
-        if (templateItem.getLabel().equals("µicroservice"))
-            workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.FOREST, Color.FOREST, "µicroservice", TemplateType.MICROSERVICE, UUID.randomUUID()));
+        if (templateItem.getLabel().equals("Application/Service"))
+            workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.FOREST, Color.FOREST, "Application/Service", TemplateType.MICROSERVICE, UUID.randomUUID()));
         if (templateItem.getLabel().equals("Infrastructure"))
             workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.CORAL, Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
         if (templateItem.getLabel().equals("Scripts"))

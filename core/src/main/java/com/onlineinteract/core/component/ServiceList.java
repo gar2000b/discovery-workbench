@@ -220,7 +220,7 @@ public class ServiceList {
 
     public void addTemplateInstance(Template instance) {
         templateInstances.add(instance);
-        if (instance.getType() == TemplateType.MICROSERVICE && instance.getLabel().equals("µicroservice"))
+        if (instance.getType() == TemplateType.MICROSERVICE && instance.getLabel().equals("Application/Service"))
             orderedServiceList.add(instance);
         else if (instance.getType() == TemplateType.INFRASTRUCTURE)
             orderedServiceList.add(instance);

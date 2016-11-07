@@ -305,7 +305,7 @@ public class Template implements WorkbenchItem {
     public void renderServiceDialog() {
         Gdx.input.setInputProcessor(stage);
         serviceDialog = new ServiceDialog("Service Configuration", skin, workspace, this);
-        if (label.equals("µicroservice"))
+        if (label.equals("Application/Service"))
             serviceDialog.getLabelTextField().setText("New Service");
         else
             serviceDialog.getLabelTextField().setText(label);
@@ -332,7 +332,7 @@ public class Template implements WorkbenchItem {
     public String toString() {
         String tempLabel = "";
 
-        if (label.equals("µicroservice"))
+        if (label.equals("Application/Service"))
             tempLabel = "New Service";
         else
             tempLabel = label;
