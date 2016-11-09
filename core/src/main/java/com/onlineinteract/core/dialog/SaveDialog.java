@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.component.ServiceList;
 import com.onlineinteract.core.workbench.Arrow;
+import com.onlineinteract.core.workbench.DataStore;
 import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.Topic;
 
@@ -68,6 +69,7 @@ public class SaveDialog extends Dialog {
         writeOutTemplateInstances(serviceListComponent, mapper, fos);
         writeOutArrows(mapper, fos);
         writeOutTopics(mapper, fos);
+        writeOutDataStores(mapper, fos);
         try {
             fos.flush();
             fos.close();
@@ -77,6 +79,22 @@ public class SaveDialog extends Dialog {
         Gdx.graphics.setTitle("Discovery Workbench - " + pathTextField.getText());
     }
 
+    private void writeOutDataStores(ObjectMapper mapper, FileOutputStream fos) {
+    	List<DataStore> dataStoreList = workspace.getDataStoreList();
+    	try {
+    		for (DataStore dataStore : dataStoreList) {
+    			String dataStoreString = mapper.writeValueAsString(dataStore);
+    			dataStoreString += "\n";
+    			fos.write(dataStoreString.getBytes());
+    		}
+    		fos.write("#endDataStores\n".getBytes());
+    	} catch (JsonProcessingException e) {
+    		e.printStackTrace();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
     private void writeOutTopics(ObjectMapper mapper, FileOutputStream fos) {
         List<Topic> topicList = workspace.getTopicList();
         try {
