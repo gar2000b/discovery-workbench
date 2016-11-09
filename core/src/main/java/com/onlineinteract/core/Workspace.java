@@ -25,6 +25,7 @@ import com.onlineinteract.core.processor.DeviceInputProcessor;
 import com.onlineinteract.core.render.WorkspaceRenderer;
 import com.onlineinteract.core.type.TemplateType;
 import com.onlineinteract.core.workbench.Arrow;
+import com.onlineinteract.core.workbench.DataStore;
 import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.Topic;
 import com.onlineinteract.core.workbench.WorkbenchItem;
@@ -59,6 +60,7 @@ public class Workspace extends ScreenAdapter {
     private List<WorkbenchItem> workbenchItems = new ArrayList<WorkbenchItem>();
     private Arrow arrow;
     private Topic topic;
+    private DataStore dataStore;
     private DeviceInputProcessor deviceInputProcessor;
     private String instructions;
     ServiceList serviceListComponent;
@@ -84,6 +86,7 @@ public class Workspace extends ScreenAdapter {
         instantiateTemplates(worldWidth, worldHeight);
         instantiateArrow();
         instantiateTopic();
+        instantiateDataStore();
         workspaceRenderer = new WorkspaceRenderer(this);
         stage = new Stage();
         serviceListComponent = new ServiceList(this);
@@ -199,6 +202,10 @@ public class Workspace extends ScreenAdapter {
 
     private void instantiateTopic() {
         topic = new Topic(camera);
+    }
+
+    private void instantiateDataStore() {
+        dataStore = new DataStore(camera);
     }
 
     @Override
@@ -387,5 +394,9 @@ public class Workspace extends ScreenAdapter {
 
     public void setTopicList(List<Topic> topicList) {
         this.topicList = topicList;
+    }
+
+    public DataStore getDataStore() {
+        return dataStore;
     }
 }

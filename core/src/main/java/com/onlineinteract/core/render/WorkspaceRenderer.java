@@ -23,6 +23,7 @@ public class WorkspaceRenderer {
         workspace.getCamera().update();
         workspace.getArrow().draw();
         workspace.getTopic().draw();
+        workspace.getDataStore().draw();
         for (WorkbenchItem workbenchItem : workspace.getWorkbenchItems()) {
             workbenchItem.draw();
         }
