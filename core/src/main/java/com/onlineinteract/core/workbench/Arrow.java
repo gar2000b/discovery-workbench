@@ -23,6 +23,8 @@ public class Arrow implements WorkbenchItem {
 	private float instanceOffsetY;
 	private Compass rotatePosition = Compass.EAST;
 
+	public Arrow(){}
+	
 	public Arrow(OrthographicCamera camera) {
 		this(X_OFFSET, Y_OFFSET, camera);
 	}
@@ -31,6 +33,12 @@ public class Arrow implements WorkbenchItem {
 		this.camera = camera;
 		this.x = x;
 		this.y = y;
+		lineShapeRenderer = new ShapeRenderer();
+		arrowHeadShapeRenderer = new ShapeRenderer();
+	}
+	
+	public void instantiateRenderersAndCamera(OrthographicCamera camera) {
+		this.camera = camera;
 		lineShapeRenderer = new ShapeRenderer();
 		arrowHeadShapeRenderer = new ShapeRenderer();
 	}

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.component.ServiceList;
+import com.onlineinteract.core.workbench.Arrow;
 import com.onlineinteract.core.workbench.Template;
 
 import java.io.BufferedReader;
@@ -64,12 +65,14 @@ public class OpenDialog extends Dialog {
             readLine = br.readLine();
             List<String> orderedList = mapper.readValue(readLine, List.class);
             List<Template> templateInstances = readInTemplateInstances(mapper, br);
+            List<Arrow> arrowList = readInArrowList(mapper, br);
             br.close();
             serviceListComponent.setTemplateInstances(templateInstances);
             workspace.getDeviceInputProcessor().setTemplateInstances(templateInstances);
             List<Template> orderedServiceList = reconstructOrderedList(orderedList, templateInstances);
             serviceListComponent.setOrderedServiceList(orderedServiceList);
             serviceListComponent.refreshOrderedServiceList();
+            workspace.setArrowList(arrowList);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -85,10 +88,21 @@ public class OpenDialog extends Dialog {
         return orderedServiceList;
     }
 
+    private List<Arrow> readInArrowList(ObjectMapper mapper, BufferedReader br) throws IOException {
+    	String readLine;
+    	List<Arrow> arrowList = new ArrayList<>();
+    	while ((readLine = br.readLine()) != null && !readLine.equals("#endArrows")) {
+    		Arrow arrow = mapper.readValue(readLine, Arrow.class);
+    		arrow.instantiateRenderersAndCamera(workspace.getCamera());
+    		arrowList.add(arrow);
+    	}
+    	return arrowList;
+    }
+    
     private List<Template> readInTemplateInstances(ObjectMapper mapper, BufferedReader br) throws IOException, JsonParseException, JsonMappingException {
         String readLine;
         List<Template> templateInstances = new ArrayList<>();
-        while ((readLine = br.readLine()) != null) {
+        while ((readLine = br.readLine()) != null && !readLine.equals("#endTemplateInstances")) {
             Template instance = mapper.readValue(readLine, Template.class);
             instance.setWorkspace(workspace);
             instance.setShapeRenderer(workspace.getShapeRenderer());

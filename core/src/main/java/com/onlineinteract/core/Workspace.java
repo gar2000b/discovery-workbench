@@ -363,4 +363,8 @@ public class Workspace extends ScreenAdapter {
 	public List<Arrow> getArrowList() {
 		return arrowList;
 	}
+
+	public void setArrowList(List<Arrow> arrowList) {
+		this.arrowList = arrowList;
+	}
 }
