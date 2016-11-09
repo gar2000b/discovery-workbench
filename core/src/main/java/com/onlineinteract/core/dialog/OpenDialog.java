@@ -12,6 +12,7 @@ import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.component.ServiceList;
 import com.onlineinteract.core.workbench.Arrow;
 import com.onlineinteract.core.workbench.Template;
+import com.onlineinteract.core.workbench.Topic;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -66,6 +67,7 @@ public class OpenDialog extends Dialog {
             List<String> orderedList = mapper.readValue(readLine, List.class);
             List<Template> templateInstances = readInTemplateInstances(mapper, br);
             List<Arrow> arrowList = readInArrowList(mapper, br);
+            List<Topic> topicList = readInTopicList(mapper, br);
             br.close();
             serviceListComponent.setTemplateInstances(templateInstances);
             workspace.getDeviceInputProcessor().setTemplateInstances(templateInstances);
@@ -73,6 +75,7 @@ public class OpenDialog extends Dialog {
             serviceListComponent.setOrderedServiceList(orderedServiceList);
             serviceListComponent.refreshOrderedServiceList();
             workspace.setArrowList(arrowList);
+            workspace.setTopicList(topicList);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -88,17 +91,28 @@ public class OpenDialog extends Dialog {
         return orderedServiceList;
     }
 
-    private List<Arrow> readInArrowList(ObjectMapper mapper, BufferedReader br) throws IOException {
-    	String readLine;
-    	List<Arrow> arrowList = new ArrayList<>();
-    	while ((readLine = br.readLine()) != null && !readLine.equals("#endArrows")) {
-    		Arrow arrow = mapper.readValue(readLine, Arrow.class);
-    		arrow.instantiateRenderersAndCamera(workspace.getCamera());
-    		arrowList.add(arrow);
-    	}
-    	return arrowList;
+    private List<Topic> readInTopicList(ObjectMapper mapper, BufferedReader br) throws IOException {
+        String readLine;
+        List<Topic> topicList = new ArrayList<>();
+        while ((readLine = br.readLine()) != null && !readLine.equals("#endTopics")) {
+            Topic topic = mapper.readValue(readLine, Topic.class);
+            topic.instantiateRenderersAndCamera(workspace.getCamera());
+            topicList.add(topic);
+        }
+        return topicList;
     }
-    
+
+    private List<Arrow> readInArrowList(ObjectMapper mapper, BufferedReader br) throws IOException {
+        String readLine;
+        List<Arrow> arrowList = new ArrayList<>();
+        while ((readLine = br.readLine()) != null && !readLine.equals("#endArrows")) {
+            Arrow arrow = mapper.readValue(readLine, Arrow.class);
+            arrow.instantiateRenderersAndCamera(workspace.getCamera());
+            arrowList.add(arrow);
+        }
+        return arrowList;
+    }
+
     private List<Template> readInTemplateInstances(ObjectMapper mapper, BufferedReader br) throws IOException, JsonParseException, JsonMappingException {
         String readLine;
         List<Template> templateInstances = new ArrayList<>();
