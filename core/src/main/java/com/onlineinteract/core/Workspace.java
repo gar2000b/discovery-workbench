@@ -26,6 +26,7 @@ import com.onlineinteract.core.render.WorkspaceRenderer;
 import com.onlineinteract.core.type.TemplateType;
 import com.onlineinteract.core.workbench.Arrow;
 import com.onlineinteract.core.workbench.Template;
+import com.onlineinteract.core.workbench.Topic;
 import com.onlineinteract.core.workbench.WorkbenchItem;
 import com.onlineinteract.core.workbench.WorkbenchOutline;
 
@@ -57,10 +58,12 @@ public class Workspace extends ScreenAdapter {
     private WorkspaceRenderer workspaceRenderer;
     private List<WorkbenchItem> workbenchItems = new ArrayList<WorkbenchItem>();
     private Arrow arrow;
+    private Topic topic;
     private DeviceInputProcessor deviceInputProcessor;
     private String instructions;
     ServiceList serviceListComponent;
     private List<Arrow> arrowList;
+    private List<Topic> topicList;
 
     private boolean toggleFSFlag = false;
     private boolean dialogToggleFlag = false;
@@ -80,10 +83,12 @@ public class Workspace extends ScreenAdapter {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         instantiateTemplates(worldWidth, worldHeight);
         instantiateArrow();
+        instantiateTopic();
         workspaceRenderer = new WorkspaceRenderer(this);
         stage = new Stage();
         serviceListComponent = new ServiceList(this);
         arrowList = new ArrayList<>();
+        topicList = new ArrayList<>();
         setupInputProcessors();
         setupWorkspaceButtons();
     }
@@ -115,7 +120,7 @@ public class Workspace extends ScreenAdapter {
         envVarsButton.setWidth(125);
         stage.addActor(envVarsButton);
     }
-    
+
     private void setupInstructionsButton() {
         Button instructionsButton = new TextButton("Instructions", getSkin());
         instructionsButton.addListener(new EventListener() {
@@ -187,9 +192,13 @@ public class Workspace extends ScreenAdapter {
         workbenchItems.add(new Template(this, worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY, "Scripts", TemplateType.SCRIPT, UUID.randomUUID()));
         workbenchItems.add(new Template(this, worldHeight - PROVISIONING_TEMPLATE_HEIGHT_OFFSET, Color.WHITE, Color.WHITE, "Provisioning", TemplateType.PROVISIONING, UUID.randomUUID()));
     }
-    
+
     private void instantiateArrow() {
-    	arrow = new Arrow(camera);
+        arrow = new Arrow(camera);
+    }
+
+    private void instantiateTopic() {
+        topic = new Topic(camera);
     }
 
     @Override
@@ -356,15 +365,27 @@ public class Workspace extends ScreenAdapter {
         this.instructions = instructions;
     }
 
-	public Arrow getArrow() {
-		return arrow;
-	}
+    public Arrow getArrow() {
+        return arrow;
+    }
 
-	public List<Arrow> getArrowList() {
-		return arrowList;
-	}
+    public List<Arrow> getArrowList() {
+        return arrowList;
+    }
 
-	public void setArrowList(List<Arrow> arrowList) {
-		this.arrowList = arrowList;
-	}
+    public void setArrowList(List<Arrow> arrowList) {
+        this.arrowList = arrowList;
+    }
+
+    public Topic getTopic() {
+        return topic;
+    }
+
+    public List<Topic> getTopicList() {
+        return topicList;
+    }
+
+    public void setTopicList(List<Topic> topicList) {
+        this.topicList = topicList;
+    }
 }
