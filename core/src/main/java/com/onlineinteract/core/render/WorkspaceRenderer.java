@@ -1,12 +1,13 @@
 package com.onlineinteract.core.render;
 
+import java.util.ListIterator;
+
 import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.workbench.Arrow;
+import com.onlineinteract.core.workbench.DataStore;
 import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.Topic;
 import com.onlineinteract.core.workbench.WorkbenchItem;
-
-import java.util.ListIterator;
 
 public class WorkspaceRenderer {
 
@@ -41,6 +42,11 @@ public class WorkspaceRenderer {
         for (ListIterator<Topic> iterator = workspace.getTopicList()
                         .listIterator(workspace.getTopicList().size()); iterator.hasPrevious();) {
             iterator.previous().draw();
+        }
+        
+        for (ListIterator<DataStore> iterator = workspace.getDataStoreList()
+        		.listIterator(workspace.getDataStoreList().size()); iterator.hasPrevious();) {
+        	iterator.previous().draw();
         }
     }
 
