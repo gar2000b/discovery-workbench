@@ -113,9 +113,4 @@ public class DataStore implements WorkbenchItem {
         deleteServiceDialog.show(workspace.getStage());
 	}
 
-//	@Override
-//	public UUID getUuid() {
-//		// TODO Need to re-factor inheritance as to not override
-//		return null;
-//	}
 }
