@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.type.Compass;
 
 public class Arrow implements WorkbenchItem {
@@ -104,6 +106,12 @@ public class Arrow implements WorkbenchItem {
 		this.y = y;
 	}
 
+	@JsonIgnore
+	@Override
+	public void setWorkspace(Workspace workspace) {
+		// TODO Auto-generated method stub
+	}
+	
 	@Override
 	public void renderDeleteDialog() {
 		// TODO Auto-generated method stub
