@@ -3,6 +3,7 @@ package com.onlineinteract.core.dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.onlineinteract.core.Workspace;
+import com.onlineinteract.core.workbench.Arrow;
 import com.onlineinteract.core.workbench.DataStore;
 import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.Topic;
@@ -37,6 +38,8 @@ public class DeleteDialog extends Dialog {
 				workspace.getDataStoreList().remove(item);
 			if (item instanceof Topic)
 				workspace.getTopicList().remove(item);
+			if (item instanceof Arrow)
+				workspace.getArrowList().remove(item);
 		}
 	}
 

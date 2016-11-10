@@ -1,11 +1,13 @@
 package com.onlineinteract.core.workbench;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.onlineinteract.core.Workspace;
+import com.onlineinteract.core.dialog.DeleteDialog;
 import com.onlineinteract.core.type.Compass;
 
 public class Arrow implements WorkbenchItem {
@@ -24,6 +26,7 @@ public class Arrow implements WorkbenchItem {
 	private float instanceOffsetX;
 	private float instanceOffsetY;
 	private Compass rotatePosition = Compass.EAST;
+	private Workspace workspace;
 
 	public Arrow(){}
 	
@@ -109,11 +112,14 @@ public class Arrow implements WorkbenchItem {
 	@JsonIgnore
 	@Override
 	public void setWorkspace(Workspace workspace) {
-		// TODO Auto-generated method stub
+		this.workspace = workspace;
 	}
 	
 	@Override
 	public void renderDeleteDialog() {
-		// TODO Auto-generated method stub
+        Gdx.input.setInputProcessor(workspace.getStage());
+        DeleteDialog deleteServiceDialog = new DeleteDialog("Really Delete Arrow?", workspace.getSkin(), workspace, this);
+        workspace.getStage().act();
+        deleteServiceDialog.show(workspace.getStage());
 	}
 }

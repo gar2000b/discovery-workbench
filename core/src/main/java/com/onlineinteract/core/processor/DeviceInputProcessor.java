@@ -60,6 +60,7 @@ public class DeviceInputProcessor {
             removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), templateInstances);
             removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), workspace.getDataStoreList());
             removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), workspace.getTopicList());
+            removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), workspace.getArrowList());
         }
     }
 
