@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.workbench.DataStore;
 import com.onlineinteract.core.workbench.Template;
+import com.onlineinteract.core.workbench.Topic;
 import com.onlineinteract.core.workbench.WorkbenchItem;
 
 public class DeleteDialog extends Dialog {
@@ -34,6 +35,8 @@ public class DeleteDialog extends Dialog {
 				workspace.getServiceListComponent().removeTemplateInstance((Template) item);
 			if (item instanceof DataStore)
 				workspace.getDataStoreList().remove(item);
+			if (item instanceof Topic)
+				workspace.getTopicList().remove(item);
 		}
 	}
 
