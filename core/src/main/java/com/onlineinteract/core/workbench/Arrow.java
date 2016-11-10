@@ -103,4 +103,9 @@ public class Arrow implements WorkbenchItem {
 	public void setY(float y) {
 		this.y = y;
 	}
+
+	@Override
+	public void renderDeleteDialog() {
+		// TODO Auto-generated method stub
+	}
 }

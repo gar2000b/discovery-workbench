@@ -45,4 +45,37 @@ public class WorkbenchOutline implements WorkbenchItem {
     public float getBoxWidth() {
         return boxWidth;
     }
+
+	@Override
+	public boolean isClickWithinBoundary(float x, float y) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void renderDeleteDialog() {
+		// TODO Need to re-factor inheritance as to not override
+	}
+
+	@Override
+	public float getInstanceOffsetX() {
+		// TODO Need to re-factor inheritance as to not override
+		return 0;
+	}
+
+	@Override
+	public float getInstanceOffsetY() {
+		// TODO Need to re-factor inheritance as to not override
+		return 0;
+	}
+
+	@Override
+	public void setX(float x) {
+		// TODO Need to re-factor inheritance as to not override
+	}
+
+	@Override
+	public void setY(float y) {
+		// TODO Need to re-factor inheritance as to not override
+	}
 }

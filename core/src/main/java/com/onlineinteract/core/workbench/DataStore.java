@@ -1,11 +1,14 @@
 package com.onlineinteract.core.workbench;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.onlineinteract.core.Workspace;
+import com.onlineinteract.core.dialog.DeleteDialog;
 
 public class DataStore implements WorkbenchItem {
     public static final int X_OFFSET = 80;
@@ -19,20 +22,22 @@ public class DataStore implements WorkbenchItem {
     private float y;
     private float instanceOffsetX;
     private float instanceOffsetY;
+	private Workspace workspace;
 
     public DataStore() {}
 
-    public DataStore(OrthographicCamera camera) {
-        this(X_OFFSET, Y_OFFSET, camera);
+    public DataStore(Workspace workspace, OrthographicCamera camera) {
+        this(workspace, X_OFFSET, Y_OFFSET, camera);
     }
 
-    public DataStore(float x, float y, OrthographicCamera camera) {
+    public DataStore(Workspace workspace, float x, float y, OrthographicCamera camera) {
         this.camera = camera;
         this.x = x;
         this.y = y;
         shapeRenderer = new ShapeRenderer();
         font = new BitmapFont();
         batch = new SpriteBatch();
+        this.workspace = workspace;
     }
 
     public void instantiateRenderersAndCamera(OrthographicCamera camera) {
@@ -99,4 +104,18 @@ public class DataStore implements WorkbenchItem {
     public void setY(float y) {
         this.y = y;
     }
+
+	@Override
+	public void renderDeleteDialog() {
+        Gdx.input.setInputProcessor(workspace.getStage());
+        DeleteDialog deleteServiceDialog = new DeleteDialog("Really Delete Data Store?", workspace.getSkin(), workspace, this);
+        workspace.getStage().act();
+        deleteServiceDialog.show(workspace.getStage());
+	}
+
+//	@Override
+//	public UUID getUuid() {
+//		// TODO Need to re-factor inheritance as to not override
+//		return null;
+//	}
 }
