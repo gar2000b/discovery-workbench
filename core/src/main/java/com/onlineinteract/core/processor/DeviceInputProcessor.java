@@ -23,13 +23,7 @@ public class DeviceInputProcessor {
     private List<Template> retainedTemplateList;
     private List<Template> templateInstances;
     private boolean instanceDragFlag = false;
-    private boolean arrowDragFlag = false;
-    private boolean topicDragFlag = false;
-    private boolean dataStoreDragFlag = false;
-    private Template currentInstanceItem;
-    private WorkbenchItem currentInstanceArrow;
-    private WorkbenchItem currentInstanceTopic;
-    private WorkbenchItem currentInstanceDataStore;
+    private WorkbenchItem currentInstanceItem;
 
     public DeviceInputProcessor(Workspace workspace) {
         this.workspace = workspace;
@@ -90,7 +84,7 @@ public class DeviceInputProcessor {
     }
 
     private void detectClickTemplateInstances(float x, float y) {
-        for (Template instanceItem : templateInstances) {
+        for (WorkbenchItem instanceItem : templateInstances) {
             if (instanceItem.isClickWithinBoundary(x, y)) {
                 putInstanceToBeginningOfList(instanceItem, templateInstances);
                 instanceDragFlag = true;
@@ -106,8 +100,8 @@ public class DeviceInputProcessor {
         for (WorkbenchItem arrow : workspace.getArrowList()) {
             if (arrow.isClickWithinBoundary(x, y)) {
                 putInstanceToBeginningOfList(arrow, workspace.getArrowList());
-                arrowDragFlag = true;
-                currentInstanceArrow = arrow;
+                instanceDragFlag = true;
+                currentInstanceItem = arrow;
                 break;
             }
         }
@@ -117,8 +111,9 @@ public class DeviceInputProcessor {
         for (WorkbenchItem dataStore : workspace.getDataStoreList()) {
             if (dataStore.isClickWithinBoundary(x, y)) {
                 putInstanceToBeginningOfList(dataStore, workspace.getDataStoreList());
-                dataStoreDragFlag = true;
-                currentInstanceDataStore = dataStore;
+                instanceDragFlag = true;
+                currentInstanceItem = dataStore;
+                detectAndProcessDoubleClick(dataStore);
                 break;
             }
         }
@@ -128,8 +123,8 @@ public class DeviceInputProcessor {
         for (WorkbenchItem topic : workspace.getTopicList()) {
             if (topic.isClickWithinBoundary(x, y)) {
                 putInstanceToBeginningOfList(topic, workspace.getTopicList());
-                topicDragFlag = true;
-                currentInstanceTopic = topic;
+                instanceDragFlag = true;
+                currentInstanceItem = topic;
                 break;
             }
         }
@@ -148,16 +143,13 @@ public class DeviceInputProcessor {
         workbenchItems.remove(index);
         workbenchItems.add(0, (T) instanceItem);
     }
-
-    private void detectAndProcessDoubleClick(Template instanceItem) {
+    
+    private void detectAndProcessDoubleClick(WorkbenchItem instanceItem) {
         long currentTimeMillis = System.currentTimeMillis();
         if (currentTimeMillis - currentInstanceItem.getPreviousTimeMillis() < Template.DOUBLE_CLICK_RANGE
                         && !workspace.isToggleFSFlag() && !workspace.isDialogToggleFlag()) {
-            currentInstanceItem.renderServiceDialog();
+            currentInstanceItem.renderDialog();
             instanceDragFlag = false;
-            arrowDragFlag = false;
-            topicDragFlag = false;
-            dataStoreDragFlag = false;
             currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
         }
         currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
@@ -206,9 +198,6 @@ public class DeviceInputProcessor {
     protected void processTouchUp(InputEvent evt) {
         if (evt.getButton() == Input.Buttons.LEFT) {
             instanceDragFlag = false;
-            arrowDragFlag = false;
-            topicDragFlag = false;
-            dataStoreDragFlag = false;
             currentInstanceItem = null;
         }
     }
@@ -217,21 +206,6 @@ public class DeviceInputProcessor {
         if (instanceDragFlag && !workspace.isDialogToggleFlag()) {
             currentInstanceItem.setX(evt.getStageX() - currentInstanceItem.getInstanceOffsetX());
             currentInstanceItem.setY(evt.getStageY() - currentInstanceItem.getInstanceOffsetY());
-        }
-
-        if (arrowDragFlag && !workspace.isDialogToggleFlag()) {
-            currentInstanceArrow.setX(evt.getStageX() - currentInstanceArrow.getInstanceOffsetX());
-            currentInstanceArrow.setY(evt.getStageY() - currentInstanceArrow.getInstanceOffsetY());
-        }
-
-        if (topicDragFlag && !workspace.isDialogToggleFlag()) {
-            currentInstanceTopic.setX(evt.getStageX() - currentInstanceTopic.getInstanceOffsetX());
-            currentInstanceTopic.setY(evt.getStageY() - currentInstanceTopic.getInstanceOffsetY());
-        }
-        
-        if (dataStoreDragFlag && !workspace.isDialogToggleFlag()) {
-            currentInstanceDataStore.setX(evt.getStageX() - currentInstanceDataStore.getInstanceOffsetX());
-            currentInstanceDataStore.setY(evt.getStageY() - currentInstanceDataStore.getInstanceOffsetY());
         }
     }
 

@@ -302,7 +302,7 @@ public class Template implements WorkbenchItem {
         return launchCommand;
     }
 
-    public void renderServiceDialog() {
+    public void renderDialog() {
         Gdx.input.setInputProcessor(stage);
         serviceDialog = new ServiceDialog("Service Configuration", skin, workspace, this);
         if (label.equals("Application/Service"))

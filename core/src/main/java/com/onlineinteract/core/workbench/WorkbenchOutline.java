@@ -86,4 +86,25 @@ public class WorkbenchOutline implements WorkbenchItem {
 	public void setWorkspace(Workspace workspace) {
 		// TODO Need to re-factor inheritance as to not override
 	}
+
+	@Override
+	public void renderDialog() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void setPreviousTimeMillis(long previousTimeMillis) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void startStopService(float x, float y) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public long getPreviousTimeMillis() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
