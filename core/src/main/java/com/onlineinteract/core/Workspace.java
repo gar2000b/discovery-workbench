@@ -76,7 +76,7 @@ public class Workspace extends ScreenAdapter {
 
 	public Workspace(DiscoveryWorkbench discoverWorkbench, int worldWidth, int worldHeight) {
 		instance = this;
-		
+
 		this.discoveryWorkbench = discoverWorkbench;
 		this.worldWidth = worldWidth;
 		this.worldHeight = worldHeight;

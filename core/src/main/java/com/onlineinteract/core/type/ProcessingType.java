@@ -7,5 +7,5 @@ package com.onlineinteract.core.type;
  *
  */
 public enum ProcessingType {
-    SEQ, PAR
+	SEQ, PAR
 }
