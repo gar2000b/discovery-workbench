@@ -18,22 +18,20 @@ import java.util.ListIterator;
 
 public class ServiceList {
 
-    private Workspace workspace;
     private com.badlogic.gdx.scenes.scene2d.ui.List<Template> serviceList;
     private List<Template> orderedServiceList;
     ScrollPane scrollPane;
     private List<Template> templateInstances = new ArrayList<Template>();
 
-    public ServiceList(Workspace workspace) {
-        this.workspace = workspace;
-        serviceList = new com.badlogic.gdx.scenes.scene2d.ui.List<Template>(workspace.getSkin());
+    public ServiceList() {
+        serviceList = new com.badlogic.gdx.scenes.scene2d.ui.List<Template>(Workspace.getInstance().getSkin());
         orderedServiceList = new ArrayList<>();
 
         serviceList.setItems(orderedServiceList.toArray(new Template[orderedServiceList.size()]));
         scrollPane = new ScrollPane(serviceList);
         scrollPane.setBounds(10, 10, 200, 660);
         scrollPane.setSmoothScrolling(true);
-        scrollPane.setPosition(workspace.getWorldWidth() - 280, 20);
+        scrollPane.setPosition(Workspace.getInstance().getWorldWidth() - 280, 20);
         scrollPane.setTransform(true);
         scrollPane.setScale(1);
         serviceList.setColor(Color.CYAN);
@@ -41,7 +39,7 @@ public class ServiceList {
         serviceList.getSelection().setRequired(false);
         serviceList.setSelected(null);
 
-        workspace.getStage().addActor(scrollPane);
+        Workspace.getInstance().getStage().addActor(scrollPane);
         setupServiceListButtons();
     }
 
@@ -54,7 +52,7 @@ public class ServiceList {
     }
 
     private void setupToggleProcessingTypeButton() {
-        Button toggleProcessingTypeButton = new TextButton("Toggle Processing Type", workspace.getSkin());
+        Button toggleProcessingTypeButton = new TextButton("Toggle Processing Type", Workspace.getInstance().getSkin());
         toggleProcessingTypeButton.addListener(new EventListener() {
             @Override
             public boolean handle(Event event) {
@@ -63,7 +61,7 @@ public class ServiceList {
         });
         toggleProcessingTypeButton.setPosition(1280, 750);
         toggleProcessingTypeButton.setWidth(200);
-        workspace.getStage().addActor(toggleProcessingTypeButton);
+        Workspace.getInstance().getStage().addActor(toggleProcessingTypeButton);
     }
 
     private boolean toggleProcessingTypes(Event event) {
@@ -80,7 +78,7 @@ public class ServiceList {
     }
 
     private void setupUpButton() {
-        Button upButton = new TextButton("^ - up", workspace.getSkin());
+        Button upButton = new TextButton("^ - up", Workspace.getInstance().getSkin());
         upButton.addListener(new EventListener() {
 
             @Override
@@ -90,7 +88,7 @@ public class ServiceList {
         });
         upButton.setPosition(1280, 720);
         upButton.setWidth(50);
-        workspace.getStage().addActor(upButton);
+        Workspace.getInstance().getStage().addActor(upButton);
     }
 
     private boolean moveItemsUp(Event event) {
@@ -116,7 +114,7 @@ public class ServiceList {
     }
 
     private void setupDownButton() {
-        Button downButton = new TextButton("v - dn", workspace.getSkin());
+        Button downButton = new TextButton("v - dn", Workspace.getInstance().getSkin());
         downButton.addListener(new EventListener() {
 
             @Override
@@ -126,7 +124,7 @@ public class ServiceList {
         });
         downButton.setPosition(1280, 690);
         downButton.setWidth(50);
-        workspace.getStage().addActor(downButton);
+        Workspace.getInstance().getStage().addActor(downButton);
     }
 
     private boolean moveItemsDown(Event event) {
@@ -152,7 +150,7 @@ public class ServiceList {
     }
 
     private void setupStartAllButton() {
-        Button startAllButton = new TextButton("Start All", workspace.getSkin());
+        Button startAllButton = new TextButton("Start All", Workspace.getInstance().getSkin());
         startAllButton.addListener(new EventListener() {
 
             @Override
@@ -162,11 +160,11 @@ public class ServiceList {
         });
         startAllButton.setPosition(1340, 720);
         startAllButton.setWidth(140);
-        workspace.getStage().addActor(startAllButton);
+        Workspace.getInstance().getStage().addActor(startAllButton);
     }
 
     private void setupStopAllButton() {
-        Button stopAllButton = new TextButton("Stop All", workspace.getSkin());
+        Button stopAllButton = new TextButton("Stop All", Workspace.getInstance().getSkin());
         stopAllButton.addListener(new EventListener() {
 
             @Override
@@ -176,7 +174,7 @@ public class ServiceList {
         });
         stopAllButton.setPosition(1340, 690);
         stopAllButton.setWidth(140);
-        workspace.getStage().addActor(stopAllButton);
+        Workspace.getInstance().getStage().addActor(stopAllButton);
     }
 
     private boolean startAll(Event event) {

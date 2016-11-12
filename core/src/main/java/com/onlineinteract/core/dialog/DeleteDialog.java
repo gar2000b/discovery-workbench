@@ -11,16 +11,14 @@ import com.onlineinteract.core.workbench.WorkbenchItem;
 
 public class DeleteDialog extends Dialog {
 
-	private Workspace workspace;
 	private WorkbenchItem item;
 
 	public DeleteDialog(String title, Skin skin, String windowStyleName) {
 		super(title, skin, windowStyleName);
 	}
 
-	public DeleteDialog(String title, Skin skin, Workspace workspace, WorkbenchItem item) {
+	public DeleteDialog(String title, Skin skin, WorkbenchItem item) {
 		super(title, skin);
-		this.workspace = workspace;
 		this.item = item;
 	}
 
@@ -33,13 +31,13 @@ public class DeleteDialog extends Dialog {
 	protected void result(Object object) {
 		if (object.getClass().getSimpleName().equals("Boolean") && object == Boolean.TRUE) {
 			if (item instanceof Template)
-				workspace.getServiceListComponent().removeTemplateInstance((Template) item);
+				Workspace.getInstance().getServiceListComponent().removeTemplateInstance((Template) item);
 			if (item instanceof DataStore)
-				workspace.getDataStoreList().remove(item);
+				Workspace.getInstance().getDataStoreList().remove(item);
 			if (item instanceof Topic)
-				workspace.getTopicList().remove(item);
+				Workspace.getInstance().getTopicList().remove(item);
 			if (item instanceof Arrow)
-				workspace.getArrowList().remove(item);
+				Workspace.getInstance().getArrowList().remove(item);
 		}
 	}
 

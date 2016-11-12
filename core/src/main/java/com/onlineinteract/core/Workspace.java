@@ -47,7 +47,7 @@ public class Workspace extends ScreenAdapter {
 	private int worldHeight;
 
 	@SuppressWarnings("unused")
-	private final DiscoveryWorkbench discoveryWorkbench;
+	private DiscoveryWorkbench discoveryWorkbench;
 	private OrthographicCamera camera;
 	private Viewport viewport;
 	private SpriteBatch batch;
@@ -75,6 +75,8 @@ public class Workspace extends ScreenAdapter {
 	private Stage stage;
 
 	public Workspace(DiscoveryWorkbench discoverWorkbench, int worldWidth, int worldHeight) {
+		instance = this;
+		
 		this.discoveryWorkbench = discoverWorkbench;
 		this.worldWidth = worldWidth;
 		this.worldHeight = worldHeight;
@@ -89,14 +91,23 @@ public class Workspace extends ScreenAdapter {
 		instantiateArrow();
 		instantiateTopic();
 		instantiateDataStore();
-		workspaceRenderer = new WorkspaceRenderer(this);
+		workspaceRenderer = new WorkspaceRenderer();
 		stage = new Stage();
-		serviceListComponent = new ServiceList(this);
+		serviceListComponent = new ServiceList();
 		arrowList = new ArrayList<>();
 		topicList = new ArrayList<>();
 		dataStoreList = new ArrayList<>();
 		setupInputProcessors();
 		setupWorkspaceButtons();
+	}
+
+	private static Workspace instance = null;
+
+	public static Workspace getInstance() {
+		if (instance != null)
+			return instance;
+
+		return null;
 	}
 
 	private void setupWorkspaceButtons() {
@@ -113,8 +124,7 @@ public class Workspace extends ScreenAdapter {
 			public boolean handle(Event event) {
 				if (event.toString().equals("touchDown")) {
 					Gdx.input.setInputProcessor(stage);
-					InstructionsDialog instructionsDialog = new InstructionsDialog("Instructions", skin,
-							Workspace.this);
+					InstructionsDialog instructionsDialog = new InstructionsDialog("Instructions", skin);
 					instructionsDialog.getInstructionsTextArea().setText(instructions);
 					stage.act();
 					instructionsDialog.show(stage);
@@ -135,8 +145,7 @@ public class Workspace extends ScreenAdapter {
 			public boolean handle(Event event) {
 				if (event.toString().equals("touchDown")) {
 					Gdx.input.setInputProcessor(stage);
-					InstructionsDialog instructionsDialog = new InstructionsDialog("Instructions", skin,
-							Workspace.this);
+					InstructionsDialog instructionsDialog = new InstructionsDialog("Instructions", skin);
 					instructionsDialog.getInstructionsTextArea().setText(instructions);
 					stage.act();
 					instructionsDialog.show(stage);
@@ -157,7 +166,7 @@ public class Workspace extends ScreenAdapter {
 			public boolean handle(Event event) {
 				if (event.toString().equals("touchDown")) {
 					Gdx.input.setInputProcessor(stage);
-					OpenDialog openDialog = new OpenDialog("Open workspace", skin, Workspace.this);
+					OpenDialog openDialog = new OpenDialog("Open workspace", skin);
 					stage.act();
 					openDialog.show(stage);
 				}
@@ -176,7 +185,7 @@ public class Workspace extends ScreenAdapter {
 			public boolean handle(Event event) {
 				if (event.toString().equals("touchDown")) {
 					Gdx.input.setInputProcessor(stage);
-					SaveDialog saveDialog = new SaveDialog("Save workspace", skin, Workspace.this);
+					SaveDialog saveDialog = new SaveDialog("Save workspace", skin);
 					stage.act();
 					saveDialog.show(stage);
 				}
@@ -189,19 +198,20 @@ public class Workspace extends ScreenAdapter {
 	}
 
 	private void setupInputProcessors() {
-		deviceInputProcessor = new DeviceInputProcessor(this);
+		deviceInputProcessor = new DeviceInputProcessor();
 		Gdx.input.setInputProcessor(stage);
 	}
 
 	private void instantiateTemplates(int worldWidth, int worldHeight) {
-		workbenchRenderItems.add(workbenchOutline = new WorkbenchOutline(worldWidth, worldHeight, shapeRenderer, camera));
-		workbenchRenderItems.add(new Template(this, worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST,
+		workbenchRenderItems
+				.add(workbenchOutline = new WorkbenchOutline(worldWidth, worldHeight, shapeRenderer, camera));
+		workbenchRenderItems.add(new Template(worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST,
 				Color.FOREST, "Application/Service", TemplateType.MICROSERVICE, UUID.randomUUID()));
-		workbenchRenderItems.add(new Template(this, worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL,
+		workbenchRenderItems.add(new Template(worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL,
 				Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
-		workbenchRenderItems.add(new Template(this, worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY,
+		workbenchRenderItems.add(new Template(worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY,
 				"Scripts", TemplateType.SCRIPT, UUID.randomUUID()));
-		workbenchRenderItems.add(new Template(this, worldHeight - PROVISIONING_TEMPLATE_HEIGHT_OFFSET, Color.WHITE,
+		workbenchRenderItems.add(new Template(worldHeight - PROVISIONING_TEMPLATE_HEIGHT_OFFSET, Color.WHITE,
 				Color.WHITE, "Provisioning", TemplateType.PROVISIONING, UUID.randomUUID()));
 	}
 
@@ -214,7 +224,7 @@ public class Workspace extends ScreenAdapter {
 	}
 
 	private void instantiateDataStore() {
-		dataStore = new DataStore(this, camera);
+		dataStore = new DataStore(camera);
 	}
 
 	@Override

@@ -25,25 +25,23 @@ public class DataStore implements WorkbenchItem {
 	private float y;
 	private float instanceOffsetX;
 	private float instanceOffsetY;
-	private Workspace workspace;
 	private String label;
 	private long previousTimeMillis = -DOUBLE_CLICK_RANGE - 1;
 
 	public DataStore() {
 	}
 
-	public DataStore(Workspace workspace, OrthographicCamera camera) {
-		this(workspace, X_OFFSET, Y_OFFSET, camera);
+	public DataStore(OrthographicCamera camera) {
+		this(X_OFFSET, Y_OFFSET, camera);
 	}
 
-	public DataStore(Workspace workspace, float x, float y, OrthographicCamera camera) {
+	public DataStore(float x, float y, OrthographicCamera camera) {
 		this.camera = camera;
 		this.x = x;
 		this.y = y;
 		shapeRenderer = new ShapeRenderer();
 		font = new BitmapFont();
 		batch = new SpriteBatch();
-		this.workspace = workspace;
 	}
 
 	public void instantiateRenderersAndCamera(OrthographicCamera camera) {
@@ -88,12 +86,13 @@ public class DataStore implements WorkbenchItem {
 	}
 
 	public void renderDialog() {
-		Gdx.input.setInputProcessor(workspace.getStage());
-		DataStoreDialog dataStoreDialog = new DataStoreDialog("Data Store", workspace.getSkin(), workspace, this);
+		Gdx.input.setInputProcessor(Workspace.getInstance().getStage());
+		DataStoreDialog dataStoreDialog = new DataStoreDialog("Data Store", Workspace.getInstance().getSkin(),
+				Workspace.getInstance(), this);
 		dataStoreDialog.getNameTextField().setText(label);
-        workspace.getStage().act();
-        dataStoreDialog.show(workspace.getStage());
-        workspace.setDialogToggleFlag(true);
+		Workspace.getInstance().getStage().act();
+		dataStoreDialog.show(Workspace.getInstance().getStage());
+		Workspace.getInstance().setDialogToggleFlag(true);
 	}
 
 	public float getInstanceOffsetX() {
@@ -123,25 +122,25 @@ public class DataStore implements WorkbenchItem {
 	@JsonIgnore
 	@Override
 	public void setWorkspace(Workspace workspace) {
-		this.workspace = workspace;
+		// TODO: revisit
 	}
 
 	@Override
 	public void renderDeleteDialog() {
-		Gdx.input.setInputProcessor(workspace.getStage());
-		DeleteDialog deleteServiceDialog = new DeleteDialog("Really Delete Data Store?", workspace.getSkin(), workspace,
-				this);
-		workspace.getStage().act();
-		deleteServiceDialog.show(workspace.getStage());
+		Gdx.input.setInputProcessor(Workspace.getInstance().getStage());
+		DeleteDialog deleteServiceDialog = new DeleteDialog("Really Delete Data Store?",
+				Workspace.getInstance().getSkin(), this);
+		Workspace.getInstance().getStage().act();
+		deleteServiceDialog.show(Workspace.getInstance().getStage());
 	}
-	
-	@Override
-    public long getPreviousTimeMillis() {
-        return previousTimeMillis;
-    }
 
 	@Override
-    public void setPreviousTimeMillis(long previousTimeMillis) {
-        this.previousTimeMillis = previousTimeMillis;
-    }
+	public long getPreviousTimeMillis() {
+		return previousTimeMillis;
+	}
+
+	@Override
+	public void setPreviousTimeMillis(long previousTimeMillis) {
+		this.previousTimeMillis = previousTimeMillis;
+	}
 }
