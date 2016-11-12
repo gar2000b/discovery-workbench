@@ -1,5 +1,8 @@
 package com.onlineinteract.core.processor;
 
+import java.util.List;
+import java.util.UUID;
+
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
@@ -13,207 +16,206 @@ import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.Topic;
 import com.onlineinteract.core.workbench.WorkbenchItem;
 import com.onlineinteract.core.workbench.WorkbenchOutline;
-
-import java.util.List;
-import java.util.UUID;
+import com.onlineinteract.core.workbench.WorkbenchRenderer;
 
 public class DeviceInputProcessor {
 
-    private Workspace workspace;
-    private List<Template> retainedTemplateList;
-    private List<Template> templateInstances;
-    private boolean instanceDragFlag = false;
-    private WorkbenchItem currentInstanceItem;
+	private Workspace workspace;
+	private List<Template> retainedTemplateList;
+	private List<Template> templateInstances;
+	private boolean instanceDragFlag = false;
+	private WorkbenchItem currentInstanceItem;
 
-    public DeviceInputProcessor(Workspace workspace) {
-        this.workspace = workspace;
-        templateInstances = this.workspace.getServiceListComponent().getTemplateInstances();
-        List<WorkbenchItem> workbenchItems = this.workspace.getWorkbenchItems();
-        retainedTemplateList = ListTypeRetainer.<WorkbenchItem, Template>retainedList(workbenchItems, Template.class);
-        processEvents();
-    }
+	public DeviceInputProcessor(Workspace workspace) {
+		this.workspace = workspace;
+		templateInstances = this.workspace.getServiceListComponent().getTemplateInstances();
+		List<WorkbenchRenderer> workbenchItems = this.workspace.getWorkbenchItems();
+		retainedTemplateList = ListTypeRetainer.<WorkbenchRenderer, Template>retainedList(workbenchItems,
+				Template.class);
+		processEvents();
+	}
 
-    private void processEvents() {
-        workspace.getStage().addListener(new ClickListener(this, Buttons.LEFT));
-        workspace.getStage().addListener(new ClickListener(this, Buttons.RIGHT));
-    }
+	private void processEvents() {
+		workspace.getStage().addListener(new ClickListener(this, Buttons.LEFT));
+		workspace.getStage().addListener(new ClickListener(this, Buttons.RIGHT));
+	}
 
-    protected void processTouchDown(InputEvent evt) {
-        if (evt.getButton() == Input.Buttons.LEFT) {
-            detectClickTemplateList(evt.getStageX(), evt.getStageY());
-            detectClickTemplateInstances(evt.getStageX(), evt.getStageY());
-            detectClickArrow(evt.getStageX(), evt.getStageY());
-            detectClickTopic(evt.getStageX(), evt.getStageY());
-            detectClickDataStore(evt.getStageX(), evt.getStageY());
-            detectClickArrowInstances(evt.getStageX(), evt.getStageY());
-            detectClickTopicInstances(evt.getStageX(), evt.getStageY());
-            detectClickDataStoreInstances(evt.getStageX(), evt.getStageY());
-        }
+	protected void processTouchDown(InputEvent evt) {
+		if (evt.getButton() == Input.Buttons.LEFT) {
+			detectClickTemplateList(evt.getStageX(), evt.getStageY());
+			detectClickTemplateInstances(evt.getStageX(), evt.getStageY());
+			detectClickArrow(evt.getStageX(), evt.getStageY());
+			detectClickTopic(evt.getStageX(), evt.getStageY());
+			detectClickDataStore(evt.getStageX(), evt.getStageY());
+			detectClickArrowInstances(evt.getStageX(), evt.getStageY());
+			detectClickTopicInstances(evt.getStageX(), evt.getStageY());
+			detectClickDataStoreInstances(evt.getStageX(), evt.getStageY());
+		}
 
-        if (evt.getButton() == Input.Buttons.RIGHT) {
-            removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), templateInstances);
-            removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), workspace.getDataStoreList());
-            removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), workspace.getTopicList());
-            removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), workspace.getArrowList());
-        }
-    }
+		if (evt.getButton() == Input.Buttons.RIGHT) {
+			removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), templateInstances);
+			removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), workspace.getDataStoreList());
+			removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), workspace.getTopicList());
+			removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), workspace.getArrowList());
+		}
+	}
 
-    private void detectClickDataStore(float x, float y) {
-    	DataStore dataStore = workspace.getDataStore();
-    	if (dataStore.isClickWithinBoundary(x, y))
-    		createDataStoreInstance();
-    }
-    
-    private void detectClickTopic(float x, float y) {
-        Topic topic = workspace.getTopic();
-        if (topic.isClickWithinBoundary(x, y))
-            createTopicInstance();
-    }
+	private void detectClickDataStore(float x, float y) {
+		DataStore dataStore = workspace.getDataStore();
+		if (dataStore.isClickWithinBoundary(x, y))
+			createDataStoreInstance();
+	}
 
-    private void detectClickArrow(float x, float y) {
-        Arrow arrow = workspace.getArrow();
-        if (arrow.isClickWithinBoundary(x, y))
-            createArrowInstance();
-    }
+	private void detectClickTopic(float x, float y) {
+		Topic topic = workspace.getTopic();
+		if (topic.isClickWithinBoundary(x, y))
+			createTopicInstance();
+	}
 
-    private void detectClickTemplateList(float x, float y) {
-        for (Template templateItem : retainedTemplateList) {
-            if (templateItem.isClickWithinBoundary(x, y))
-                createTemplateInstance(templateItem);
-        }
-    }
+	private void detectClickArrow(float x, float y) {
+		Arrow arrow = workspace.getArrow();
+		if (arrow.isClickWithinBoundary(x, y))
+			createArrowInstance();
+	}
 
-    private void detectClickTemplateInstances(float x, float y) {
-        for (WorkbenchItem instanceItem : templateInstances) {
-            if (instanceItem.isClickWithinBoundary(x, y)) {
-                putInstanceToBeginningOfList(instanceItem, templateInstances);
-                instanceDragFlag = true;
-                instanceItem.startStopService(x, y);
-                currentInstanceItem = instanceItem;
-                detectAndProcessDoubleClick(instanceItem);
-                break;
-            }
-        }
-    }
+	private void detectClickTemplateList(float x, float y) {
+		for (Template templateItem : retainedTemplateList) {
+			if (templateItem.isClickWithinBoundary(x, y))
+				createTemplateInstance(templateItem);
+		}
+	}
 
-    private void detectClickArrowInstances(float x, float y) {
-        for (WorkbenchItem arrow : workspace.getArrowList()) {
-            if (arrow.isClickWithinBoundary(x, y)) {
-                putInstanceToBeginningOfList(arrow, workspace.getArrowList());
-                instanceDragFlag = true;
-                currentInstanceItem = arrow;
-                break;
-            }
-        }
-    }
+	private void detectClickTemplateInstances(float x, float y) {
+		for (Template instanceItem : templateInstances) {
+			if (instanceItem.isClickWithinBoundary(x, y)) {
+				putInstanceToBeginningOfList(instanceItem, templateInstances);
+				instanceDragFlag = true;
+				instanceItem.startStopService(x, y);
+				currentInstanceItem = instanceItem;
+				detectAndProcessDoubleClick(instanceItem);
+				break;
+			}
+		}
+	}
 
-    private void detectClickDataStoreInstances(float x, float y) {
-        for (WorkbenchItem dataStore : workspace.getDataStoreList()) {
-            if (dataStore.isClickWithinBoundary(x, y)) {
-                putInstanceToBeginningOfList(dataStore, workspace.getDataStoreList());
-                instanceDragFlag = true;
-                currentInstanceItem = dataStore;
-                detectAndProcessDoubleClick(dataStore);
-                break;
-            }
-        }
-    }
-    
-    private void detectClickTopicInstances(float x, float y) {
-        for (WorkbenchItem topic : workspace.getTopicList()) {
-            if (topic.isClickWithinBoundary(x, y)) {
-                putInstanceToBeginningOfList(topic, workspace.getTopicList());
-                instanceDragFlag = true;
-                currentInstanceItem = topic;
-                break;
-            }
-        }
-    }
+	private void detectClickArrowInstances(float x, float y) {
+		for (WorkbenchItem arrow : workspace.getArrowList()) {
+			if (arrow.isClickWithinBoundary(x, y)) {
+				putInstanceToBeginningOfList(arrow, workspace.getArrowList());
+				instanceDragFlag = true;
+				currentInstanceItem = arrow;
+				break;
+			}
+		}
+	}
 
-    private void removeWorkbenchItemInstance(float x, float y, List<? extends WorkbenchItem> workbenchItems) {
-        for (WorkbenchItem instanceItem : workbenchItems) {
-            if (instanceItem.isClickWithinBoundary(x, y))
-                instanceItem.renderDeleteDialog();
-        }
-    }
+	private void detectClickDataStoreInstances(float x, float y) {
+		for (WorkbenchItem dataStore : workspace.getDataStoreList()) {
+			if (dataStore.isClickWithinBoundary(x, y)) {
+				putInstanceToBeginningOfList(dataStore, workspace.getDataStoreList());
+				instanceDragFlag = true;
+				currentInstanceItem = dataStore;
+				detectAndProcessDoubleClick(dataStore);
+				break;
+			}
+		}
+	}
 
-    @SuppressWarnings("unchecked")
-    private <T> void putInstanceToBeginningOfList(WorkbenchItem instanceItem, List<T> workbenchItems) {
-        int index = workbenchItems.indexOf(instanceItem);
-        workbenchItems.remove(index);
-        workbenchItems.add(0, (T) instanceItem);
-    }
-    
-    private void detectAndProcessDoubleClick(WorkbenchItem instanceItem) {
-        long currentTimeMillis = System.currentTimeMillis();
-        if (currentTimeMillis - currentInstanceItem.getPreviousTimeMillis() < Template.DOUBLE_CLICK_RANGE
-                        && !workspace.isToggleFSFlag() && !workspace.isDialogToggleFlag()) {
-            currentInstanceItem.renderDialog();
-            instanceDragFlag = false;
-            currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
-        }
-        currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
-    }
+	private void detectClickTopicInstances(float x, float y) {
+		for (WorkbenchItem topic : workspace.getTopicList()) {
+			if (topic.isClickWithinBoundary(x, y)) {
+				putInstanceToBeginningOfList(topic, workspace.getTopicList());
+				instanceDragFlag = true;
+				currentInstanceItem = topic;
+				break;
+			}
+		}
+	}
 
-    private void createTemplateInstance(Template templateItem) {
-        WorkbenchOutline workbenchOutline = workspace.getWorkbenchOutline();
-        float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
-        float y = workbenchOutline.getBoxHeight() - Template.BOX_HEIGHT;
+	private void removeWorkbenchItemInstance(float x, float y, List<? extends WorkbenchItem> workbenchItems) {
+		for (WorkbenchItem instanceItem : workbenchItems) {
+			if (instanceItem.isClickWithinBoundary(x, y))
+				instanceItem.renderDeleteDialog();
+		}
+	}
 
-        if (templateItem.getLabel().equals("Application/Service"))
-            workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.FOREST,
-                            Color.FOREST, "Application/Service", TemplateType.MICROSERVICE, UUID.randomUUID()));
-        if (templateItem.getLabel().equals("Infrastructure"))
-            workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.CORAL,
-                            Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
-        if (templateItem.getLabel().equals("Scripts"))
-            workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.BLUE,
-                            Color.GRAY, "Scripts", TemplateType.SCRIPT, UUID.randomUUID()));
-        if (templateItem.getLabel().equals("Provisioning"))
-            workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.WHITE,
-                            Color.WHITE, "Provisioning", TemplateType.PROVISIONING, UUID.randomUUID()));
-    }
+	@SuppressWarnings("unchecked")
+	private <T> void putInstanceToBeginningOfList(WorkbenchItem instanceItem, List<T> workbenchItems) {
+		int index = workbenchItems.indexOf(instanceItem);
+		workbenchItems.remove(index);
+		workbenchItems.add(0, (T) instanceItem);
+	}
 
-    private void createArrowInstance() {
-        WorkbenchOutline workbenchOutline = workspace.getWorkbenchOutline();
-        float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
-        float y = workbenchOutline.getBoxHeight() - 20;
-        workspace.getArrowList().add(new Arrow(x, y, workspace.getCamera()));
-    }
+	private void detectAndProcessDoubleClick(WorkbenchItem instanceItem) {
+		long currentTimeMillis = System.currentTimeMillis();
+		if (currentTimeMillis - currentInstanceItem.getPreviousTimeMillis() < Template.DOUBLE_CLICK_RANGE
+				&& !workspace.isToggleFSFlag() && !workspace.isDialogToggleFlag()) {
+			currentInstanceItem.renderDialog();
+			instanceDragFlag = false;
+			currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
+		}
+		currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
+	}
 
-    private void createDataStoreInstance() {
-    	WorkbenchOutline workbenchOutline = workspace.getWorkbenchOutline();
-    	float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
-    	float y = workbenchOutline.getBoxHeight() - 20;
-    	workspace.getDataStoreList().add(new DataStore(workspace, x, y, workspace.getCamera()));
-    }
-    
-    private void createTopicInstance() {
-        WorkbenchOutline workbenchOutline = workspace.getWorkbenchOutline();
-        float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
-        float y = workbenchOutline.getBoxHeight() - 20;
-        workspace.getTopicList().add(new Topic(x, y, workspace.getCamera()));
-    }
+	private void createTemplateInstance(Template templateItem) {
+		WorkbenchOutline workbenchOutline = workspace.getWorkbenchOutline();
+		float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
+		float y = workbenchOutline.getBoxHeight() - Template.BOX_HEIGHT;
 
-    protected void processTouchUp(InputEvent evt) {
-        if (evt.getButton() == Input.Buttons.LEFT) {
-            instanceDragFlag = false;
-            currentInstanceItem = null;
-        }
-    }
+		if (templateItem.getLabel().equals("Application/Service"))
+			workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.FOREST,
+					Color.FOREST, "Application/Service", TemplateType.MICROSERVICE, UUID.randomUUID()));
+		if (templateItem.getLabel().equals("Infrastructure"))
+			workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.CORAL,
+					Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
+		if (templateItem.getLabel().equals("Scripts"))
+			workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.BLUE,
+					Color.GRAY, "Scripts", TemplateType.SCRIPT, UUID.randomUUID()));
+		if (templateItem.getLabel().equals("Provisioning"))
+			workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.WHITE,
+					Color.WHITE, "Provisioning", TemplateType.PROVISIONING, UUID.randomUUID()));
+	}
 
-    protected void processTouchDragged(InputEvent evt) {
-        if (instanceDragFlag && !workspace.isDialogToggleFlag()) {
-            currentInstanceItem.setX(evt.getStageX() - currentInstanceItem.getInstanceOffsetX());
-            currentInstanceItem.setY(evt.getStageY() - currentInstanceItem.getInstanceOffsetY());
-        }
-    }
+	private void createArrowInstance() {
+		WorkbenchOutline workbenchOutline = workspace.getWorkbenchOutline();
+		float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
+		float y = workbenchOutline.getBoxHeight() - 20;
+		workspace.getArrowList().add(new Arrow(x, y, workspace.getCamera()));
+	}
 
-    public List<Template> getTemplateInstances() {
-        return templateInstances;
-    }
+	private void createDataStoreInstance() {
+		WorkbenchOutline workbenchOutline = workspace.getWorkbenchOutline();
+		float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
+		float y = workbenchOutline.getBoxHeight() - 20;
+		workspace.getDataStoreList().add(new DataStore(workspace, x, y, workspace.getCamera()));
+	}
 
-    public void setTemplateInstances(List<Template> templateInstances) {
-        this.templateInstances = templateInstances;
-    }
+	private void createTopicInstance() {
+		WorkbenchOutline workbenchOutline = workspace.getWorkbenchOutline();
+		float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
+		float y = workbenchOutline.getBoxHeight() - 20;
+		workspace.getTopicList().add(new Topic(x, y, workspace.getCamera()));
+	}
+
+	protected void processTouchUp(InputEvent evt) {
+		if (evt.getButton() == Input.Buttons.LEFT) {
+			instanceDragFlag = false;
+			currentInstanceItem = null;
+		}
+	}
+
+	protected void processTouchDragged(InputEvent evt) {
+		if (instanceDragFlag && !workspace.isDialogToggleFlag()) {
+			currentInstanceItem.setX(evt.getStageX() - currentInstanceItem.getInstanceOffsetX());
+			currentInstanceItem.setY(evt.getStageY() - currentInstanceItem.getInstanceOffsetY());
+		}
+	}
+
+	public List<Template> getTemplateInstances() {
+		return templateInstances;
+	}
+
+	public void setTemplateInstances(List<Template> templateInstances) {
+		this.templateInstances = templateInstances;
+	}
 }

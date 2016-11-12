@@ -2,8 +2,7 @@ package com.onlineinteract.core.workbench;
 
 import com.onlineinteract.core.Workspace;
 
-public interface WorkbenchItem {
-    public void draw();
+public interface WorkbenchItem extends WorkbenchRenderer {
     public boolean isClickWithinBoundary(float x, float y);
     public void renderDeleteDialog();
     public float getInstanceOffsetX();
@@ -13,6 +12,5 @@ public interface WorkbenchItem {
     public void setWorkspace(Workspace workspace);
     public void renderDialog();
     public void setPreviousTimeMillis(long previousTimeMillis);
-    public void startStopService(float x, float y);
     public long getPreviousTimeMillis();
 }

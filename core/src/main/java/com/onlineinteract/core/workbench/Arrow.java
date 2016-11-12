@@ -135,12 +135,6 @@ public class Arrow implements WorkbenchItem {
 		
 	}
 
-	@Override
-	public void startStopService(float x, float y) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public long getPreviousTimeMillis() {
 		// TODO Auto-generated method stub
 		return 0;

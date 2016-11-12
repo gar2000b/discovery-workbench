@@ -134,11 +134,6 @@ public class DataStore implements WorkbenchItem {
 		workspace.getStage().act();
 		deleteServiceDialog.show(workspace.getStage());
 	}
-
-	@Override
-	public void startStopService(float x, float y) {
-		// TODO Auto-generated method stub
-	}
 	
 	@Override
     public long getPreviousTimeMillis() {
