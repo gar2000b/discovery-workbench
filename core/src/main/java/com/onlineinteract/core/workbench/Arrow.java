@@ -21,8 +21,6 @@ public class Arrow extends WorkbenchItem {
 	private float x;
 	private float y;
 	private float length = 50;
-	private float instanceOffsetX;
-	private float instanceOffsetY;
 	private Compass rotatePosition = Compass.EAST;
 
 	public Arrow() {
@@ -82,14 +80,6 @@ public class Arrow extends WorkbenchItem {
 		}
 
 		return false;
-	}
-
-	public float getInstanceOffsetX() {
-		return instanceOffsetX;
-	}
-
-	public float getInstanceOffsetY() {
-		return instanceOffsetY;
 	}
 
 	public float getX() {

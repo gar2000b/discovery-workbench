@@ -7,13 +7,10 @@ import com.onlineinteract.core.dialog.DeleteDialog;
 public abstract class WorkbenchItem implements WorkbenchRenderer {
 
 	String label;
-	private DeleteDialog deleteServiceDialog;
+	float instanceOffsetX;
+	float instanceOffsetY;
 
 	public abstract boolean isClickWithinBoundary(float x, float y);
-
-	public abstract float getInstanceOffsetX();
-
-	public abstract float getInstanceOffsetY();
 
 	public abstract void setX(float x);
 
@@ -29,12 +26,19 @@ public abstract class WorkbenchItem implements WorkbenchRenderer {
 
 	public void renderDeleteDialog() {
 		Gdx.input.setInputProcessor(Workspace.getInstance().getStage());
-		deleteServiceDialog = new DeleteDialog("Really Delete Instance: " + label + "?",
-				Workspace.getInstance().getSkin(), this);
 		Workspace.getInstance().getStage().act();
-		deleteServiceDialog.show(Workspace.getInstance().getStage());
+		new DeleteDialog("Really Delete Instance: " + label + "?", Workspace.getInstance().getSkin(), this)
+				.show(Workspace.getInstance().getStage());
 	}
-	
+
+	public float getInstanceOffsetX() {
+		return instanceOffsetX;
+	}
+
+	public float getInstanceOffsetY() {
+		return instanceOffsetY;
+	}
+
 	public String getLabel() {
 		return label;
 	}
