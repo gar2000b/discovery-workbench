@@ -408,21 +408,9 @@ public class Template extends WorkbenchItem {
 		this.color2 = color2;
 	}
 
-	public Workspace getWorkspace() {
-		return Workspace.getInstance();
-	}
-
-	public ShapeRenderer getShapeRenderer() {
-		return shapeRenderer;
-	}
-
 	@JsonIgnore
 	public void setShapeRenderer(ShapeRenderer shapeRenderer) {
 		this.shapeRenderer = shapeRenderer;
-	}
-
-	public SpriteBatch getBatch() {
-		return batch;
 	}
 
 	@JsonIgnore
@@ -430,17 +418,9 @@ public class Template extends WorkbenchItem {
 		this.batch = batch;
 	}
 
-	public BitmapFont getFont() {
-		return font;
-	}
-
 	@JsonIgnore
 	public void setFont(BitmapFont font) {
 		this.font = font;
-	}
-
-	public Skin getSkin() {
-		return skin;
 	}
 
 	@JsonIgnore
@@ -448,17 +428,9 @@ public class Template extends WorkbenchItem {
 		this.skin = skin;
 	}
 
-	public Stage getStage() {
-		return stage;
-	}
-
 	@JsonIgnore
 	public void setStage(Stage stage) {
 		this.stage = stage;
-	}
-
-	public Runtime getRuntime() {
-		return runtime;
 	}
 
 	@JsonIgnore
