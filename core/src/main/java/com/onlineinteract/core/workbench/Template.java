@@ -488,11 +488,4 @@ public class Template extends WorkbenchItem {
 	public void setRuntime(Runtime runtime) {
 		this.runtime = runtime;
 	}
-
-	@JsonIgnore
-	@Override
-	public void setWorkspace(Workspace workspace) {
-		// TODO Revisit and strip out.
-	}
-
 }

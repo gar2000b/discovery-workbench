@@ -14,8 +14,6 @@ public abstract class WorkbenchItem implements WorkbenchRenderer {
 
 	public abstract boolean isClickWithinBoundary(float x, float y);
 
-	public abstract void setWorkspace(Workspace workspace);
-
 	public abstract void renderDialog();
 
 	public abstract void setPreviousTimeMillis(long previousTimeMillis);
