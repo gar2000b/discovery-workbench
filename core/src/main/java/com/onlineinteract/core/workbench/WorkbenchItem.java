@@ -9,12 +9,10 @@ public abstract class WorkbenchItem implements WorkbenchRenderer {
 	String label;
 	float instanceOffsetX;
 	float instanceOffsetY;
+	float x;
+	float y;
 
 	public abstract boolean isClickWithinBoundary(float x, float y);
-
-	public abstract void setX(float x);
-
-	public abstract void setY(float y);
 
 	public abstract void setWorkspace(Workspace workspace);
 
@@ -37,6 +35,22 @@ public abstract class WorkbenchItem implements WorkbenchRenderer {
 
 	public float getInstanceOffsetY() {
 		return instanceOffsetY;
+	}
+	
+	public float getX() {
+		return x;
+	}
+
+	public void setX(float x) {
+		this.x = x;
+	}
+	
+	public float getY() {
+		return y;
+	}
+
+	public void setY(float y) {
+		this.y = y;
 	}
 
 	public String getLabel() {

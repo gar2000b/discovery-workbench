@@ -20,8 +20,6 @@ public class DataStore extends WorkbenchItem {
 	private BitmapFont font;
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
-	private float x;
-	private float y;
 	private String label;
 	private long previousTimeMillis = -DOUBLE_CLICK_RANGE - 1;
 
@@ -91,22 +89,6 @@ public class DataStore extends WorkbenchItem {
 		Workspace.getInstance().getStage().act();
 		dataStoreDialog.show(Workspace.getInstance().getStage());
 		Workspace.getInstance().setDialogToggleFlag(true);
-	}
-
-	public float getX() {
-		return x;
-	}
-
-	public float getY() {
-		return y;
-	}
-
-	public void setX(float x) {
-		this.x = x;
-	}
-
-	public void setY(float y) {
-		this.y = y;
 	}
 
 	@JsonIgnore

@@ -37,8 +37,6 @@ public class Template extends WorkbenchItem {
 	private SpriteBatch batch;
 	private BitmapFont font;
 	private OrthographicCamera camera;
-	private float x;
-	private float y;
 	private Color color1;
 	private Color color2;
 	private String startupCommand;
@@ -326,22 +324,6 @@ public class Template extends WorkbenchItem {
 			tempLabel = label;
 
 		return "(" + processingType + ") " + tempLabel;
-	}
-
-	public float getX() {
-		return x;
-	}
-
-	public void setX(float x) {
-		this.x = x;
-	}
-
-	public float getY() {
-		return y;
-	}
-
-	public void setY(float y) {
-		this.y = y;
 	}
 
 	public long getPreviousTimeMillis() {
