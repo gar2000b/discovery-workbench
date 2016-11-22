@@ -1,16 +1,12 @@
 package com.onlineinteract.core.workbench;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.onlineinteract.core.Workspace;
-import com.onlineinteract.core.dialog.DeleteDialog;
 import com.onlineinteract.core.type.Compass;
 
-public class Arrow implements WorkbenchItem {
+public class Arrow extends WorkbenchItem {
 
 	public static final int X_OFFSET = 20;
 	public static final int Y_OFFSET = 300;
@@ -19,40 +15,30 @@ public class Arrow implements WorkbenchItem {
 
 	private ShapeRenderer lineShapeRenderer;
 	private ShapeRenderer arrowHeadShapeRenderer;
-	private OrthographicCamera camera;
-	private float x;
-	private float y;
 	private float length = 50;
-	private float instanceOffsetX;
-	private float instanceOffsetY;
 	private Compass rotatePosition = Compass.EAST;
-	private Workspace workspace;
 
-	public Arrow(){}
-	
-	public Arrow(OrthographicCamera camera) {
-		this(X_OFFSET, Y_OFFSET, camera);
+	public Arrow() {
+		this(X_OFFSET, Y_OFFSET);
 	}
 
-	public Arrow(float x, float y, OrthographicCamera camera) {
-		this.camera = camera;
+	public Arrow(float x, float y) {
 		this.x = x;
 		this.y = y;
 		lineShapeRenderer = new ShapeRenderer();
 		arrowHeadShapeRenderer = new ShapeRenderer();
+		this.label = "Arrow";
 	}
-	
-	public void instantiateRenderersAndCamera(OrthographicCamera camera) {
-		this.camera = camera;
+
+	public void instantiateRenderers() {
 		lineShapeRenderer = new ShapeRenderer();
 		arrowHeadShapeRenderer = new ShapeRenderer();
 	}
 
 	@Override
 	public void draw() {
-
 		lineShapeRenderer.begin(ShapeType.Line);
-		lineShapeRenderer.setProjectionMatrix(camera.combined);
+		lineShapeRenderer.setProjectionMatrix(Workspace.getInstance().getCamera().combined);
 		lineShapeRenderer.identity();
 		lineShapeRenderer.translate(x, y, 0);
 		lineShapeRenderer.setColor(Color.ORANGE);
@@ -60,7 +46,7 @@ public class Arrow implements WorkbenchItem {
 		lineShapeRenderer.end();
 
 		arrowHeadShapeRenderer.begin(ShapeType.Line);
-		arrowHeadShapeRenderer.setProjectionMatrix(camera.combined);
+		arrowHeadShapeRenderer.setProjectionMatrix(Workspace.getInstance().getCamera().combined);
 		arrowHeadShapeRenderer.identity();
 		arrowHeadShapeRenderer.translate(x + length, y - 10, 0);
 		arrowHeadShapeRenderer.setColor(Color.ORANGE);
@@ -85,41 +71,8 @@ public class Arrow implements WorkbenchItem {
 		return false;
 	}
 
-	public float getInstanceOffsetX() {
-		return instanceOffsetX;
-	}
-
-	public float getInstanceOffsetY() {
-		return instanceOffsetY;
-	}
-
-	public float getX() {
-		return x;
-	}
-
-	public float getY() {
-		return y;
-	}
-
-	public void setX(float x) {
-		this.x = x;
-	}
-
-	public void setY(float y) {
-		this.y = y;
-	}
-
-	@JsonIgnore
 	@Override
-	public void setWorkspace(Workspace workspace) {
-		this.workspace = workspace;
-	}
-	
-	@Override
-	public void renderDeleteDialog() {
-        Gdx.input.setInputProcessor(workspace.getStage());
-        DeleteDialog deleteServiceDialog = new DeleteDialog("Really Delete Arrow?", workspace.getSkin(), workspace, this);
-        workspace.getStage().act();
-        deleteServiceDialog.show(workspace.getStage());
+	public void renderDialog() {
+		// TODO require dialog TBD.
 	}
 }

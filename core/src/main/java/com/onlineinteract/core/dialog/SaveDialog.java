@@ -22,7 +22,6 @@ import com.onlineinteract.core.workbench.WorkbenchItem;
 
 public class SaveDialog extends Dialog {
 
-	private Workspace workspace;
 	TextField pathTextField;
 	Label pathLabel;
 
@@ -30,9 +29,8 @@ public class SaveDialog extends Dialog {
 		super(title, skin, windowStyleName);
 	}
 
-	public SaveDialog(String title, Skin skin, Workspace workspace) {
+	public SaveDialog(String title, Skin skin) {
 		super(title, skin);
-		this.workspace = workspace;
 	}
 
 	{
@@ -53,7 +51,7 @@ public class SaveDialog extends Dialog {
 	}
 
 	private void saveToFile() {
-		ServiceList serviceListComponent = workspace.getServiceListComponent();
+		ServiceList serviceListComponent = Workspace.getInstance().getServiceListComponent();
 		ObjectMapper mapper = new ObjectMapper();
 		File file = new File(pathTextField.getText());
 		FileOutputStream fos = null;
@@ -78,7 +76,7 @@ public class SaveDialog extends Dialog {
 	}
 
 	private void writeOutDataStores(ObjectMapper mapper, FileOutputStream fos) {
-		List<WorkbenchItem> dataStoreList = workspace.getDataStoreList();
+		List<WorkbenchItem> dataStoreList = Workspace.getInstance().getDataStoreList();
 		try {
 			for (WorkbenchItem dataStore : dataStoreList) {
 				String dataStoreString = mapper.writeValueAsString(dataStore);
@@ -94,7 +92,7 @@ public class SaveDialog extends Dialog {
 	}
 
 	private void writeOutTopics(ObjectMapper mapper, FileOutputStream fos) {
-		List<WorkbenchItem> topicList = workspace.getTopicList();
+		List<WorkbenchItem> topicList = Workspace.getInstance().getTopicList();
 		try {
 			for (WorkbenchItem topic : topicList) {
 				String topicString = mapper.writeValueAsString(topic);
@@ -110,7 +108,7 @@ public class SaveDialog extends Dialog {
 	}
 
 	private void writeOutArrows(ObjectMapper mapper, FileOutputStream fos) {
-		List<WorkbenchItem> arrowList = workspace.getArrowList();
+		List<WorkbenchItem> arrowList = Workspace.getInstance().getArrowList();
 		try {
 			for (WorkbenchItem arrow : arrowList) {
 				String arrowString = mapper.writeValueAsString(arrow);
@@ -127,7 +125,7 @@ public class SaveDialog extends Dialog {
 
 	private void writeOutInstructions(ObjectMapper mapper, FileOutputStream fos) {
 		try {
-			String instructions = mapper.writeValueAsString(workspace.getInstructions()) + "\n";
+			String instructions = mapper.writeValueAsString(Workspace.getInstance().getInstructions()) + "\n";
 			fos.write(instructions.getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -26,135 +26,129 @@ import com.onlineinteract.core.workbench.WorkbenchItem;
 
 public class OpenDialog extends Dialog {
 
-    private Workspace workspace;
-    TextField pathTextField;
-    Label pathLabel;
+	TextField pathTextField;
+	Label pathLabel;
 
-    public OpenDialog(String title, Skin skin, String windowStyleName) {
-        super(title, skin, windowStyleName);
-    }
+	public OpenDialog(String title, Skin skin, String windowStyleName) {
+		super(title, skin, windowStyleName);
+	}
 
-    public OpenDialog(String title, Skin skin, Workspace workspace) {
-        super(title, skin);
-        this.workspace = workspace;
-    }
+	public OpenDialog(String title, Skin skin) {
+		super(title, skin);
+	}
 
-    {
-        button("Open", true).padBottom(10);
-        button("Cancel", false).padBottom(10);
-        pathTextField = new TextField("", getSkin());
-        pathLabel = new Label("File Path: ", getSkin());
-        getContentTable().add(pathLabel).padTop(20);
-        getContentTable().add(pathTextField).padTop(20).width(200);
-        getContentTable().row();
-    }
+	{
+		button("Open", true).padBottom(10);
+		button("Cancel", false).padBottom(10);
+		pathTextField = new TextField("", getSkin());
+		pathLabel = new Label("File Path: ", getSkin());
+		getContentTable().add(pathLabel).padTop(20);
+		getContentTable().add(pathTextField).padTop(20).width(200);
+		getContentTable().row();
+	}
 
-    @Override
-    protected void result(Object object) {
-        if (object.getClass().getSimpleName().equals("Boolean") && object == Boolean.TRUE) {
-            openFile();
-        }
-    }
+	@Override
+	protected void result(Object object) {
+		if (object.getClass().getSimpleName().equals("Boolean") && object == Boolean.TRUE) {
+			openFile();
+		}
+	}
 
-    @SuppressWarnings("unchecked")
-    private void openFile() {
-        ServiceList serviceListComponent = workspace.getServiceListComponent();
-        ObjectMapper mapper = new ObjectMapper();
-        String readLine = "";
-        File file = new File(pathTextField.getText());
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            workspace.setInstructions(mapper.readValue(br.readLine(), String.class));
-            readLine = br.readLine();
-            List<String> orderedList = mapper.readValue(readLine, List.class);
-            List<Template> templateInstances = readInTemplateInstances(mapper, br);
-            List<WorkbenchItem> arrowList = readInArrowList(mapper, br);
-            List<WorkbenchItem> topicList = readInTopicList(mapper, br);
-            List<WorkbenchItem> dataStoreList = readInDataStoreList(mapper, br);
-            br.close();
-            serviceListComponent.setTemplateInstances(templateInstances);
-            workspace.getDeviceInputProcessor().setTemplateInstances(templateInstances);
-            List<Template> orderedServiceList = reconstructOrderedList(orderedList, templateInstances);
-            serviceListComponent.setOrderedServiceList(orderedServiceList);
-            serviceListComponent.refreshOrderedServiceList();
-            workspace.setArrowList(arrowList);
-            workspace.setTopicList(topicList);
-            workspace.setDataStoreList(dataStoreList);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Gdx.graphics.setTitle("Discovery Workbench - " + pathTextField.getText());
-    }
+	@SuppressWarnings("unchecked")
+	private void openFile() {
+		ServiceList serviceListComponent = Workspace.getInstance().getServiceListComponent();
+		ObjectMapper mapper = new ObjectMapper();
+		String readLine = "";
+		File file = new File(pathTextField.getText());
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			Workspace.getInstance().setInstructions(mapper.readValue(br.readLine(), String.class));
+			readLine = br.readLine();
+			List<String> orderedList = mapper.readValue(readLine, List.class);
+			List<Template> templateInstances = readInTemplateInstances(mapper, br);
+			List<WorkbenchItem> arrowList = readInArrowList(mapper, br);
+			List<WorkbenchItem> topicList = readInTopicList(mapper, br);
+			List<WorkbenchItem> dataStoreList = readInDataStoreList(mapper, br);
+			br.close();
+			serviceListComponent.setTemplateInstances(templateInstances);
+			Workspace.getInstance().getDeviceInputProcessor().setTemplateInstances(templateInstances);
+			List<Template> orderedServiceList = reconstructOrderedList(orderedList, templateInstances);
+			serviceListComponent.setOrderedServiceList(orderedServiceList);
+			serviceListComponent.refreshOrderedServiceList();
+			Workspace.getInstance().setArrowList(arrowList);
+			Workspace.getInstance().setTopicList(topicList);
+			Workspace.getInstance().setDataStoreList(dataStoreList);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Gdx.graphics.setTitle("Discovery Workbench - " + pathTextField.getText());
+	}
 
-    private List<Template> reconstructOrderedList(List<String> orderedList, List<Template> templateInstances) {
-        List<Template> orderedServiceList = new ArrayList<>();
-        for (int i = 0; i < orderedList.size(); i++)
-            orderedServiceList.add(fetchTemplate(orderedList.get(i).toString(), templateInstances));
-        return orderedServiceList;
-    }
+	private List<Template> reconstructOrderedList(List<String> orderedList, List<Template> templateInstances) {
+		List<Template> orderedServiceList = new ArrayList<>();
+		for (int i = 0; i < orderedList.size(); i++)
+			orderedServiceList.add(fetchTemplate(orderedList.get(i).toString(), templateInstances));
+		return orderedServiceList;
+	}
 
-    private List<WorkbenchItem> readInDataStoreList(ObjectMapper mapper, BufferedReader br) throws IOException {
-    	String readLine;
-    	List<WorkbenchItem> dataStoreList = new ArrayList<>();
-    	while ((readLine = br.readLine()) != null && !readLine.equals("#endDataStores")) {
-    		DataStore dataStore = mapper.readValue(readLine, DataStore.class);
-    		dataStore.setWorkspace(workspace);
-    		dataStore.instantiateRenderersAndCamera(workspace.getCamera());
-    		dataStoreList.add(dataStore);
-    	}
-    	return dataStoreList;
-    }
-    
-    private List<WorkbenchItem> readInTopicList(ObjectMapper mapper, BufferedReader br) throws IOException {
-        String readLine;
-        List<WorkbenchItem> topicList = new ArrayList<>();
-        while ((readLine = br.readLine()) != null && !readLine.equals("#endTopics")) {
-            Topic topic = mapper.readValue(readLine, Topic.class);
-            topic.setWorkspace(workspace);
-            topic.instantiateRenderersAndCamera(workspace.getCamera());
-            topicList.add(topic);
-        }
-        return topicList;
-    }
+	private List<WorkbenchItem> readInDataStoreList(ObjectMapper mapper, BufferedReader br) throws IOException {
+		String readLine;
+		List<WorkbenchItem> dataStoreList = new ArrayList<>();
+		while ((readLine = br.readLine()) != null && !readLine.equals("#endDataStores")) {
+			DataStore dataStore = mapper.readValue(readLine, DataStore.class);
+			dataStore.instantiateRenderers();
+			dataStoreList.add(dataStore);
+		}
+		return dataStoreList;
+	}
 
-    private List<WorkbenchItem> readInArrowList(ObjectMapper mapper, BufferedReader br) throws IOException {
-        String readLine;
-        List<WorkbenchItem> arrowList = new ArrayList<>();
-        while ((readLine = br.readLine()) != null && !readLine.equals("#endArrows")) {
-            Arrow arrow = mapper.readValue(readLine, Arrow.class);
-            arrow.setWorkspace(workspace);
-            arrow.instantiateRenderersAndCamera(workspace.getCamera());
-            arrowList.add(arrow);
-        }
-        return arrowList;
-    }
+	private List<WorkbenchItem> readInTopicList(ObjectMapper mapper, BufferedReader br) throws IOException {
+		String readLine;
+		List<WorkbenchItem> topicList = new ArrayList<>();
+		while ((readLine = br.readLine()) != null && !readLine.equals("#endTopics")) {
+			Topic topic = mapper.readValue(readLine, Topic.class);
+			topic.instantiateRenderers();
+			topicList.add(topic);
+		}
+		return topicList;
+	}
 
-    private List<Template> readInTemplateInstances(ObjectMapper mapper, BufferedReader br) throws IOException, JsonParseException, JsonMappingException {
-        String readLine;
-        List<Template> templateInstances = new ArrayList<>();
-        while ((readLine = br.readLine()) != null && !readLine.equals("#endTemplateInstances")) {
-            Template instance = mapper.readValue(readLine, Template.class);
-            instance.setWorkspace(workspace);
-            instance.setShapeRenderer(workspace.getShapeRenderer());
-            instance.setBatch(workspace.getBatch());
-            instance.setFont(workspace.getFont());
-            instance.setCamera(workspace.getCamera());
-            instance.setSkin(workspace.getSkin());
-            instance.setStage(workspace.getStage());
-            instance.setRuntime(Runtime.getRuntime());
-            templateInstances.add(instance);
-        }
-        return templateInstances;
-    }
+	private List<WorkbenchItem> readInArrowList(ObjectMapper mapper, BufferedReader br) throws IOException {
+		String readLine;
+		List<WorkbenchItem> arrowList = new ArrayList<>();
+		while ((readLine = br.readLine()) != null && !readLine.equals("#endArrows")) {
+			Arrow arrow = mapper.readValue(readLine, Arrow.class);
+			arrow.instantiateRenderers();
+			arrowList.add(arrow);
+		}
+		return arrowList;
+	}
 
-    private Template fetchTemplate(String uuid, List<Template> templateInstances) {
-        for (Template template : templateInstances) {
-            if (template.getUuid().toString().equals(uuid)) {
-                return template;
-            }
-        }
-        return null;
-    }
+	private List<Template> readInTemplateInstances(ObjectMapper mapper, BufferedReader br)
+			throws IOException, JsonParseException, JsonMappingException {
+		String readLine;
+		List<Template> templateInstances = new ArrayList<>();
+		while ((readLine = br.readLine()) != null && !readLine.equals("#endTemplateInstances")) {
+			Template instance = mapper.readValue(readLine, Template.class);
+			instance.setShapeRenderer(Workspace.getInstance().getShapeRenderer());
+			instance.setBatch(Workspace.getInstance().getBatch());
+			instance.setFont(Workspace.getInstance().getFont());
+			instance.setSkin(Workspace.getInstance().getSkin());
+			instance.setStage(Workspace.getInstance().getStage());
+			instance.setRuntime(Runtime.getRuntime());
+			templateInstances.add(instance);
+		}
+		return templateInstances;
+	}
+
+	private Template fetchTemplate(String uuid, List<Template> templateInstances) {
+		for (Template template : templateInstances) {
+			if (template.getUuid().toString().equals(uuid)) {
+				return template;
+			}
+		}
+		return null;
+	}
 }

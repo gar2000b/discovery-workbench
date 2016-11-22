@@ -8,42 +8,40 @@ import com.onlineinteract.core.Workspace;
 
 public class InstructionsDialog extends Dialog {
 
-    private Workspace workspace;
-    TextArea instructionsTextArea;
-    Label instructionsLabel;
+	TextArea instructionsTextArea;
+	Label instructionsLabel;
 
-    public InstructionsDialog(String title, Skin skin, String windowStyleName) {
-        super(title, skin, windowStyleName);
-    }
+	public InstructionsDialog(String title, Skin skin, String windowStyleName) {
+		super(title, skin, windowStyleName);
+	}
 
-    public InstructionsDialog(String title, Skin skin, Workspace workspace) {
-        super(title, skin);
-        this.workspace = workspace;
-    }
+	public InstructionsDialog(String title, Skin skin) {
+		super(title, skin);
+	}
 
-    {
-        button("Update", true).padBottom(10);
-        button("Cancel", false).padBottom(10);
-        instructionsTextArea = new TextArea("", getSkin());
-        instructionsTextArea.setPrefRows(20);
-        getContentTable().add(instructionsTextArea).padTop(20).width(400);
-        getContentTable().row();
-    }
+	{
+		button("Update", true).padBottom(10);
+		button("Cancel", false).padBottom(10);
+		instructionsTextArea = new TextArea("", getSkin());
+		instructionsTextArea.setPrefRows(20);
+		getContentTable().add(instructionsTextArea).padTop(20).width(400);
+		getContentTable().row();
+	}
 
-    @Override
-    protected void result(Object object) {
-        if (object.getClass().getSimpleName().equals("Boolean") && object == Boolean.TRUE) {
-            workspace.setInstructions(instructionsTextArea.getText());
-        }
-        workspace.setDialogToggleFlag(false);
-    }
+	@Override
+	protected void result(Object object) {
+		if (object.getClass().getSimpleName().equals("Boolean") && object == Boolean.TRUE) {
+			Workspace.getInstance().setInstructions(instructionsTextArea.getText());
+		}
+		Workspace.getInstance().setDialogToggleFlag(false);
+	}
 
-    public TextArea getInstructionsTextArea() {
-        return instructionsTextArea;
-    }
+	public TextArea getInstructionsTextArea() {
+		return instructionsTextArea;
+	}
 
-    public void setInstructionsTextArea(TextArea instructionsTextArea) {
-        this.instructionsTextArea = instructionsTextArea;
-    }
+	public void setInstructionsTextArea(TextArea instructionsTextArea) {
+		this.instructionsTextArea = instructionsTextArea;
+	}
 
 }

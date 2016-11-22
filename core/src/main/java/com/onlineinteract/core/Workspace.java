@@ -34,7 +34,18 @@ import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.Topic;
 import com.onlineinteract.core.workbench.WorkbenchItem;
 import com.onlineinteract.core.workbench.WorkbenchOutline;
+import com.onlineinteract.core.workbench.WorkbenchRenderer;
 
+/**
+ * 
+ * Workspace is the main engine that drives Discovery Workbench. It
+ * implements a singleton pattern as it is only intended to be
+ * instantiated once and provides a nice convenient getInstance()
+ * method for all dependencies that require a reference to it.
+ * 
+ * @author Digilogue
+ *
+ */
 public class Workspace extends ScreenAdapter {
 
 	private static final int MICROSERVICE_TEMPLATE_HEIGHT_OFFSET = 120;
@@ -42,41 +53,59 @@ public class Workspace extends ScreenAdapter {
 	private static final int SCRIPTS_TEMPLATE_HEIGHT_OFFSET = 360;
 	private static final int PROVISIONING_TEMPLATE_HEIGHT_OFFSET = 480;
 
-	private int worldWidth;
-	private int worldHeight;
+	private static int worldWidth;
+	private static int worldHeight;
 
-	@SuppressWarnings("unused")
-	private final DiscoveryWorkbench discoveryWorkbench;
-	private OrthographicCamera camera;
-	private Viewport viewport;
-	private SpriteBatch batch;
-	private ShapeRenderer shapeRenderer;
-	private BitmapFont font = new BitmapFont();
-	private WorkbenchOutline workbenchOutline;
-	private Template microserviceTemplate;
-	private Template infrastructureTemplate;
-	private Template scriptTemplate;
-	private WorkspaceRenderer workspaceRenderer;
-	private List<WorkbenchItem> workbenchItems = new ArrayList<WorkbenchItem>();
-	private Arrow arrow;
-	private Topic topic;
-	private DataStore dataStore;
-	private DeviceInputProcessor deviceInputProcessor;
-	private String instructions;
-	ServiceList serviceListComponent;
-	private List<WorkbenchItem> arrowList;
-	private List<WorkbenchItem> topicList;
-	private List<WorkbenchItem> dataStoreList;
+	private static OrthographicCamera camera;
+	private static Viewport viewport;
+	private static SpriteBatch batch;
+	private static ShapeRenderer shapeRenderer;
+	private static BitmapFont font = new BitmapFont();
+	private static WorkbenchOutline workbenchOutline;
+	private static Template microserviceTemplate;
+	private static Template infrastructureTemplate;
+	private static Template scriptTemplate;
+	private static WorkspaceRenderer workspaceRenderer;
+	private static List<WorkbenchRenderer> workbenchRenderItems = new ArrayList<WorkbenchRenderer>();
+	private static Arrow arrow;
+	private static Topic topic;
+	private static DataStore dataStore;
+	private static DeviceInputProcessor deviceInputProcessor;
+	private static String instructions;
+	private static ServiceList serviceListComponent;
+	private static List<WorkbenchItem> arrowList;
+	private static List<WorkbenchItem> topicList;
+	private static List<WorkbenchItem> dataStoreList;
 
-	private boolean toggleFSFlag = false;
-	private boolean dialogToggleFlag = false;
-	private Skin skin;
-	private Stage stage;
+	private static boolean toggleFSFlag = false;
+	private static boolean dialogToggleFlag = false;
+	private static Skin skin;
+	private static Stage stage;
 
-	public Workspace(DiscoveryWorkbench discoverWorkbench, int worldWidth, int worldHeight) {
-		this.discoveryWorkbench = discoverWorkbench;
-		this.worldWidth = worldWidth;
-		this.worldHeight = worldHeight;
+	private static Workspace instance = null;
+
+	public static Workspace getInstance() {
+		if (instance != null)
+			return instance;
+
+		return null;
+	}
+
+	public static Workspace getInstance(int worldWidth, int worldHeight) {
+		if (instance != null)
+			return instance;
+		else
+			return new Workspace(worldWidth, worldHeight);
+	}
+
+	private Workspace() {
+	}
+
+	private Workspace(int worldWidth, int worldHeight) {
+		instance = this;
+
+		Workspace.worldWidth = worldWidth;
+		Workspace.worldHeight = worldHeight;
 
 		camera = new OrthographicCamera();
 		viewport = new ScreenViewport(camera);
@@ -88,9 +117,9 @@ public class Workspace extends ScreenAdapter {
 		instantiateArrow();
 		instantiateTopic();
 		instantiateDataStore();
-		workspaceRenderer = new WorkspaceRenderer(this);
+		workspaceRenderer = new WorkspaceRenderer();
 		stage = new Stage();
-		serviceListComponent = new ServiceList(this);
+		serviceListComponent = new ServiceList();
 		arrowList = new ArrayList<>();
 		topicList = new ArrayList<>();
 		dataStoreList = new ArrayList<>();
@@ -112,8 +141,7 @@ public class Workspace extends ScreenAdapter {
 			public boolean handle(Event event) {
 				if (event.toString().equals("touchDown")) {
 					Gdx.input.setInputProcessor(stage);
-					InstructionsDialog instructionsDialog = new InstructionsDialog("Instructions", skin,
-							Workspace.this);
+					InstructionsDialog instructionsDialog = new InstructionsDialog("Instructions", skin);
 					instructionsDialog.getInstructionsTextArea().setText(instructions);
 					stage.act();
 					instructionsDialog.show(stage);
@@ -134,8 +162,7 @@ public class Workspace extends ScreenAdapter {
 			public boolean handle(Event event) {
 				if (event.toString().equals("touchDown")) {
 					Gdx.input.setInputProcessor(stage);
-					InstructionsDialog instructionsDialog = new InstructionsDialog("Instructions", skin,
-							Workspace.this);
+					InstructionsDialog instructionsDialog = new InstructionsDialog("Instructions", skin);
 					instructionsDialog.getInstructionsTextArea().setText(instructions);
 					stage.act();
 					instructionsDialog.show(stage);
@@ -156,7 +183,7 @@ public class Workspace extends ScreenAdapter {
 			public boolean handle(Event event) {
 				if (event.toString().equals("touchDown")) {
 					Gdx.input.setInputProcessor(stage);
-					OpenDialog openDialog = new OpenDialog("Open workspace", skin, Workspace.this);
+					OpenDialog openDialog = new OpenDialog("Open workspace", skin);
 					stage.act();
 					openDialog.show(stage);
 				}
@@ -175,7 +202,7 @@ public class Workspace extends ScreenAdapter {
 			public boolean handle(Event event) {
 				if (event.toString().equals("touchDown")) {
 					Gdx.input.setInputProcessor(stage);
-					SaveDialog saveDialog = new SaveDialog("Save workspace", skin, Workspace.this);
+					SaveDialog saveDialog = new SaveDialog("Save workspace", skin);
 					stage.act();
 					saveDialog.show(stage);
 				}
@@ -188,32 +215,33 @@ public class Workspace extends ScreenAdapter {
 	}
 
 	private void setupInputProcessors() {
-		deviceInputProcessor = new DeviceInputProcessor(this);
+		deviceInputProcessor = new DeviceInputProcessor();
 		Gdx.input.setInputProcessor(stage);
 	}
 
 	private void instantiateTemplates(int worldWidth, int worldHeight) {
-		workbenchItems.add(workbenchOutline = new WorkbenchOutline(worldWidth, worldHeight, shapeRenderer, camera));
-		workbenchItems.add(new Template(this, worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST,
+		workbenchRenderItems
+				.add(workbenchOutline = new WorkbenchOutline(worldWidth, worldHeight, shapeRenderer, camera));
+		workbenchRenderItems.add(new Template(worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST,
 				Color.FOREST, "Application/Service", TemplateType.MICROSERVICE, UUID.randomUUID()));
-		workbenchItems.add(new Template(this, worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL,
+		workbenchRenderItems.add(new Template(worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL,
 				Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
-		workbenchItems.add(new Template(this, worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY,
+		workbenchRenderItems.add(new Template(worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY,
 				"Scripts", TemplateType.SCRIPT, UUID.randomUUID()));
-		workbenchItems.add(new Template(this, worldHeight - PROVISIONING_TEMPLATE_HEIGHT_OFFSET, Color.WHITE,
+		workbenchRenderItems.add(new Template(worldHeight - PROVISIONING_TEMPLATE_HEIGHT_OFFSET, Color.WHITE,
 				Color.WHITE, "Provisioning", TemplateType.PROVISIONING, UUID.randomUUID()));
 	}
 
 	private void instantiateArrow() {
-		arrow = new Arrow(camera);
+		arrow = new Arrow();
 	}
 
 	private void instantiateTopic() {
-		topic = new Topic(camera);
+		topic = new Topic();
 	}
 
 	private void instantiateDataStore() {
-		dataStore = new DataStore(this, camera);
+		dataStore = new DataStore();
 	}
 
 	@Override
@@ -324,8 +352,8 @@ public class Workspace extends ScreenAdapter {
 		return workbenchOutline;
 	}
 
-	public List<WorkbenchItem> getWorkbenchItems() {
-		return workbenchItems;
+	public List<WorkbenchRenderer> getWorkbenchItems() {
+		return workbenchRenderItems;
 	}
 
 	public ShapeRenderer getShapeRenderer() {
@@ -349,7 +377,7 @@ public class Workspace extends ScreenAdapter {
 	}
 
 	public void setDeviceInputProcessor(DeviceInputProcessor deviceInputProcessor) {
-		this.deviceInputProcessor = deviceInputProcessor;
+		Workspace.deviceInputProcessor = deviceInputProcessor;
 	}
 
 	public Skin getSkin() {
@@ -369,7 +397,7 @@ public class Workspace extends ScreenAdapter {
 	}
 
 	public void setDialogToggleFlag(boolean dialogToggleFlag) {
-		this.dialogToggleFlag = dialogToggleFlag;
+		Workspace.dialogToggleFlag = dialogToggleFlag;
 	}
 
 	public String getInstructions() {
@@ -377,7 +405,7 @@ public class Workspace extends ScreenAdapter {
 	}
 
 	public void setInstructions(String instructions) {
-		this.instructions = instructions;
+		Workspace.instructions = instructions;
 	}
 
 	public Arrow getArrow() {
@@ -389,7 +417,7 @@ public class Workspace extends ScreenAdapter {
 	}
 
 	public void setArrowList(List<WorkbenchItem> arrowList) {
-		this.arrowList = arrowList;
+		Workspace.arrowList = arrowList;
 	}
 
 	public Topic getTopic() {
@@ -401,7 +429,7 @@ public class Workspace extends ScreenAdapter {
 	}
 
 	public void setTopicList(List<WorkbenchItem> topicList) {
-		this.topicList = topicList;
+		Workspace.topicList = topicList;
 	}
 
 	public DataStore getDataStore() {
@@ -413,7 +441,7 @@ public class Workspace extends ScreenAdapter {
 	}
 
 	public void setDataStoreList(List<WorkbenchItem> dataStoreList) {
-		this.dataStoreList = dataStoreList;
+		Workspace.dataStoreList = dataStoreList;
 	}
 
 }
