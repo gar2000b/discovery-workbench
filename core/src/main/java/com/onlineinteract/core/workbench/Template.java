@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -26,7 +25,6 @@ public class Template extends WorkbenchItem {
 
 	UUID uuid;
 
-	public static final int DOUBLE_CLICK_RANGE = 400;
 	private static float BOX_OFFEST_X = 20;
 	private static float LABEL_OFFSET_X = 10;
 	private static float LABEL_OFFSET_Y = 90;
@@ -36,7 +34,6 @@ public class Template extends WorkbenchItem {
 	private ShapeRenderer shapeRenderer;
 	private SpriteBatch batch;
 	private BitmapFont font;
-	private OrthographicCamera camera;
 	private Color color1;
 	private Color color2;
 	private String startupCommand;
@@ -55,8 +52,6 @@ public class Template extends WorkbenchItem {
 
 	private ServiceStatus serviceStatus = ServiceStatus.SHUTDOWN;
 
-	private long previousTimeMillis = -DOUBLE_CLICK_RANGE - 1;
-
 	public Template() {
 	}
 
@@ -68,7 +63,6 @@ public class Template extends WorkbenchItem {
 		this.shapeRenderer = Workspace.getInstance().getShapeRenderer();
 		this.batch = Workspace.getInstance().getBatch();
 		this.font = Workspace.getInstance().getFont();
-		this.camera = Workspace.getInstance().getCamera();
 		this.skin = Workspace.getInstance().getSkin();
 		this.stage = Workspace.getInstance().getStage();
 		this.x = x;
@@ -84,7 +78,7 @@ public class Template extends WorkbenchItem {
 
 	public void draw() {
 		shapeRenderer.begin(ShapeType.Line);
-		shapeRenderer.setProjectionMatrix(camera.combined);
+		shapeRenderer.setProjectionMatrix(Workspace.getInstance().getCamera().combined);
 		shapeRenderer.setColor(color1);
 		Gdx.gl.glLineWidth(2);
 		shapeRenderer.rect(x, y, BOX_WIDTH, BOX_HEIGHT);
@@ -100,7 +94,7 @@ public class Template extends WorkbenchItem {
 			shapeRenderer.rect(x + 60, y + 110, 120, 25);
 			shapeRenderer.line(x + 120, y + 100, x + 120, y + 110);
 			shapeRenderer.end();
-			batch.setProjectionMatrix(camera.combined);
+			batch.setProjectionMatrix(Workspace.getInstance().getCamera().combined);
 			batch.begin();
 			font.setColor(Color.FOREST);
 			font.getData().setScale(1);
@@ -108,7 +102,7 @@ public class Template extends WorkbenchItem {
 			batch.end();
 		}
 
-		batch.setProjectionMatrix(camera.combined);
+		batch.setProjectionMatrix(Workspace.getInstance().getCamera().combined);
 		batch.begin();
 		font.setColor(color2);
 		font.getData().setScale(1);
@@ -326,14 +320,6 @@ public class Template extends WorkbenchItem {
 		return "(" + processingType + ") " + tempLabel;
 	}
 
-	public long getPreviousTimeMillis() {
-		return previousTimeMillis;
-	}
-
-	public void setPreviousTimeMillis(long previousTimeMillis) {
-		this.previousTimeMillis = previousTimeMillis;
-	}
-
 	public String getStartupCommand() {
 		return startupCommand;
 	}
@@ -451,15 +437,6 @@ public class Template extends WorkbenchItem {
 	@JsonIgnore
 	public void setFont(BitmapFont font) {
 		this.font = font;
-	}
-
-	public OrthographicCamera getCamera() {
-		return camera;
-	}
-
-	@JsonIgnore
-	public void setCamera(OrthographicCamera camera) {
-		this.camera = camera;
 	}
 
 	public Skin getSkin() {

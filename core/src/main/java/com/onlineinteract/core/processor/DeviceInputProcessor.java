@@ -178,21 +178,21 @@ public class DeviceInputProcessor {
 		WorkbenchOutline workbenchOutline = Workspace.getInstance().getWorkbenchOutline();
 		float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
 		float y = workbenchOutline.getBoxHeight() - 20;
-		Workspace.getInstance().getArrowList().add(new Arrow(x, y, Workspace.getInstance().getCamera()));
+		Workspace.getInstance().getArrowList().add(new Arrow(x, y));
 	}
 
 	private void createDataStoreInstance() {
 		WorkbenchOutline workbenchOutline = Workspace.getInstance().getWorkbenchOutline();
 		float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
 		float y = workbenchOutline.getBoxHeight() - 20;
-		Workspace.getInstance().getDataStoreList().add(new DataStore(x, y, Workspace.getInstance().getCamera()));
+		Workspace.getInstance().getDataStoreList().add(new DataStore(x, y));
 	}
 
 	private void createTopicInstance() {
 		WorkbenchOutline workbenchOutline = Workspace.getInstance().getWorkbenchOutline();
 		float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
 		float y = workbenchOutline.getBoxHeight() - 20;
-		Workspace.getInstance().getTopicList().add(new Topic(x, y, Workspace.getInstance().getCamera()));
+		Workspace.getInstance().getTopicList().add(new Topic(x, y));
 	}
 
 	protected void processTouchUp(InputEvent evt) {

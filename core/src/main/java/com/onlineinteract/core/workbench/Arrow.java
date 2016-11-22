@@ -1,9 +1,9 @@
 package com.onlineinteract.core.workbench;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.type.Compass;
 
 public class Arrow extends WorkbenchItem {
@@ -15,19 +15,14 @@ public class Arrow extends WorkbenchItem {
 
 	private ShapeRenderer lineShapeRenderer;
 	private ShapeRenderer arrowHeadShapeRenderer;
-	private OrthographicCamera camera;
 	private float length = 50;
 	private Compass rotatePosition = Compass.EAST;
 
 	public Arrow() {
+		this(X_OFFSET, Y_OFFSET);
 	}
 
-	public Arrow(OrthographicCamera camera) {
-		this(X_OFFSET, Y_OFFSET, camera);
-	}
-
-	public Arrow(float x, float y, OrthographicCamera camera) {
-		this.camera = camera;
+	public Arrow(float x, float y) {
 		this.x = x;
 		this.y = y;
 		lineShapeRenderer = new ShapeRenderer();
@@ -35,17 +30,15 @@ public class Arrow extends WorkbenchItem {
 		this.label = "Arrow";
 	}
 
-	public void instantiateRenderersAndCamera(OrthographicCamera camera) {
-		this.camera = camera;
+	public void instantiateRenderers() {
 		lineShapeRenderer = new ShapeRenderer();
 		arrowHeadShapeRenderer = new ShapeRenderer();
 	}
 
 	@Override
 	public void draw() {
-
 		lineShapeRenderer.begin(ShapeType.Line);
-		lineShapeRenderer.setProjectionMatrix(camera.combined);
+		lineShapeRenderer.setProjectionMatrix(Workspace.getInstance().getCamera().combined);
 		lineShapeRenderer.identity();
 		lineShapeRenderer.translate(x, y, 0);
 		lineShapeRenderer.setColor(Color.ORANGE);
@@ -53,7 +46,7 @@ public class Arrow extends WorkbenchItem {
 		lineShapeRenderer.end();
 
 		arrowHeadShapeRenderer.begin(ShapeType.Line);
-		arrowHeadShapeRenderer.setProjectionMatrix(camera.combined);
+		arrowHeadShapeRenderer.setProjectionMatrix(Workspace.getInstance().getCamera().combined);
 		arrowHeadShapeRenderer.identity();
 		arrowHeadShapeRenderer.translate(x + length, y - 10, 0);
 		arrowHeadShapeRenderer.setColor(Color.ORANGE);
@@ -80,18 +73,6 @@ public class Arrow extends WorkbenchItem {
 
 	@Override
 	public void renderDialog() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setPreviousTimeMillis(long previousTimeMillis) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public long getPreviousTimeMillis() {
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO require dialog TBD.
 	}
 }
