@@ -1,25 +1,45 @@
 package com.onlineinteract.core.workbench;
 
+import com.badlogic.gdx.Gdx;
 import com.onlineinteract.core.Workspace;
+import com.onlineinteract.core.dialog.DeleteDialog;
 
-public interface WorkbenchItem extends WorkbenchRenderer {
-	public boolean isClickWithinBoundary(float x, float y);
+public abstract class WorkbenchItem implements WorkbenchRenderer {
 
-	public void renderDeleteDialog();
+	String label;
+	private DeleteDialog deleteServiceDialog;
 
-	public float getInstanceOffsetX();
+	public abstract boolean isClickWithinBoundary(float x, float y);
 
-	public float getInstanceOffsetY();
+	public abstract float getInstanceOffsetX();
 
-	public void setX(float x);
+	public abstract float getInstanceOffsetY();
 
-	public void setY(float y);
+	public abstract void setX(float x);
 
-	public void setWorkspace(Workspace workspace);
+	public abstract void setY(float y);
 
-	public void renderDialog();
+	public abstract void setWorkspace(Workspace workspace);
 
-	public void setPreviousTimeMillis(long previousTimeMillis);
+	public abstract void renderDialog();
 
-	public long getPreviousTimeMillis();
+	public abstract void setPreviousTimeMillis(long previousTimeMillis);
+
+	public abstract long getPreviousTimeMillis();
+
+	public void renderDeleteDialog() {
+		Gdx.input.setInputProcessor(Workspace.getInstance().getStage());
+		deleteServiceDialog = new DeleteDialog("Really Delete Instance: " + label + "?",
+				Workspace.getInstance().getSkin(), this);
+		Workspace.getInstance().getStage().act();
+		deleteServiceDialog.show(Workspace.getInstance().getStage());
+	}
+	
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
 }
