@@ -66,7 +66,7 @@ public class LoadingScreen extends ScreenAdapter {
 
 	private void update() {
 		if (discoveryWorkbench.getAssetManager().update()) {
-			workspace = new Workspace(discoveryWorkbench, worldWidth, worldHeight);
+			workspace = Workspace.getInstance(worldWidth, worldHeight);
 			discoveryWorkbench.setScreen(workspace);
 		} else {
 			progress = discoveryWorkbench.getAssetManager().getProgress();
