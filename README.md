@@ -1,5 +1,7 @@
 # Discovery Workbench
 
+LICENSE:https://github.com/gar2000b/discovery-workbench/blob/master/LICENSE.md
+
 The scope of this project is to orchestrate and run all aspects of a local/dev copy of a distributed system (typically microservice/cloud native applications although this need not be restricted to this architecture pattern).
 
 In plain English, one should be able to easily start up all of his/her applications from the touch of a button, all from one place in this GUI tool + much much more.
