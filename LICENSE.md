@@ -10,4 +10,4 @@ You may download the source, compile and run for non-commercial/home purposes (o
 
 A product license/key is required to be purchased from the author before use is permitted in any other setting outside home use.
 
-Launching single instances of this product without a licence in a commericial setting is only permitted with the express permission of the author in writing. This permission must be sought from the author every 365 calander days or else the product will be deemed to be out of license.
+Launching single instances of this product without a licence in a commericial setting is only permitted with the express permission of the author in writing. This permission must be sought from the author every 365 calendar days or else the product will be deemed to be out of license.
