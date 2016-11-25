@@ -1,6 +1,6 @@
 # Discovery Workbench
 
-Project Start Date: 1st November 2016
+PROJECT START DATE: 1st November 2016
 
 LICENSE: https://github.com/gar2000b/discovery-workbench/blob/master/LICENSE.md
 
