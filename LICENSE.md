@@ -1,4 +1,4 @@
-PROJECT DISCOVERY LICENSE  
+DISCOVERY WORKBENCH LICENSE  
 Version 1.0, 01/11/2016
 
 The default copyright laws apply, meaning that I (the author, Gary Black) retain all rights to this source code and no one may reproduce, distribute, or create derivative works from this work.
