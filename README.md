@@ -45,11 +45,46 @@ Currently, the provisioning functionality is under development, so the following
 
 ## Running your services
 
+The project should already have been pre-configured (to one extent or the other) by another member of your team and will be ready to be executed after going through the instructions above (this should be a one time time).
+
+The configuration will include a) the topology layout b) wiring up each service with commands c) configuring the order and processing type of each service (will explain further down).
+
+Bringing all the services up together is as simple as clicking **'Start All'** - as each service gets to it's running state, you will see a running flag appear on each service.
+
+**'Stop All'** should be self explanitory :)
+
+You also have the ability to individually start and stop each service/script by clicking it's **play/stop** button.
+
 ## Creating a new workspace
 
 ### Layout Workspace
 
+Creating a new workspace is as simple as dragging each of the required template types from the left-hand column over to the right-hand workbench.
+
+**Application/Service** - represents any application, service or microservice you wish to include in your topology.
+
+**Infrastructure** - represents any infrastructure service such as a DBMS like MongoDB or Queue like RabbitMQ. These templates are functionally equivalent to the Application/Service ones.
+
+**Scripts** - represents any script commands you wish to launch such as: build, kick off Integration Tests etc.
+
+Once you have constructed your topology roughly the way you envisage, you are ready to start configuring each service/scripts.
+
 ### Configuring Templates
+
+Starting with Infrastructure, double-click to open up the dialog box as shown:
+
+![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/service-dialog.png "Instructions")
+
+1. Enter a **'Service Name'**.
+2. The **'Startup Command'** should reflect the same command you would use as if launching it from a cmd line terminal. (in windows) although you can target bat files direct, it is recommended that you use cmd /c in front of OS specific commands that only the Windows Command Intepreter would be able to process. Things like rd... Startup command exmaple for zookeeper: **%CONFLUENT_HOME%\bin\windows\zookeeper-server-start.bat %CONFLUENT_HOME%\etc\kafka\zookeeper.properties**
+3. **Note**: environment variables in all commands (for all template types) are wrapped in %%.
+4. The **'Running Clause'** is a statement that Discovery Workbench will search for once the app is launched. Once it encounters it from **STDIN** (exactly as you would read it from the console), it then determines that the app is now running and then updates it to the **RUNNING** state. You must find an apporpriate running clause in advance. An example for zookeeper might be: **binding to port 0.0.0.0/0.0.0.0:2181** as we would see that if we launched zookeeper from the cmd line.
+5. The **'Shutdown Command'** is what you would run if you had any cleanup operations beyond just destroying the service with stop. Zookeeper for example is: **%CONFLUENT_HOME%\bin\windows\zookeeper-server-stop.bat**
+6. The **'shutdown command 2'** is a secondary shutdown command for any additional cleanup beyond simply shutting down gracefully + cleanup. In the above case, we are using this with zookeeper to clean up it's log files using: **cmd /c rd /S /Q c:\tmp\zookeeper** - note the use of **cmd /c**.
+7. **Port Number** is the main port the application may be bound to. It is optional and will be used more in a future version of this tool for re-binding and force killing apps.
+8. Once complete, click **'update'**.
+9. Note: It is recommended that you experiment with these commands from a console before wiring this up into Discovery Workbench. It is important that apps get shutdown and cleaned up properly as to not leave it in an inconsistent state.
+10. Configuring **Scripts** are easier, simply add a **name + command**.
 
 ### Updating Start/Stop order
 
