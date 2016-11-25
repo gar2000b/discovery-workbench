@@ -21,11 +21,11 @@ Discovery Workbench can not be copied and/or distributed without the express wri
 
 Contributions to the project will not be be granted at this time as the author has a fairly opinionated view on the direction of the project.
 
-You may download the source, compile and run for non-commercial/home purposes (only), for example: experimentation and learning so long as all the other rules within this license are observed.
+You may download the source, compile and run for private non-commercial home use only, for example: experimentation and learning, so long as all the other rules within this license are observed.
 
-A **product license/key** is required to be purchased from the author before use is permitted in any other setting outside home use.
+A **product license key** is required to be purchased from the author before use is permitted in any other setting outside of private non-commercial home use.
 
-Launching single instances of this product without purchasing a license (in a commericial setting) will only be permitted with the express written permission of the author. This permission must be sought from the author every 365 calendar days (from the initial date that permission was granted) or license/key purchased or else the product will be deemed to be out of license. If 365 calendar days pass and permission has not been sought in advance with no license/key purchased, then you must cease use of the product immediately after that time period has elapsed to avoid being in violation of this agreement.
+Launching single instances of this product without purchasing a license (in a commericial setting) will only be permitted with the express written permission of the author. This permission must be sought from the author every 365 calendar days (from the initial date that permission was granted) or license/key purchased or else the product will be deemed to be out of license. If 365 calendar days pass and permission has not been sought in advance with no license key purchased, then you must cease use of the product immediately after that time period has elapsed to avoid being in violation of this agreement.
 
 Any clarification or licensing requirements may be sought by contacting the author direct via email: **gar2000b@yahoo.com**
 
