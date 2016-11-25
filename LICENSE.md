@@ -21,7 +21,7 @@ Discovery Workbench can not be copied and/or distributed without the express wri
 
 Contributions to the project will not be be granted at this time as the author has a fairly opinionated view on the direction of the project.
 
-You may download the source, compile and run for private non-commercial home use only, for example: experimentation and learning, so long as all the other rules within this license are observed.
+You may download the source, compile and run for private non-commercial home use **only**, key examples include: experimentation and learning; so long as all the other rules within this license are observed.
 
 A **product license key** is required to be purchased from the author before use is permitted in any other setting (commercial or otherwise) outside of private non-commercial home use.
 
