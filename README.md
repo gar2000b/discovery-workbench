@@ -6,6 +6,27 @@
 
 ![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/social-insurance-workflow-service.png "Social Insurance Workflow")
 
+## What is the Discovery Workbench?
+
+The Discovery Workbench is part of a wider Project called Discovery.
+
+Specifically, it is an application orchestrator for orchestrating all the applications/services on developers local machines.
+
+Let's say you have a workflow/project where you have a collection of microservices + supporting infrastructure that you would like to spin up locally for testing purposes say. This very quickly becomes a tedious task to manage and orchestrate manually.
+
+The aim of this tool is have a workspace with your project topology laid out and configured (as show in pic above) that can be saved and shared among all members of your team. It keeps everything in one place where you simply have to click a button to spin up and run all your services and any supporting scripts you may have.
+
+## To Run
+
+1. Checkout/clone from above  
+2. cd into discovery-workbench  
+3. mvn clean package  
+4. java -jar desktop/target/discovery-workbench-desktop-1.0-SNAPSHOT-jar-with-dependencies.jar  
+
+## Opening shared workspaces
+
+
+
 The scope of this project is to orchestrate and run all aspects of a local/dev copy of a distributed system (typically microservice/cloud native applications although this need not be restricted to this architecture pattern).
 
 In plain English, one should be able to easily start up all of his/her applications from the touch of a button, all from one place in this GUI tool + much much more.
