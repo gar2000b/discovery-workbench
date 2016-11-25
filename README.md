@@ -6,6 +6,8 @@ The scope of this project is to orchestrate and run all aspects of a local/dev c
 
 In plain English, one should be able to easily start up all of his/her applications from the touch of a button, all from one place in this GUI tool + much much more.
 
+A lot of this work (together with POCs have been done offline since 1st Novemeber 2016). As the author (Gary Black), I am passing over this code and integrating it piece by piece over the coming months (as of 09/09/17).
+
 The following list illustrates all of the phase 1 goals of this project:
 
 1. Spin up local services (i.e microservices).  
@@ -40,8 +42,6 @@ The following list illustrates all of the phase 2 goals of this project:
 5. Graphical tool box templates will allow the end user to specify GUI listeners for the end user to monitor payloads at any of the junctions between services (where there are logs of course).  
 6. The end user should have the ability to inject random payloads manually from the insertion tool box, capturing the data at all of the listener and assertion tool boxes.  
 7. The end user should have the ability to fire pre-determined load via an insertion tool box and monitor performance metrics at the assertion toolbox.
-
-A lot of this work (together with POCs have been done offline since Novemeber 2016). As the author (Gary Black), I am passing over this code and integrating it piece by piece over the coming months (as of 09/09/17).
 
 The core graphics libraries are libGDX.
 
