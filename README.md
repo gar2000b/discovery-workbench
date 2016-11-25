@@ -12,7 +12,7 @@
 
 The Discovery Workbench is part of a wider Project called Discovery.
 
-Specifically, it is an application orchestrator for orchestrating all the applications/services on developers local machines.
+Specifically, it is an application orchestrator for coordinating all the applications/services installed on developers local machines.
 
 Let's say you have a workflow/project where you have a collection of microservices + supporting infrastructure that you would like to spin up locally for testing purposes say. This very quickly becomes a tedious task to manage and orchestrate manually.
 
@@ -43,7 +43,23 @@ Currently, the provisioning functionality is under development, so the following
 
 ![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/instructions-dialog.png "Instructions")
 
+## Running your services
+
+## Creating a new workspace
+
+### Layout Workspace
+
+### Configuring Templates
+
+### Updating Start/Stop order
+
+### Change the processing type
+
+### Saving Workspace
+
 ## Notes and other stuff...
+
+**TODO**: May need to rethink this section and possibly move it elsewhere...
 
 The scope of this project is to orchestrate and run all aspects of a local/dev copy of a distributed system (typically microservice/cloud native applications although this need not be restricted to this architecture pattern).
 
