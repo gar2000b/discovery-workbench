@@ -14,7 +14,7 @@ Specifically, it is an application orchestrator for orchestrating all the applic
 
 Let's say you have a workflow/project where you have a collection of microservices + supporting infrastructure that you would like to spin up locally for testing purposes say. This very quickly becomes a tedious task to manage and orchestrate manually.
 
-The aim of this tool is have a workspace with your project topology laid out and configured (as show in pic above) that can be saved and shared among all members of your team. It keeps everything in one place where you simply have to click a button to spin up and run all your services and any supporting scripts you may have.
+The aim of this tool is have a workspace with your project topology laid out and configured (as shown in pic above) that can be saved and shared among all members of your team. It keeps everything in one place where you simply have to click a button to spin up and run all your services and any supporting scripts you may have.
 
 ## To Run
 
@@ -25,7 +25,9 @@ The aim of this tool is have a workspace with your project topology laid out and
 
 ## Opening shared workspaces
 
+TODO
 
+## Notes and other stuff...
 
 The scope of this project is to orchestrate and run all aspects of a local/dev copy of a distributed system (typically microservice/cloud native applications although this need not be restricted to this architecture pattern).
 
