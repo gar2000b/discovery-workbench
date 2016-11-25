@@ -12,8 +12,6 @@ The terms 'Agreement' and 'License' are synonymous with one another.
 
 Signed means physically signed on paper with two copies: one for the author and one for the other party.
 
-Product
-
 Details:
 --------
 
