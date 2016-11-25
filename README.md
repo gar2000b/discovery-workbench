@@ -6,6 +6,8 @@
 
 ![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/social-insurance-workflow-service.png "Social Insurance Workflow")
 
+^ please click to enlarge and get a clear view of the topology.
+
 ## What is the Discovery Workbench?
 
 The Discovery Workbench is part of a wider Project called Discovery.
