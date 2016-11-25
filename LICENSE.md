@@ -1,7 +1,7 @@
 **DISCOVERY WORKBENCH LICENSE**  
 **Version 1.0, 01/11/2016**
 
-The default copyright laws apply, meaning that I (the author, Gary Black) retain all rights to this source code and no one may reproduce, distribute, or create derivative works from this work.
+The default copyright laws apply, meaning that I (the author, Gary Brian Black) retain all rights to this source code and no one may reproduce, distribute, or create derivative works from this work.
 
 Notes:
 ------
@@ -17,7 +17,7 @@ Details:
 
 This is NOT a FREE product.
 
-Discovery Workbench can not be copied and/or distributed without the express written, signed permission of the author (Gary Black).
+Discovery Workbench can not be copied and/or distributed without the express written, signed permission of the author (Gary Brian Black).
 
 Contributions to the project will not be be granted at this time as the author has a fairly opinionated view on the direction of the project.
 
