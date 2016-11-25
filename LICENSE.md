@@ -18,12 +18,12 @@ A **product license key** is required to be purchased from the author before **u
 
 Launching single instances of this product without purchasing a license (in a commericial setting) will only be permitted with the express written permission of the author. This permission must be sought from the author every 365 calendar days (from the initial date that permission was granted), failing this, a product license key must be purchased or the product will be deemed to be out of license. If 365 calendar days pass and permission has not been sought in advance with no license key purchased, then you must cease **usage** of the product immediately after that time period has elapsed to avoid being in violation of this agreement.
 
-Any further clarification on licensing requirements may be sought by contacting the author direct via email: **gar2000b@yahoo.com**
-
 The author (or any other parties) who discover instances of the product **in usage** being out of license may contact bodies/agencies such as **BSA | The Software Alliance** or **FAST, the Federation against Software Theft** to report any violations/abuse/piracy of the Software being used outside of license:
 
 https://reporting.bsa.org/r/report/add.aspx?ln=en-ca&src=ca  
 https://www.fast.org/report-piracy
+
+Any further clarification on licensing requirements may be sought by contacting the author direct via email: **gar2000b@yahoo.com**
 
 All rights reserved.
 
