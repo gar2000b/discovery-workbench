@@ -8,7 +8,7 @@ The scope of this project is to orchestrate and run all aspects of a local/dev c
 
 In plain English, one should be able to easily start up all of his/her applications from the touch of a button, all from one place in this GUI tool + much much more.
 
-A lot of this work (together with POCs have been done offline since 1st Novemeber 2016). As the author (Gary Black), I am passing over this code and integrating it piece by piece over the coming months (as of 09/09/17).
+A lot of this work (together with POCs have been done offline since 1st November 2016). As the author (Gary Black), I am passing over this code and integrating it piece by piece over the coming months (as of 09/09/17).
 
 The following list illustrates all of the phase 1 goals of this project:
 
