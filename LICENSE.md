@@ -1,14 +1,14 @@
 **DISCOVERY WORKBENCH LICENSE**  
 **Version 1.0, 01/11/2016**
 
-The default copyright laws apply, meaning that I (the author, Gary Brian Black) retain all rights to this source code and no one may reproduce, distribute, or create derivative works from this work.
+The default copyright laws apply, meaning that I (the author, **Gary Brian Black**) retain all rights to this source code and no one may reproduce, distribute, or create derivative works from this work.
 
 Notes:
 ------
 
-The terms 'Discovery Workbench', Product and Project are synonymous with one another.
+The terms **Discovery Workbench**, **Product**, **Project Discovery** and **Project** are synonymous with one another.
 
-The terms 'Agreement' and 'License' are synonymous with one another.
+The terms **Agreement** and **License** are synonymous with one another.
 
 Signed means physically signed on paper with two copies: one for the author and one for the other party.
 
@@ -17,7 +17,7 @@ Details:
 
 This is NOT a FREE product.
 
-Discovery Workbench can not be copied and/or distributed without the express written, signed permission of the author (Gary Brian Black).
+Discovery Workbench can not be copied and/or distributed without the express written, signed permission of the author (**Gary Brian Black**).
 
 Contributions to the project will not be be granted at this time as the author has a fairly opinionated view on the direction of the project.
 
