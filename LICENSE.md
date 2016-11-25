@@ -3,17 +3,6 @@
 
 The default copyright laws apply, meaning that I (the author, **Gary Brian Black**) retain all rights to this source code and no one may reproduce, modify, distribute, or create derivative works from this work.
 
-Notes:
-------
-
-The terms **Discovery Workbench**, **Product**, **Project Discovery** and **Project** are synonymous with one another.
-
-The terms **Agreement** and **License** are synonymous with one another.
-
-**Signed** means physically signed on paper with two copies: one for the author and one for the other party.
-
-**Usage** simply means running or launching an instance of this application.
-
 Details:
 --------
 
@@ -32,3 +21,14 @@ Launching single instances of this product without purchasing a license (in a co
 Any clarification or licensing requirements may be sought by contacting the author direct via email: **gar2000b@yahoo.com**
 
 All rights reserved.
+
+Glossary of Terms:
+------------------
+
+The terms **Discovery Workbench**, **Product**, **Project Discovery** and **Project** are synonymous with one another.
+
+The terms **Agreement** and **License** are synonymous with one another.
+
+**Signed** means physically signed on paper with two copies: one for the author and one for the other party.
+
+**Usage** simply means running or launching an instance of this application.
