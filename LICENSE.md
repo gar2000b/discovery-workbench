@@ -20,7 +20,10 @@ Launching single instances of this product without purchasing a license (in a co
 
 Any further clarification on licensing requirements may be sought by contacting the author direct via email: **gar2000b@yahoo.com**
 
-The author (or any other parties) who discover instances of the product **in usage** being out of license may contact bodies/agencies such as **BSA | The Software Alliance** or **FAST, the Federation against Software Theft** to report any violations of Software being used outside of license.
+The author (or any other parties) who discover instances of the product **in usage** being out of license may contact bodies/agencies such as **BSA | The Software Alliance** or **FAST, the Federation against Software Theft** to report any violations of Software being used outside of license:
+
+https://reporting.bsa.org/r/report/add.aspx?ln=en-ca&src=ca
+https://www.fast.org/report-piracy
 
 All rights reserved.
 
