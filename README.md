@@ -6,7 +6,7 @@
 
 ![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/social-insurance-workflow-service.png "Social Insurance Workflow")
 
-^ please click to enlarge and get a clear view of the topology.
+^ please click to enlarge and get a clear view of the example topology.
 
 ## What is the Discovery Workbench?
 
@@ -16,7 +16,7 @@ Specifically, it is an application orchestrator for orchestrating all the applic
 
 Let's say you have a workflow/project where you have a collection of microservices + supporting infrastructure that you would like to spin up locally for testing purposes say. This very quickly becomes a tedious task to manage and orchestrate manually.
 
-The aim of this tool is to have a workspace with your project topology laid out and configured (as shown in pic above) that can be saved and shared among all members of your team. It keeps everything in one place where you simply have to click a button to spin up and run all your services and any supporting scripts you may have.
+The initial aim of this tool is to have a workspace with your project topology laid out and configured (as shown in pic above) that can be saved and shared among all members of your team. It keeps everything in one place where you simply have to click a button to spin up and run all your services and any supporting scripts you may have.
 
 ## To Run
 
@@ -32,6 +32,14 @@ The **workspaces** are simply saved as files and you can find some examples unde
 Loading an existing workspace is as simple as clicking **'Load'**, enter the path to your workspace e.g: C:\work\my-workspaces\social-insurance-workflow-service and click open.
 
 ![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/open-dialog.png "Open Social Insurance Workflow Service")
+
+## Provisioning Instructions
+
+Currently, the provisioning functionality under development, so the following instructions are for manually provisioning your infrastructure:
+
+1. Once you have opened up a workspace, the first thing to do is to click on 'Instructions' to see how to install and configure any pre-requisites required for your project. It should contain information like installing Elastsearch and setting environment variables.
+2. Once you have gone through the instructions, shutdown restart the workbench and open the project back up - this is so that it picks up on any env vars you may have set. Env vars will be getting overridden with internal config vars soon, then you will not have to do this in future.
+3. You should now be good to run and spin up all your services.
 
 ## Notes and other stuff...
 
