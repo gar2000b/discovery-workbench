@@ -35,11 +35,13 @@ Loading an existing workspace is as simple as clicking **'Load'**, enter the pat
 
 ## Provisioning Instructions
 
-Currently, the provisioning functionality under development, so the following instructions are for manually provisioning your infrastructure:
+Currently, the provisioning functionality is under development, so the following instructions are for manually provisioning your infrastructure:
 
 1. Once you have opened up a workspace, the first thing to do is to click on 'Instructions' to see how to install and configure any pre-requisites required for your project. It should contain information like installing Elastsearch and setting environment variables.
-2. Once you have gone through the instructions, shutdown restart the workbench and open the project back up - this is so that it picks up on any env vars you may have set. Env vars will be getting overridden with internal config vars soon, then you will not have to do this in future.
+2. Once you have gone through the instructions, shutdown, restart the workbench and open the project back up - this is so that it picks up on any env vars you may have set. **Note**: env vars will be getting overridden with internal config vars soon, then you will not have to do this in future.
 3. You should now be good to run and spin up all your services.
+
+![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/instructions-dialog.png "Instructions")
 
 ## Notes and other stuff...
 
