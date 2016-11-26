@@ -76,7 +76,7 @@ Starting with Infrastructure, double-click to open up the dialog box as shown:
 ![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/service-dialog.png "Instructions")
 
 1. Enter a **'Service Name'**.
-2. The **'Startup Command'** should reflect the same command you would use as if launching it from a cmd line terminal. (in windows) although you can target bat files direct, it is recommended that you use cmd /c in front of OS specific commands that only the Windows Command Intepreter would be able to process. Things like rd... Startup command exmaple for zookeeper: **%CONFLUENT_HOME%\bin\windows\zookeeper-server-start.bat %CONFLUENT_HOME%\etc\kafka\zookeeper.properties**
+2. The **'Startup Command'** should reflect the same command you would use as if launching it from a cmd line terminal. (in windows) although you can target bat files direct, it is recommended that you use cmd /c in front of OS specific commands that only the Windows Command Intepreter would be able to process. Things like rd... Startup command example for zookeeper: **%CONFLUENT_HOME%\bin\windows\zookeeper-server-start.bat %CONFLUENT_HOME%\etc\kafka\zookeeper.properties**
 3. **Note**: environment variables in all commands (for all template types) are wrapped in %%.
 4. The **'Running Clause'** is a statement that Discovery Workbench will search for once the app is launched. Once it encounters it from **STDIN** (exactly as you would read it from the console), it then determines that the app is now running and then updates it to the **RUNNING** state. You must find an apporpriate running clause in advance. An example for zookeeper might be: **binding to port 0.0.0.0/0.0.0.0:2181** as we would see that if we launched zookeeper from the cmd line.
 5. The **'Shutdown Command'** is what you would run if you had any cleanup operations beyond just destroying the service with stop. Zookeeper for example is: **%CONFLUENT_HOME%\bin\windows\zookeeper-server-stop.bat**
@@ -85,6 +85,8 @@ Starting with Infrastructure, double-click to open up the dialog box as shown:
 8. Once complete, click **'update'**.
 9. Note: It is recommended that you experiment with these commands from a console before wiring this up into Discovery Workbench. It is important that apps get shutdown and cleaned up properly as to not leave it in an inconsistent state.
 10. Configuring **Scripts** are easier, simply add a **name + command**.
+
+![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/scripts-dialog.png "Instructions")
 
 ### Updating Start/Stop order
 
