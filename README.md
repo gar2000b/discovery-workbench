@@ -86,13 +86,45 @@ Starting with Infrastructure, double-click to open up the dialog box as shown:
 9. Note: It is recommended that you experiment with these commands from a console before wiring this up into Discovery Workbench. It is important that apps get shutdown and cleaned up properly as to not leave it in an inconsistent state.
 10. Configuring **Scripts** are easier, simply add a **name + command**.
 
-![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/scripts-dialog.png "Instructions")
+![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/scripts-dialog.png "Scripts")
 
 ### Updating Start/Stop order
 
+Refering again to the first screenshot, you will notice that every time you add either a new service or infrastructure item, it gets added to the startup list on the right-hand side.
+
+You can adjust the startup order of this list by simply selecting the service and then clicking the up/down buttons above.
+
 ### Change the processing type
 
+The Discovery Workbench has this concept of processing type for each service that spins up. Basically it dictates whether the service spins up **sequentially** or in **parallel**.
+
+When you select an item from the list and then click **'Toggle Processing Type'** you will notice the the left-hand side of the items label toggles between **SEQ (sequential)** and **PAR (parallel)**.
+
+**Sequential** basically means that the service will spin up on it's own. The sebsequent service in the list will not spin up until the current service is in the running state.
+
+**Parallel** basically means that the subsequent service is free to spin up concurrently at the same time as the current service. This can continue until it hits another service marked as **SEQ**.
+
+^ this is especially useful when we have service dependencies on one another. For example, spinning up a lot of our infrastructure makes sense to start up sequentially as they are often dependencies of our services (and sometimes of each other). Services/Applications themselves can usually startup in parallel with each other.
+
 ### Saving Workspace
+
+Saving the workspace is as simple as clicking the **'Save'** button.
+
+![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/save-workspace-dialog.png "Save workspace")
+
+Simply enter the path to the file to wish to save, e.g: **C:\work\ms-orchestrator\workspaces\deposit-transaction-eod-flow**
+
+Click **'Save'**
+
+Actually, since we are intending (for the moment to share this via our git repo), please ensure that it is saved within the repo's workspaces directory, git add, commit and push back there. A future version will include a 'Discovery Workbench Service' that will make sharing workspaces even easier.
+
+## Where does this sit on the Path to Production?
+
+A - Right at the beginning. Actually before we even push any of our stuff out to our pipelines. It is purely used to aid the developer in the production and testing of software locally on their machine. Again, it keeps everything in one place and once set up, should make life much easier for engineers to orchestrate all these CI/CD pre-pipeline activities.
+
+## Future
+
+This project is a work in progress. This first pass of the tool is now considered MVP ready. It will naturally go through a period of hardening over the coming months. There are multiple phases earmarked for the future. Will document as soon as possible.
 
 ## Notes and other stuff...
 
