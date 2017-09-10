@@ -1,4 +1,4 @@
-# ms-orchestrator (Microservice Orchestrator)
+# µicroservice Orchestrator
 
 The scope of this project is to orchestrate and run all aspects of a local/dev copy of a distributed system (typically microservice/cloud native applications although this need not be restricted to this architecture pattern).
 
@@ -16,13 +16,17 @@ The following list illustrates all of the phase 1 goals of this project:
 
 Beyond just bringing services up/down and executing all myriad of scripts that may for example: clear down DBs, Queues, Indexes, create topics, inject payloads or even execute Integration Tests locally, the real purpose of this project is as follows:
 
-As a Software Engineer building distributed systems, I want a tool that brings backend systems to life via a graphical topology such that it is instantly recognisable to all stakeholders on such projects.  
-I want to be able to create/drive high-level end-to-end integration tests from within this tool for showcase/demo purposes. I want the GUI diagram/topology to come to life as payloads traverse through the interconnected nodes from one system to another as you could probably imagine in your mind - think of it as a real-time simulation, except it will be real data flowing through real applications running locally on your system.  
+As a Software Engineer building distributed systems, I want a tool that brings backend systems to life via a graphical topology such that it is instantly recognisable to all stakeholders on such projects.
+
+I want to be able to create/drive high-level end-to-end integration tests from within this tool for showcase/demo purposes. I want the GUI diagram/topology to come to life as payloads traverse through the interconnected nodes from one system to another as you could probably imagine in your mind - think of it as a real-time simulation, except it will be real data flowing through real applications running locally on your system.
+
 Again, this will just bring back-end systems development to the forefront in a way that is rarely done to allow teams to report on/demonstrate functional progress as a project evolves.  It is easy to showcase a nice front-end website but what about backend systems that lift, shift and enrich data? Do we really want to continue using cmd line tools that show lots of grouped data and then ask our stakeholders to take our word for it? eh, this worked end to end by the way... It's just hard at times for others to visualise what was achieved during that sprint as demonstrating back-end can be quite dry at times.
 
 To achieve the above, the graphical elements will be enhanced to support detection of payloads as they traverse through the system. All components/paths will come to life in the form of animations that represent that flow of data.  
-Specifically, in order to keep this tool language agnostic (example: apps written in .NET, some Java, some Python etc), the data capture of processing/payload movements will be done through a special instance of each applications log files. Yes, this tool will tail log files.  
-Graphical tools from within the Microservice Orchestrator will be used to create injection/assertion patterns hooked up to the relevant areas within the system/topology. Any special drivers/plugins required will be written as use cases for those technologies appear. If this tool becomes useful to other people, this project can be set up in such a way as to allow others to contribute by writing such integration tools.
+Specifically, in order to keep this tool language agnostic (example: apps written in .NET, some Java, some Python etc), the data capture of processing/payload movements will be done through a special instance of each applications log files. Yes, this tool will tail log files.
+
+Graphical tools from within the Microservice Orchestrator will be used to create injection/assertion patterns hooked up to the relevant areas within the system/topology.  
+Any special drivers/plugins required will be written as use cases for those technologies appear. If this tool becomes useful to other people, this project can be set up in such a way as to allow others to contribute by writing such integration tools.
 
 The following list illustrates all of the phase 2 goals of this project:
 
