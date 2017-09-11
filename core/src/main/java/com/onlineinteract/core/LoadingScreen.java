@@ -25,12 +25,13 @@ public class LoadingScreen extends ScreenAdapter {
     private Viewport viewport;
     private OrthographicCamera camera;
     private ShapeRenderer shapeRenderer;
+    private Workspace workspace;
 
     private float progress = 0;
     private final MsOrchestrator msOrchestrator;
 
-    public LoadingScreen(MsOrchestrator transportSimulation, int worldWidth, int worldHeight) {
-        this.msOrchestrator = transportSimulation;
+    public LoadingScreen(MsOrchestrator msOrchestrator, int worldWidth, int worldHeight) {
+        this.msOrchestrator = msOrchestrator;
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;
     }
@@ -84,7 +85,8 @@ public class LoadingScreen extends ScreenAdapter {
 
     private void update() {
         if (msOrchestrator.getAssetManager().update()) {
-            msOrchestrator.setScreen(new Workspace(msOrchestrator, worldWidth, worldHeight));
+            workspace = new Workspace(msOrchestrator, worldWidth, worldHeight);
+            msOrchestrator.setScreen(workspace);
         } else {
             progress = msOrchestrator.getAssetManager().getProgress();
         }

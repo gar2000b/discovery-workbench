@@ -6,14 +6,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector3;
 
-public class Template {
+public class Template implements WorkbenchItem {
 
     private static float BOX_OFFEST_X = 20;
     private static float LABEL_OFFSET_X = 10;
     private static float LABEL_OFFSET_Y = 90;
     private static int BOX_WIDTH = 180;
-    private static int BOX_HEIGHT = 100;
+    public static int BOX_HEIGHT = 100;
 
     private ShapeRenderer shapeRenderer;
     private SpriteBatch batch;
@@ -37,6 +38,18 @@ public class Template {
         this.label = label;
     }
 
+    public Template(ShapeRenderer shapeRenderer, SpriteBatch batch, BitmapFont font, OrthographicCamera camera, float x, float y, Color color1, Color color2, String label) {
+        this.shapeRenderer = shapeRenderer;
+        this.batch = batch;
+        this.font = font;
+        this.camera = camera;
+        this.x = x;
+        this.y = y;
+        this.color1 = color1;
+        this.color2 = color2;
+        this.label = label;
+    }
+
     public void draw() {
         shapeRenderer.begin(ShapeType.Line);
         shapeRenderer.setProjectionMatrix(camera.combined);
@@ -51,4 +64,20 @@ public class Template {
         batch.end();
     }
 
+    public boolean isClickWithinBoundary(Vector3 coordinates) {
+
+        float clickX = coordinates.x;
+        float clickY = coordinates.y;
+
+        if (clickX >= x && clickX <= (x + BOX_WIDTH) && clickY >= y && clickY <= (y + BOX_HEIGHT)) {
+            System.out.println("Click is within template: " + label + " boundary");
+            return true;
+        }
+
+        return false;
+    }
+
+    public String getLabel() {
+        return label;
+    }
 }

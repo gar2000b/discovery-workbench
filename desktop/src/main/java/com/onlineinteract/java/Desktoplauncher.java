@@ -4,12 +4,15 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.onlineinteract.core.MsOrchestrator;
 
-public class Desktoplauncher {
+public class DesktopLauncher {
     public static void main(String[] args) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
-        float width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
-        float height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
+        // float width = LwjglApplicationConfiguration.getDesktopDisplayMode().width * 0.8f;
+        // float height = LwjglApplicationConfiguration.getDesktopDisplayMode().height * 0.8f;
+
+        float width = 1560;
+        float height = 800;
 
         config.width = (int) width;
         config.height = (int) height;

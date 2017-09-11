@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
-public class WorkbenchOutline {
+public class WorkbenchOutline implements WorkbenchItem {
 
-    private static final int BOX_X = 10;
-    private static final int BOX_Y = 10;
-    private static final int COLUMN_WIDTH = 200;
+    public static final int BOX_X = 10;
+    public static final int BOX_Y = 10;
+    public static final int COLUMN_WIDTH = 200;
 
     private float worldWidth;
     private float worldHeight;
@@ -39,5 +39,13 @@ public class WorkbenchOutline {
         shapeRenderer.rect(BOX_X, BOX_Y, boxWidth, boxHeight);
         shapeRenderer.rect(BOX_X, BOX_Y, COLUMN_WIDTH, boxHeight);
         shapeRenderer.end();
+    }
+
+    public float getBoxHeight() {
+        return boxHeight;
+    }
+
+    public float getBoxWidth() {
+        return boxWidth;
     }
 }
