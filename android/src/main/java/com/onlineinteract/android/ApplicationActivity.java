@@ -1,4 +1,4 @@
-package com.onlineinteract.android;
+/*package com.onlineinteract.android;
 
 import com.onlineinteract.core.Application;
 
@@ -15,4 +15,4 @@ public class ApplicationActivity extends AndroidApplication {
 			AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 			initialize(new Application(), config);
 	}
-}
+}*/

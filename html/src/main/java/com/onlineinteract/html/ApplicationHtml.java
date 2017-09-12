@@ -16,4 +16,10 @@ public class ApplicationHtml extends GwtApplication {
 	public GwtApplicationConfiguration getConfig () {
 		return new GwtApplicationConfiguration(480, 320);
 	}
+
+	@Override
+	public ApplicationListener createApplicationListener() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
