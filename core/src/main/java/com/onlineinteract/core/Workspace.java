@@ -51,6 +51,7 @@ public class Workspace extends ScreenAdapter {
 	private boolean toggleFSFlag = false;
 	private Skin skin;
 	private Stage stage;
+	private ExitDialog exitDialog;
 
 	public Workspace(MsOrchestrator msOrchestrator, int worldWidth, int worldHeight) {
 		this.msOrchestrator = msOrchestrator;
@@ -66,6 +67,11 @@ public class Workspace extends ScreenAdapter {
 		setupInputProcessor();
 		workspaceRenderer = new WorkspaceRenderer(this);
 		stage = new Stage();
+		
+		Gdx.input.setInputProcessor(stage);
+		skin = new Skin(Gdx.files.internal("uiskin.json"));
+		exitDialog = new ExitDialog("Confirm Exit", skin, this);
+		exitDialog.show(stage);
 	}
 
 	private void setupInputProcessor() {
@@ -89,12 +95,6 @@ public class Workspace extends ScreenAdapter {
 
 		camera.position.set(worldWidth / 2, worldHeight / 2, camera.position.z);
 		camera.update();
-
-		Gdx.input.setInputProcessor(stage);
-
-		skin = new Skin(Gdx.files.internal("uiskin.json"));
-		ExitDialog exitDialog = new ExitDialog("Confirm Exit", skin);
-		exitDialog.show(stage);
 		// stage.addActor(exitDialog);
 	}
 
@@ -214,5 +214,17 @@ public class Workspace extends ScreenAdapter {
 
 	public BitmapFont getFont() {
 		return font;
+	}
+
+	public Stage getStage() {
+		return stage;
+	}
+
+	public ExitDialog getExitDialog() {
+		return exitDialog;
+	}
+	
+	public DeviceInputProcessor getDeviceInputProcessor() {
+		return deviceInputProcessor;
 	}
 }
