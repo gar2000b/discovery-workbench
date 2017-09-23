@@ -15,8 +15,10 @@ public class ServiceDialog extends Dialog {
 	private Template template;
 	TextField labelTextField;
 	TextField startupCommandTextField;
+	TextField runningTextField;
 	Label serviceNameLabel;
 	Label startupCommandLabel;
+	Label runningLabel;
 
 	public ServiceDialog(String title, Skin skin, String windowStyleName) {
 		super(title, skin, windowStyleName);
@@ -35,8 +37,10 @@ public class ServiceDialog extends Dialog {
 	{
 		labelTextField = new TextField("", getSkin());
 		startupCommandTextField = new TextField("", getSkin());
+		runningTextField = new TextField("", getSkin());
 		serviceNameLabel = new Label("Service Name: ", getSkin());
 		startupCommandLabel = new Label("Startup Command: ", getSkin());
+		runningLabel = new Label("Running Clause: ", getSkin());
 		button("Update", true).padBottom(10);
 		button("Cancel", false).padBottom(10);
 		key(Input.Keys.ENTER, true);
@@ -47,6 +51,9 @@ public class ServiceDialog extends Dialog {
 		getContentTable().row();
 		getContentTable().add(startupCommandLabel).padBottom(10);
 		getContentTable().add(startupCommandTextField).padBottom(10).width(200);
+		getContentTable().row();
+		getContentTable().add(runningLabel).padBottom(10);
+		getContentTable().add(runningTextField).padBottom(10).width(200);
 	}
 
 	@Override

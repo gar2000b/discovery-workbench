@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.dialog.ServiceDialog;
+import com.onlineinteract.core.type.ServiceStatus;
 
 public class Template implements WorkbenchItem {
 
@@ -37,9 +38,11 @@ public class Template implements WorkbenchItem {
 	private Skin skin;
 	private Stage stage;
 
+	private ServiceStatus serviceStatus = ServiceStatus.SHUTDOWN;
+
 	private float instanceOffsetX;
 	private float instanceOffsetY;
-	
+
 	private long previousTimeMillis = -DOUBLE_CLICK_RANGE - 1;
 
 	public Template() {
@@ -70,12 +73,35 @@ public class Template implements WorkbenchItem {
 		shapeRenderer.setColor(color1);
 		shapeRenderer.rect(x, y, BOX_WIDTH, BOX_HEIGHT);
 		shapeRenderer.end();
+		drawServiceStatus();
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		font.setColor(color2);
 		font.draw(batch, label, x + LABEL_OFFSET_X, y + LABEL_OFFSET_Y);
 		batch.end();
+	}
+
+	private void drawServiceStatus() {
+		shapeRenderer.end();
+		shapeRenderer.begin(ShapeType.Filled);
+
+		switch (serviceStatus) {
+		case SHUTDOWN:
+			shapeRenderer.setColor(Color.FOREST);
+			shapeRenderer.triangle(x + 10, y + 10, x + 10, y + 30, x + 30, y + 20);
+			break;
+		case LOADING:
+			shapeRenderer.setColor(Color.GOLD);
+			shapeRenderer.circle(x + 20, y + 20, 10, 100);
+			break;
+		case RUNNING:
+			shapeRenderer.setColor(Color.FIREBRICK);
+			shapeRenderer.rect(x + 10, y + 10, 20, 20);
+			break;
+		}
+
+		shapeRenderer.end();
 	}
 
 	public boolean isClickWithinBoundary(Vector3 coordinates) {
