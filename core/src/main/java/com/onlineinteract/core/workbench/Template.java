@@ -15,6 +15,7 @@ import com.onlineinteract.core.dialog.ServiceDialog;
 
 public class Template implements WorkbenchItem {
 
+	public static final int DOUBLE_CLICK_RANGE = 400;
 	private static float BOX_OFFEST_X = 20;
 	private static float LABEL_OFFSET_X = 10;
 	private static float LABEL_OFFSET_Y = 90;
@@ -37,6 +38,8 @@ public class Template implements WorkbenchItem {
 
 	private float instanceOffsetX;
 	private float instanceOffsetY;
+	
+	private long previousTimeMillis = -DOUBLE_CLICK_RANGE - 1;
 
 	public Template() {
 	}
@@ -126,5 +129,13 @@ public class Template implements WorkbenchItem {
 
 	public float getInstanceOffsetY() {
 		return instanceOffsetY;
+	}
+
+	public long getPreviousTimeMillis() {
+		return previousTimeMillis;
+	}
+
+	public void setPreviousTimeMillis(long previousTimeMillis) {
+		this.previousTimeMillis = previousTimeMillis;
 	}
 }
