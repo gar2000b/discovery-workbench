@@ -111,7 +111,7 @@ public class DeviceInputProcessor implements InputProcessor {
         long currentTimeMillis = System.currentTimeMillis();
         if (currentTimeMillis - previousTimeMillis < DOUBLE_CLICK_RANGE) {
             System.out.println("*** Double click detected");
-            
+            currentInstanceItem.renderServiceDialog();
         }
         previousTimeMillis = currentTimeMillis;
     }

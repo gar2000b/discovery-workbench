@@ -1,5 +1,6 @@
 package com.onlineinteract.core.workbench;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -87,6 +88,7 @@ public class Template implements WorkbenchItem {
 	}
 
 	public void renderServiceDialog() {
+		Gdx.input.setInputProcessor(stage);
 		serviceDialog.show(stage);
 	}
 
