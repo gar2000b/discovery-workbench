@@ -22,7 +22,7 @@ public class DeviceInputProcessor implements InputProcessor {
 	private boolean instanceDragFlag = false;
 	private Template currentInstanceItem;
 
-	private long previousTimeMillis = 0;
+	private long previousTimeMillis = -DOUBLE_CLICK_RANGE - 1;
 
 	public DeviceInputProcessor(Workspace workspace) {
 		this.workspace = workspace;
@@ -107,9 +107,10 @@ public class DeviceInputProcessor implements InputProcessor {
 	private void detectAndProcessDoubleClick(Template instanceItem) {
 		currentInstanceItem = instanceItem;
 		long currentTimeMillis = System.currentTimeMillis();
-		if (currentTimeMillis - previousTimeMillis < DOUBLE_CLICK_RANGE) {
+		if (currentTimeMillis - previousTimeMillis < DOUBLE_CLICK_RANGE && !workspace.isToggleFSFlag()) {
 			System.out.println("*** Double click detected");
 			currentInstanceItem.renderServiceDialog();
+			instanceDragFlag = false;
 		}
 		previousTimeMillis = currentTimeMillis;
 	}

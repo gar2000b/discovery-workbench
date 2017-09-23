@@ -222,4 +222,8 @@ public class Workspace extends ScreenAdapter {
 	public Skin getSkin() {
 		return skin;
 	}
+
+	public boolean isToggleFSFlag() {
+		return toggleFSFlag;
+	}
 }

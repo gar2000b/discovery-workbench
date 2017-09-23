@@ -27,6 +27,7 @@ public class Template implements WorkbenchItem {
 	private OrthographicCamera camera;
 	private float x;
 	private float y;
+	private Workspace workspace;
 	private Color color1;
 	private Color color2;
 	private String label;
@@ -45,6 +46,7 @@ public class Template implements WorkbenchItem {
 	}
 
 	public Template(Workspace workspace, float x, float y, Color color1, Color color2, String label) {
+		this.workspace = workspace;
 		this.shapeRenderer = workspace.getShapeRenderer();
 		this.batch = workspace.getBatch();
 		this.font = workspace.getFont();
@@ -56,7 +58,6 @@ public class Template implements WorkbenchItem {
 		this.color1 = color1;
 		this.color2 = color2;
 		this.label = label;
-		serviceDialog = new ServiceDialog("Service Configuration", skin, workspace, this);
 	}
 
 	public void draw() {
@@ -89,6 +90,9 @@ public class Template implements WorkbenchItem {
 
 	public void renderServiceDialog() {
 		Gdx.input.setInputProcessor(stage);
+		serviceDialog = new ServiceDialog("Service Configuration", skin, workspace, this);
+		serviceDialog.getTextField().setText(label);
+		stage.act();
 		serviceDialog.show(stage);
 	}
 
