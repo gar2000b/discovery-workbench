@@ -30,16 +30,17 @@ public class ServiceDialog extends Dialog {
 	{
 		textField = new TextField("", getSkin());
 		text("Service Configuration");
-		button("Update");
-		button("Cancel");
+		button("Update", true);
+		button("Cancel", false);
 		getContentTable().row();
 		getContentTable().add(textField).width(135);
 	}
 
 	@Override
 	protected void result(Object object) {
-		System.out.println("Some result here" + textField.getText());
-		template.setLabel(textField.getText());
+		if (object.getClass().getSimpleName().equals("Boolean") && object == Boolean.TRUE)
+			template.setLabel(textField.getText());
+
 		Gdx.input.setInputProcessor(workspace.getDeviceInputProcessor());
 	}
 }
