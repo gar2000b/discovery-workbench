@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.onlineinteract.core.dialog.ExitDialog;
 import com.onlineinteract.core.processor.DeviceInputProcessor;
 import com.onlineinteract.core.render.WorkspaceRenderer;
 import com.onlineinteract.core.workbench.Template;
@@ -51,7 +50,6 @@ public class Workspace extends ScreenAdapter {
 	private boolean toggleFSFlag = false;
 	private Skin skin;
 	private Stage stage;
-	private ExitDialog exitDialog;
 
 	public Workspace(MsOrchestrator msOrchestrator, int worldWidth, int worldHeight) {
 		this.msOrchestrator = msOrchestrator;
@@ -68,10 +66,6 @@ public class Workspace extends ScreenAdapter {
 		setupInputProcessor();
 		workspaceRenderer = new WorkspaceRenderer(this);
 		stage = new Stage();
-
-		Gdx.input.setInputProcessor(stage);
-		exitDialog = new ExitDialog("Confirm Exit", skin, this);
-		exitDialog.show(stage);
 	}
 
 	private void setupInputProcessor() {
@@ -95,7 +89,6 @@ public class Workspace extends ScreenAdapter {
 
 		camera.position.set(worldWidth / 2, worldHeight / 2, camera.position.z);
 		camera.update();
-		// stage.addActor(exitDialog);
 	}
 
 	@Override
@@ -120,9 +113,12 @@ public class Workspace extends ScreenAdapter {
 	}
 
 	private void update(float delta) {
-		fullScreenToggle();
-		cameraZoom();
-		updateCameraPan();
+		Input input = Gdx.input;
+		if (input.getInputProcessor().getClass().getSimpleName().equals("DeviceInputProcessor")) {
+			fullScreenToggle();
+			cameraZoom();
+			updateCameraPan();
+		}
 	}
 
 	private void draw() {
@@ -143,17 +139,16 @@ public class Workspace extends ScreenAdapter {
 
 	private void cameraZoom() {
 		Input input = Gdx.input;
-		if (input.isKeyPressed(Input.Keys.X)) {
+
+		if (input.isKeyPressed(Input.Keys.X))
 			camera.zoom += 0.02;
-		}
 
-		if (input.isKeyPressed(Input.Keys.Z)) {
+		if (input.isKeyPressed(Input.Keys.Z))
 			camera.zoom -= 0.02;
-		}
 
-		if (input.isKeyPressed(Input.Keys.R)) {
+		if (input.isKeyPressed(Input.Keys.R))
 			camera.zoom = 1;
-		}
+
 	}
 
 	private void updateCameraPan() {
@@ -218,10 +213,6 @@ public class Workspace extends ScreenAdapter {
 
 	public Stage getStage() {
 		return stage;
-	}
-
-	public ExitDialog getExitDialog() {
-		return exitDialog;
 	}
 
 	public DeviceInputProcessor getDeviceInputProcessor() {
