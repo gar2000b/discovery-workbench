@@ -1,5 +1,10 @@
 package com.onlineinteract.core.workbench;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -34,9 +39,13 @@ public class Template implements WorkbenchItem {
 	private Color color2;
 	private String label;
 	private String startupCommand;
+	private String runningClause;
+	private String servicePortNo;
 	private ServiceDialog serviceDialog;
 	private Skin skin;
 	private Stage stage;
+	private Process exec;
+	private Runtime runtime;
 
 	private ServiceStatus serviceStatus = ServiceStatus.SHUTDOWN;
 
@@ -65,6 +74,7 @@ public class Template implements WorkbenchItem {
 		this.color1 = color1;
 		this.color2 = color2;
 		this.label = label;
+		runtime = Runtime.getRuntime();
 	}
 
 	public void draw() {
@@ -105,7 +115,6 @@ public class Template implements WorkbenchItem {
 	}
 
 	public boolean isClickWithinBoundary(Vector3 coordinates) {
-
 		float clickX = coordinates.x;
 		float clickY = coordinates.y;
 
@@ -118,6 +127,99 @@ public class Template implements WorkbenchItem {
 		return false;
 	}
 
+	public void startStopService(Vector3 coordinates) {
+		float clickX = coordinates.x;
+		float clickY = coordinates.y;
+
+		if (clickX >= x + 10 && clickX <= (x + 30) && clickY >= y + 10 && clickY <= (y + 30))
+			determineStartStop();
+	}
+
+	private void determineStartStop() {
+		switch (serviceStatus) {
+		case SHUTDOWN:
+			serviceStatus = ServiceStatus.LOADING;
+			spawnServiceInstance();
+			break;
+		case RUNNING:
+			serviceStatus = ServiceStatus.LOADING;
+			destroyServiceInstance();
+			break;
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * TODO: wire up command and started hooks. ensure env variables
+	 * are parsed appropriately. save. load. start all.
+	 */
+	private void spawnServiceInstance() {
+		startupCommand = replaceEnvVars(startupCommand);
+		try {
+			exec = runtime.exec(startupCommand);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		processInputStream();
+		processErrorStream();
+	}
+
+	private void processInputStream() {
+		new Thread(() -> {
+			try {
+				InputStream inputStream = exec.getInputStream();
+				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+
+				String line = "";
+				while ((line = bufferedReader.readLine()) != null) {
+					System.out.println(line);
+					if (line.contains(runningClause)) {
+						System.out.println("Application launched successfully!");
+						serviceStatus = ServiceStatus.RUNNING;
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}).start();
+	}
+	
+	private void processErrorStream() {
+		new Thread(() -> {
+			try {
+				InputStream errorStream = exec.getErrorStream();
+				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(errorStream, "UTF-8"));
+
+				String line = "";
+				while ((line = bufferedReader.readLine()) != null) {
+					System.out.println(line);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}).start();
+	}
+	
+	private void destroyServiceInstance() {
+		exec.destroy();
+		System.out.println("Process destroyed, exiting.");
+		serviceStatus = ServiceStatus.SHUTDOWN;
+	}
+	
+	protected String replaceEnvVars(String startupCommand) {
+		while (startupCommand.indexOf("%") != -1) {
+			int startIndex = startupCommand.indexOf("%");
+			int endIndex = startupCommand.indexOf("%", startIndex + 1);
+			if (endIndex == -1)
+				break;
+			String envVar = startupCommand.substring(startIndex + 1, endIndex);
+			startupCommand = startupCommand.replace("%" + envVar + "%", System.getenv(envVar));
+		}
+		return startupCommand;
+	}
+
 	public void renderServiceDialog() {
 		Gdx.input.setInputProcessor(stage);
 		serviceDialog = new ServiceDialog("Service Configuration", skin, workspace, this);
@@ -126,6 +228,8 @@ public class Template implements WorkbenchItem {
 		else
 			serviceDialog.getLabelTextField().setText(label);
 		serviceDialog.getStartupCommandTextField().setText(startupCommand);
+		serviceDialog.getRunningClauseTextField().setText(runningClause);
+		serviceDialog.getServicePortNoTextField().setText(servicePortNo);
 		stage.act();
 		serviceDialog.show(stage);
 	}
@@ -176,5 +280,21 @@ public class Template implements WorkbenchItem {
 
 	public void setStartupCommand(String startupCommand) {
 		this.startupCommand = startupCommand;
+	}
+
+	public String getRunningClause() {
+		return runningClause;
+	}
+
+	public void setRunningClause(String runningClause) {
+		this.runningClause = runningClause;
+	}
+
+	public String getServicePortNo() {
+		return servicePortNo;
+	}
+
+	public void setServicePortNo(String servicePortNo) {
+		this.servicePortNo = servicePortNo;
 	}
 }

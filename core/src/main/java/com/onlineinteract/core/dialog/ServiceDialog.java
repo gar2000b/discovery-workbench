@@ -15,10 +15,12 @@ public class ServiceDialog extends Dialog {
 	private Template template;
 	TextField labelTextField;
 	TextField startupCommandTextField;
-	TextField runningTextField;
+	TextField runningClauseTextField;
+	TextField servicePortNoTextField;
 	Label serviceNameLabel;
 	Label startupCommandLabel;
 	Label runningLabel;
+	Label servicePortNoLabel;
 
 	public ServiceDialog(String title, Skin skin, String windowStyleName) {
 		super(title, skin, windowStyleName);
@@ -37,10 +39,12 @@ public class ServiceDialog extends Dialog {
 	{
 		labelTextField = new TextField("", getSkin());
 		startupCommandTextField = new TextField("", getSkin());
-		runningTextField = new TextField("", getSkin());
+		runningClauseTextField = new TextField("", getSkin());
+		servicePortNoTextField = new TextField("", getSkin());
 		serviceNameLabel = new Label("Service Name: ", getSkin());
 		startupCommandLabel = new Label("Startup Command: ", getSkin());
 		runningLabel = new Label("Running Clause: ", getSkin());
+		servicePortNoLabel = new Label("Port Number: ", getSkin());
 		button("Update", true).padBottom(10);
 		button("Cancel", false).padBottom(10);
 		key(Input.Keys.ENTER, true);
@@ -53,7 +57,10 @@ public class ServiceDialog extends Dialog {
 		getContentTable().add(startupCommandTextField).padBottom(10).width(200);
 		getContentTable().row();
 		getContentTable().add(runningLabel).padBottom(10);
-		getContentTable().add(runningTextField).padBottom(10).width(200);
+		getContentTable().add(runningClauseTextField).padBottom(10).width(200);
+		getContentTable().row();
+		getContentTable().add(servicePortNoLabel).padBottom(10);
+		getContentTable().add(servicePortNoTextField).padBottom(10).width(200);
 	}
 
 	@Override
@@ -61,6 +68,8 @@ public class ServiceDialog extends Dialog {
 		if (object.getClass().getSimpleName().equals("Boolean") && object == Boolean.TRUE) {
 			template.setLabel(labelTextField.getText());
 			template.setStartupCommand(startupCommandTextField.getText());
+			template.setRunningClause(runningClauseTextField.getText());
+			template.setServicePortNo(servicePortNoTextField.getText());
 		}
 
 		Gdx.input.setInputProcessor(workspace.getDeviceInputProcessor());
@@ -72,5 +81,17 @@ public class ServiceDialog extends Dialog {
 
 	public TextField getStartupCommandTextField() {
 		return startupCommandTextField;
+	}
+
+	public TextField getRunningClauseTextField() {
+		return runningClauseTextField;
+	}
+
+	public Label getServicePortNoLabel() {
+		return servicePortNoLabel;
+	}
+
+	public TextField getServicePortNoTextField() {
+		return servicePortNoTextField;
 	}
 }

@@ -96,8 +96,10 @@ public class DeviceInputProcessor implements InputProcessor {
 		for (Template instanceItem : templateInstances) {
 			if (instanceItem.isClickWithinBoundary(coordinates)) {
 				instanceDragFlag = true;
-				if (detectAndProcessDoubleClick(instanceItem))
+				instanceItem.startStopService(coordinates);
+				if (detectAndProcessDoubleClick(instanceItem)) {
 					break;
+				}
 			}
 		}
 	}
@@ -116,6 +118,13 @@ public class DeviceInputProcessor implements InputProcessor {
 		currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
 		return false;
 	}
+	
+//	private void detectClickStartStopInstances(Vector3 coordinates, Template instanceItem) {
+//		if (instanceItem.isClickWithinStartStopBoundary(coordinates)) {
+//			
+//		}
+//		
+//	}
 
 	private boolean processTouchUp(int button) {
 		if (button == Input.Buttons.LEFT) {
