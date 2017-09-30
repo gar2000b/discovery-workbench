@@ -83,6 +83,9 @@ public class Template implements WorkbenchItem {
 		shapeRenderer.setColor(color1);
 		shapeRenderer.rect(x, y, BOX_WIDTH, BOX_HEIGHT);
 		shapeRenderer.end();
+		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.setColor(Color.BLACK);
+		shapeRenderer.rect(x, y + 1, BOX_WIDTH - 1, BOX_HEIGHT - 1);
 		drawServiceStatus();
 
 		batch.setProjectionMatrix(camera.combined);
