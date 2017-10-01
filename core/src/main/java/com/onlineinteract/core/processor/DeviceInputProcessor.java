@@ -2,11 +2,9 @@ package com.onlineinteract.core.processor;
 
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.type.TemplateType;
 import com.onlineinteract.core.util.ListTypeRetainer;
@@ -14,7 +12,7 @@ import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.WorkbenchItem;
 import com.onlineinteract.core.workbench.WorkbenchOutline;
 
-public class DeviceInputProcessor implements InputProcessor {
+public class DeviceInputProcessor {
 
 	private Workspace workspace;
 	private List<Template> retainedTemplateList;
@@ -27,78 +25,33 @@ public class DeviceInputProcessor implements InputProcessor {
 		templateInstances = this.workspace.getTemplateInstances();
 		List<WorkbenchItem> workbenchItems = this.workspace.getWorkbenchItems();
 		retainedTemplateList = ListTypeRetainer.<WorkbenchItem, Template>retainedList(workbenchItems, Template.class);
+		processEvents();
 	}
 
-	@Override
-	public boolean touchDown(int x, int y, int pointer, int button) {
-		return processTouchDown(button);
+	private void processEvents() {
+		workspace.getStage().addListener(new ClickListener(this));
 	}
 
-	@Override
-	public boolean touchUp(int x, int y, int pointer, int button) {
-		return processTouchUp(button);
-	}
-
-	@Override
-	public boolean keyDown(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		Vector3 coordinates = workspace.getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-		if (instanceDragFlag) {
-			currentInstanceItem.setX(coordinates.x - currentInstanceItem.getInstanceOffsetX());
-			currentInstanceItem.setY(coordinates.y - currentInstanceItem.getInstanceOffsetY());
-			return true;
+	protected void processTouchDown(InputEvent evt) {
+		if (evt.getButton() == Input.Buttons.LEFT) {
+			detectClickTemplateList(evt.getStageX(), evt.getStageY());
+			detectClickTemplateInstances(evt.getStageX(), evt.getStageY());
 		}
-
-		return false;
 	}
 
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		return false;
-	}
-
-	private boolean processTouchDown(int button) {
-		if (button == Input.Buttons.LEFT) {
-			Vector3 coordinates = workspace.getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-			detectClickTemplateList(coordinates);
-			detectClickTemplateInstances(coordinates);
-			return true;
-		}
-		return false;
-	}
-
-	private void detectClickTemplateList(Vector3 coordinates) {
+	private void detectClickTemplateList(float x, float y) {
 		for (Template templateItem : retainedTemplateList) {
-			if (templateItem.isClickWithinBoundary(coordinates))
+			if (templateItem.isClickWithinBoundary(x, y))
 				createTemplateInstance(templateItem);
 		}
 	}
 
-	private void detectClickTemplateInstances(Vector3 coordinates) {
+	private void detectClickTemplateInstances(float x, float y) {
 		for (Template instanceItem : templateInstances) {
-			if (instanceItem.isClickWithinBoundary(coordinates)) {
+			if (instanceItem.isClickWithinBoundary(x, y)) {
 				putInstanceToBeginningOfList(instanceItem);
 				instanceDragFlag = true;
-				instanceItem.startStopService(coordinates);
+				instanceItem.startStopService(x, y);
 				currentInstanceItem = instanceItem;
 				detectAndProcessDoubleClick(instanceItem);
 				break;
@@ -124,23 +77,6 @@ public class DeviceInputProcessor implements InputProcessor {
 		currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
 	}
 
-	// private void detectClickStartStopInstances(Vector3 coordinates,
-	// Template instanceItem) {
-	// if (instanceItem.isClickWithinStartStopBoundary(coordinates)) {
-	//
-	// }
-	//
-	// }
-
-	private boolean processTouchUp(int button) {
-		if (button == Input.Buttons.LEFT) {
-			instanceDragFlag = false;
-			currentInstanceItem = null;
-			return true;
-		}
-		return false;
-	}
-
 	private void createTemplateInstance(Template templateItem) {
 
 		WorkbenchOutline workbenchOutline = workspace.getWorkbenchOutline();
@@ -149,10 +85,27 @@ public class DeviceInputProcessor implements InputProcessor {
 		float y = workbenchOutline.getBoxHeight() - Template.BOX_HEIGHT;
 
 		if (templateItem.getLabel().equals("µicroservice"))
-			templateInstances.add(new Template(workspace, x, y, Color.FOREST, Color.FOREST, "µicroservice", TemplateType.MICROSERVICE));
+			templateInstances.add(new Template(workspace, x, y, Color.FOREST, Color.FOREST, "µicroservice",
+					TemplateType.MICROSERVICE));
 		if (templateItem.getLabel().equals("Infrastructure"))
-			templateInstances.add(new Template(workspace, x, y, Color.CORAL, Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE));
+			templateInstances.add(new Template(workspace, x, y, Color.CORAL, Color.CORAL, "Infrastructure",
+					TemplateType.INFRASTRUCTURE));
 		if (templateItem.getLabel().equals("Scripts"))
-			templateInstances.add(new Template(workspace, x, y, Color.BLUE, Color.GRAY, "Scripts", TemplateType.SCRIPT));
+			templateInstances
+					.add(new Template(workspace, x, y, Color.BLUE, Color.GRAY, "Scripts", TemplateType.SCRIPT));
+	}
+
+	protected void processTouchUp(InputEvent evt) {
+		if (evt.getButton() == Input.Buttons.LEFT) {
+			instanceDragFlag = false;
+			currentInstanceItem = null;
+		}
+	}
+
+	protected void processTouchDragged(InputEvent evt) {
+		if (instanceDragFlag) {
+			currentInstanceItem.setX(evt.getStageX() - currentInstanceItem.getInstanceOffsetX());
+			currentInstanceItem.setY(evt.getStageY() - currentInstanceItem.getInstanceOffsetY());
+		}
 	}
 }

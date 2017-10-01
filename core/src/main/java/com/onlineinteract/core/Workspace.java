@@ -69,9 +69,9 @@ public class Workspace extends ScreenAdapter {
 
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
 		instantiateTemplates(worldWidth, worldHeight);
-		setupInputProcessor();
 		workspaceRenderer = new WorkspaceRenderer(this);
 		stage = new Stage();
+		setupInputProcessors();
 
 		createServiceList();
 	}
@@ -97,6 +97,7 @@ public class Workspace extends ScreenAdapter {
 		serviceList.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				// System.out.println("*** Click");
 				if (serviceList.getSelectedIndex() == 3) {
 					serviceList.clearItems();
 					stringList.remove(3);
@@ -105,13 +106,43 @@ public class Workspace extends ScreenAdapter {
 				}
 			}
 		});
+		// serviceList.addListener(new EventListener() {
+		//
+		// @Override
+		// public boolean handle(Event event) {
+		//
+		// if (event instanceof InputEvent) {
+		// InputEvent evt = (InputEvent)event;
+		// switch (evt.getType()) {
+		// case keyDown:
+		// System.out.println("keydown: " + evt.getKeyCode());
+		//// return keyDown(event, event.getKeyCode());
+		// case keyUp:
+		//// return keyUp(event, event.getKeyCode());
+		// case keyTyped:
+		//// return keyTyped(event, event.getCharacter());
+		// }
+		// }
+		//
+		// System.out.println(event.toString() + " : " + event);
+		// return false;
+		// }
+		// });
+
 		stage.addActor(scrollPane);
-		// Gdx.input.setInputProcessor(stage);
 	}
 
-	private void setupInputProcessor() {
+	private void setupInputProcessors() {
+		/*
+		 * InputMultiplexer multiplexer = new InputMultiplexer();
+		 * multiplexer.addProcessor(deviceInputProcessor); // Your
+		 * screen multiplexer.addProcessor(stage);
+		 * Gdx.input.setInputProcessor(multiplexer);
+		 * Gdx.input.setInputProcessor(stage);
+		 */
+
 		deviceInputProcessor = new DeviceInputProcessor(this);
-		Gdx.input.setInputProcessor(deviceInputProcessor);
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	private void instantiateTemplates(int worldWidth, int worldHeight) {

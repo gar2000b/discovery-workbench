@@ -36,6 +36,6 @@ public class ExitDialog extends Dialog {
 	@Override
 	protected void result(Object object) {
 		System.out.println("Some result here" + textField.getText());
-		Gdx.input.setInputProcessor(workspace.getDeviceInputProcessor());
+		// Gdx.input.setInputProcessor(workspace.getDeviceInputProcessor());
 	}
 }
