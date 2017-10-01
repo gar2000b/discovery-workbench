@@ -1,7 +1,6 @@
 package com.onlineinteract.java;
 
 import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.onlineinteract.core.MsOrchestrator;

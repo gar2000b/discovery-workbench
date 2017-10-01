@@ -8,6 +8,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.onlineinteract.core.Workspace;
+import com.onlineinteract.core.type.TemplateType;
 import com.onlineinteract.core.util.ListTypeRetainer;
 import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.WorkbenchItem;
@@ -148,10 +149,10 @@ public class DeviceInputProcessor implements InputProcessor {
 		float y = workbenchOutline.getBoxHeight() - Template.BOX_HEIGHT;
 
 		if (templateItem.getLabel().equals("µicroservice"))
-			templateInstances.add(new Template(workspace, x, y, Color.FOREST, Color.FOREST, "µicroservice"));
+			templateInstances.add(new Template(workspace, x, y, Color.FOREST, Color.FOREST, "µicroservice", TemplateType.MICROSERVICE));
 		if (templateItem.getLabel().equals("Infrastructure"))
-			templateInstances.add(new Template(workspace, x, y, Color.CORAL, Color.CORAL, "Infrastructure"));
+			templateInstances.add(new Template(workspace, x, y, Color.CORAL, Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE));
 		if (templateItem.getLabel().equals("Scripts"))
-			templateInstances.add(new Template(workspace, x, y, Color.BLUE, Color.GRAY, "Scripts"));
+			templateInstances.add(new Template(workspace, x, y, Color.BLUE, Color.GRAY, "Scripts", TemplateType.SCRIPT));
 	}
 }

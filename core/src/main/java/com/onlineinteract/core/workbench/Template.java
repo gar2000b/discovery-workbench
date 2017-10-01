@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.dialog.ServiceDialog;
 import com.onlineinteract.core.type.ServiceStatus;
+import com.onlineinteract.core.type.TemplateType;
 
 public class Template implements WorkbenchItem {
 
@@ -46,6 +47,7 @@ public class Template implements WorkbenchItem {
 	private Stage stage;
 	private Process exec;
 	private Runtime runtime;
+	private TemplateType type;
 
 	private ServiceStatus serviceStatus = ServiceStatus.SHUTDOWN;
 
@@ -57,11 +59,11 @@ public class Template implements WorkbenchItem {
 	public Template() {
 	}
 
-	public Template(Workspace workspace, float y, Color color1, Color color2, String label) {
-		this(workspace, BOX_OFFEST_X, y, color1, color2, label);
+	public Template(Workspace workspace, float y, Color color1, Color color2, String label, TemplateType type) {
+		this(workspace, BOX_OFFEST_X, y, color1, color2, label, type);
 	}
 
-	public Template(Workspace workspace, float x, float y, Color color1, Color color2, String label) {
+	public Template(Workspace workspace, float x, float y, Color color1, Color color2, String label, TemplateType type) {
 		this.workspace = workspace;
 		this.shapeRenderer = workspace.getShapeRenderer();
 		this.batch = workspace.getBatch();
@@ -74,6 +76,7 @@ public class Template implements WorkbenchItem {
 		this.color1 = color1;
 		this.color2 = color2;
 		this.label = label;
+		this.type = type;
 		runtime = Runtime.getRuntime();
 	}
 
@@ -158,9 +161,9 @@ public class Template implements WorkbenchItem {
 	 * are parsed appropriately. save. load. start all.
 	 */
 	private void spawnServiceInstance() {
-		startupCommand = replaceEnvVars(startupCommand);
+		String launchCommand = replaceEnvVars(startupCommand);
 		try {
-			exec = runtime.exec(startupCommand);
+			exec = runtime.exec(launchCommand);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -212,15 +215,16 @@ public class Template implements WorkbenchItem {
 	}
 	
 	protected String replaceEnvVars(String startupCommand) {
-		while (startupCommand.indexOf("%") != -1) {
-			int startIndex = startupCommand.indexOf("%");
-			int endIndex = startupCommand.indexOf("%", startIndex + 1);
+		String launchCommand = startupCommand;
+		while (launchCommand.indexOf("%") != -1) {
+			int startIndex = launchCommand.indexOf("%");
+			int endIndex = launchCommand.indexOf("%", startIndex + 1);
 			if (endIndex == -1)
 				break;
-			String envVar = startupCommand.substring(startIndex + 1, endIndex);
-			startupCommand = startupCommand.replace("%" + envVar + "%", System.getenv(envVar));
+			String envVar = launchCommand.substring(startIndex + 1, endIndex);
+			launchCommand = launchCommand.replace("%" + envVar + "%", System.getenv(envVar));
 		}
-		return startupCommand;
+		return launchCommand;
 	}
 
 	public void renderServiceDialog() {
@@ -299,5 +303,13 @@ public class Template implements WorkbenchItem {
 
 	public void setServicePortNo(String servicePortNo) {
 		this.servicePortNo = servicePortNo;
+	}
+
+	public TemplateType getType() {
+		return type;
+	}
+
+	public void setType(TemplateType type) {
+		this.type = type;
 	}
 }
