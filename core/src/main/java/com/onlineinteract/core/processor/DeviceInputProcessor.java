@@ -1,6 +1,7 @@
 package com.onlineinteract.core.processor;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -22,7 +23,7 @@ public class DeviceInputProcessor {
 
 	public DeviceInputProcessor(Workspace workspace) {
 		this.workspace = workspace;
-		templateInstances = this.workspace.getTemplateInstances();
+		templateInstances = this.workspace.getServiceListComponent().getTemplateInstances();
 		List<WorkbenchItem> workbenchItems = this.workspace.getWorkbenchItems();
 		retainedTemplateList = ListTypeRetainer.<WorkbenchItem, Template>retainedList(workbenchItems, Template.class);
 		processEvents();
@@ -86,13 +87,17 @@ public class DeviceInputProcessor {
 
 		if (templateItem.getLabel().equals("µicroservice"))
 			templateInstances.add(new Template(workspace, x, y, Color.FOREST, Color.FOREST, "µicroservice",
-					TemplateType.MICROSERVICE));
+					TemplateType.MICROSERVICE, UUID.randomUUID()));
 		if (templateItem.getLabel().equals("Infrastructure"))
 			templateInstances.add(new Template(workspace, x, y, Color.CORAL, Color.CORAL, "Infrastructure",
-					TemplateType.INFRASTRUCTURE));
+					TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
 		if (templateItem.getLabel().equals("Scripts"))
-			templateInstances
-					.add(new Template(workspace, x, y, Color.BLUE, Color.GRAY, "Scripts", TemplateType.SCRIPT));
+			templateInstances.add(new Template(workspace, x, y, Color.BLUE, Color.GRAY, "Scripts", TemplateType.SCRIPT,
+					UUID.randomUUID()));
+
+		for (Template instance : templateInstances) {
+			System.out.println("UUID: " + instance.getUuid());
+		}
 	}
 
 	protected void processTouchUp(InputEvent evt) {

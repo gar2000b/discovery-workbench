@@ -2,6 +2,7 @@ package com.onlineinteract.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,13 +13,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.onlineinteract.core.component.ServiceList;
 import com.onlineinteract.core.processor.DeviceInputProcessor;
 import com.onlineinteract.core.render.WorkspaceRenderer;
 import com.onlineinteract.core.type.TemplateType;
@@ -48,10 +47,8 @@ public class Workspace extends ScreenAdapter {
 	private Template scriptTemplate;
 	private WorkspaceRenderer workspaceRenderer;
 	private List<WorkbenchItem> workbenchItems = new ArrayList<WorkbenchItem>();
-	private List<Template> templateInstances = new ArrayList<Template>();
 	private DeviceInputProcessor deviceInputProcessor;
-	com.badlogic.gdx.scenes.scene2d.ui.List<String> serviceList;
-	ScrollPane scrollPane;
+	ServiceList serviceListComponent;
 
 	private boolean toggleFSFlag = false;
 	private Skin skin;
@@ -71,76 +68,11 @@ public class Workspace extends ScreenAdapter {
 		instantiateTemplates(worldWidth, worldHeight);
 		workspaceRenderer = new WorkspaceRenderer(this);
 		stage = new Stage();
+		serviceListComponent = new ServiceList(this);
 		setupInputProcessors();
-
-		createServiceList();
-	}
-
-	private void createServiceList() {
-		serviceList = new com.badlogic.gdx.scenes.scene2d.ui.List<String>(skin);
-		List<String> stringList = new ArrayList<>();
-		for (int i = 0; i < 20; i++) {
-			stringList.add("String: " + i);
-		}
-		serviceList.setItems(stringList.toArray(new String[stringList.size()]));
-		scrollPane = new ScrollPane(serviceList);
-		scrollPane.setBounds(10, 10, 200, 200);
-		scrollPane.setSmoothScrolling(true);
-		scrollPane.setPosition(worldWidth - 280, 20);
-		scrollPane.setTransform(true);
-		scrollPane.setScale(1);
-		serviceList.setColor(Color.CYAN);
-		serviceList.getSelection().setMultiple(true);
-		serviceList.getSelection().setRequired(false);
-		serviceList.setSelected(null);
-		serviceList.setSelectedIndex(1);
-		serviceList.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				// System.out.println("*** Click");
-				if (serviceList.getSelectedIndex() == 3) {
-					serviceList.clearItems();
-					stringList.remove(3);
-					serviceList.setItems(stringList.toArray(new String[stringList.size()]));
-					serviceList.setSelectedIndex(4);
-				}
-			}
-		});
-		// serviceList.addListener(new EventListener() {
-		//
-		// @Override
-		// public boolean handle(Event event) {
-		//
-		// if (event instanceof InputEvent) {
-		// InputEvent evt = (InputEvent)event;
-		// switch (evt.getType()) {
-		// case keyDown:
-		// System.out.println("keydown: " + evt.getKeyCode());
-		//// return keyDown(event, event.getKeyCode());
-		// case keyUp:
-		//// return keyUp(event, event.getKeyCode());
-		// case keyTyped:
-		//// return keyTyped(event, event.getCharacter());
-		// }
-		// }
-		//
-		// System.out.println(event.toString() + " : " + event);
-		// return false;
-		// }
-		// });
-
-		stage.addActor(scrollPane);
 	}
 
 	private void setupInputProcessors() {
-		/*
-		 * InputMultiplexer multiplexer = new InputMultiplexer();
-		 * multiplexer.addProcessor(deviceInputProcessor); // Your
-		 * screen multiplexer.addProcessor(stage);
-		 * Gdx.input.setInputProcessor(multiplexer);
-		 * Gdx.input.setInputProcessor(stage);
-		 */
-
 		deviceInputProcessor = new DeviceInputProcessor(this);
 		Gdx.input.setInputProcessor(stage);
 	}
@@ -148,11 +80,11 @@ public class Workspace extends ScreenAdapter {
 	private void instantiateTemplates(int worldWidth, int worldHeight) {
 		workbenchItems.add(workbenchOutline = new WorkbenchOutline(worldWidth, worldHeight, shapeRenderer, camera));
 		workbenchItems.add(new Template(this, worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST,
-				Color.FOREST, "µicroservice", TemplateType.MICROSERVICE));
+				Color.FOREST, "µicroservice", TemplateType.MICROSERVICE, UUID.randomUUID()));
 		workbenchItems.add(new Template(this, worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL,
-				Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE));
+				Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
 		workbenchItems.add(new Template(this, worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY,
-				"Scripts", TemplateType.SCRIPT));
+				"Scripts", TemplateType.SCRIPT, UUID.randomUUID()));
 	}
 
 	@Override
@@ -268,10 +200,6 @@ public class Workspace extends ScreenAdapter {
 		return workbenchItems;
 	}
 
-	public List<Template> getTemplateInstances() {
-		return templateInstances;
-	}
-
 	public ShapeRenderer getShapeRenderer() {
 		return shapeRenderer;
 	}
@@ -298,5 +226,9 @@ public class Workspace extends ScreenAdapter {
 
 	public boolean isToggleFSFlag() {
 		return toggleFSFlag;
+	}
+
+	public ServiceList getServiceListComponent() {
+		return serviceListComponent;
 	}
 }
