@@ -86,14 +86,14 @@ public class DeviceInputProcessor {
 		float y = workbenchOutline.getBoxHeight() - Template.BOX_HEIGHT;
 
 		if (templateItem.getLabel().equals("µicroservice"))
-			templateInstances.add(new Template(workspace, x, y, Color.FOREST, Color.FOREST, "µicroservice",
-					TemplateType.MICROSERVICE, UUID.randomUUID()));
+			workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.FOREST,
+					Color.FOREST, "µicroservice", TemplateType.MICROSERVICE, UUID.randomUUID()));
 		if (templateItem.getLabel().equals("Infrastructure"))
-			templateInstances.add(new Template(workspace, x, y, Color.CORAL, Color.CORAL, "Infrastructure",
-					TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
+			workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.CORAL,
+					Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
 		if (templateItem.getLabel().equals("Scripts"))
-			templateInstances.add(new Template(workspace, x, y, Color.BLUE, Color.GRAY, "Scripts", TemplateType.SCRIPT,
-					UUID.randomUUID()));
+			workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.BLUE,
+					Color.GRAY, "Scripts", TemplateType.SCRIPT, UUID.randomUUID()));
 
 		for (Template instance : templateInstances) {
 			System.out.println("UUID: " + instance.getUuid());
