@@ -86,8 +86,30 @@ public class Workspace extends ScreenAdapter {
         setupLoadButton();
         setupSaveButton();
         setupInstructionsButton();
+        setupOverrideEnvVarsButton();
     }
 
+    private void setupOverrideEnvVarsButton() {
+        Button envVarsButton = new TextButton("Override Env", getSkin());
+        envVarsButton.addListener(new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event.toString().equals("touchDown")) {
+                    Gdx.input.setInputProcessor(stage);
+                    InstructionsDialog instructionsDialog = new InstructionsDialog("Instructions", skin, Workspace.this);
+                    instructionsDialog.getInstructionsTextArea().setText(instructions);
+                    stage.act();
+                    instructionsDialog.show(stage);
+                    setDialogToggleFlag(true);
+                }
+                return false;
+            }
+        });
+        envVarsButton.setPosition(15, 45);
+        envVarsButton.setWidth(125);
+        stage.addActor(envVarsButton);
+    }
+    
     private void setupInstructionsButton() {
         Button instructionsButton = new TextButton("Instructions", getSkin());
         instructionsButton.addListener(new EventListener() {
@@ -105,7 +127,7 @@ public class Workspace extends ScreenAdapter {
             }
         });
         instructionsButton.setPosition(15, 15);
-        instructionsButton.setWidth(100);
+        instructionsButton.setWidth(125);
         stage.addActor(instructionsButton);
     }
 
@@ -154,7 +176,7 @@ public class Workspace extends ScreenAdapter {
 
     private void instantiateTemplates(int worldWidth, int worldHeight) {
         workbenchItems.add(workbenchOutline = new WorkbenchOutline(worldWidth, worldHeight, shapeRenderer, camera));
-        workbenchItems.add(new Template(this, worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST, Color.FOREST, "µicroservice", TemplateType.MICROSERVICE, UUID.randomUUID()));
+        workbenchItems.add(new Template(this, worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST, Color.FOREST, "Application/Service", TemplateType.MICROSERVICE, UUID.randomUUID()));
         workbenchItems.add(new Template(this, worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL, Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
         workbenchItems.add(new Template(this, worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY, "Scripts", TemplateType.SCRIPT, UUID.randomUUID()));
     }
