@@ -14,8 +14,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  */
 public class LoadingScreen extends ScreenAdapter {
 
-    // private static final float WORLD_WIDTH = 1600;
-    // private static final float WORLD_HEIGHT = 900;
     private static final float PROGRESS_BAR_WIDTH = 100;
     private static final float PROGRESS_BAR_HEIGHT = 25;
 
@@ -28,10 +26,10 @@ public class LoadingScreen extends ScreenAdapter {
     private Workspace workspace;
 
     private float progress = 0;
-    private final MsOrchestrator msOrchestrator;
+    private final DiscoveryWorkbench discoveryWorkbench;
 
-    public LoadingScreen(MsOrchestrator msOrchestrator, int worldWidth, int worldHeight) {
-        this.msOrchestrator = msOrchestrator;
+    public LoadingScreen(DiscoveryWorkbench discoveryWorkbench, int worldWidth, int worldHeight) {
+        this.discoveryWorkbench = discoveryWorkbench;
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;
     }
@@ -50,23 +48,6 @@ public class LoadingScreen extends ScreenAdapter {
         camera.update();
         viewport = new FitViewport(worldWidth, worldHeight, camera);
         shapeRenderer = new ShapeRenderer();
-
-
-        // TODO: Assets go here
-        // msOrchestrator.getAssetManager().load("Taxi-Left.png", Texture.class);
-        // msOrchestrator.getAssetManager().load("Taxi-Right.png", Texture.class);
-        // msOrchestrator.getAssetManager().load("Taxi-Left-Gear.png", Texture.class);
-        // msOrchestrator.getAssetManager().load("Taxi-Right-Gear.png", Texture.class);
-        // msOrchestrator.getAssetManager().load("simulation.tmx", TiledMap.class);
-        // msOrchestrator.getAssetManager().load("thruster-up.png", Texture.class);
-        // msOrchestrator.getAssetManager().load("thruster-down.png", Texture.class);
-        // msOrchestrator.getAssetManager().load("thruster-left.png", Texture.class);
-        // msOrchestrator.getAssetManager().load("thruster-right.png", Texture.class);
-        // msOrchestrator.getAssetManager().load("traveller-a.png", Texture.class);
-        // msOrchestrator.getAssetManager().load("traveller-b.png", Texture.class);
-        // msOrchestrator.getAssetManager().load("traveller-c.png", Texture.class);
-        // msOrchestrator.getAssetManager().load("thought-bubble.png", Texture.class);
-        // msOrchestrator.getAssetManager().load("taxi-bubble.png", Texture.class);
     }
 
     @Override
@@ -84,11 +65,11 @@ public class LoadingScreen extends ScreenAdapter {
     }
 
     private void update() {
-        if (msOrchestrator.getAssetManager().update()) {
-            workspace = new Workspace(msOrchestrator, worldWidth, worldHeight);
-            msOrchestrator.setScreen(workspace);
+        if (discoveryWorkbench.getAssetManager().update()) {
+            workspace = new Workspace(discoveryWorkbench, worldWidth, worldHeight);
+            discoveryWorkbench.setScreen(workspace);
         } else {
-            progress = msOrchestrator.getAssetManager().getProgress();
+            progress = discoveryWorkbench.getAssetManager().getProgress();
         }
     }
 

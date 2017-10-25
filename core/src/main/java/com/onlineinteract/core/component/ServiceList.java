@@ -12,12 +12,9 @@ import com.onlineinteract.core.type.ServiceStatus;
 import com.onlineinteract.core.type.TemplateType;
 import com.onlineinteract.core.workbench.Template;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class ServiceList {
 
@@ -43,12 +40,6 @@ public class ServiceList {
         serviceList.getSelection().setMultiple(true);
         serviceList.getSelection().setRequired(false);
         serviceList.setSelected(null);
-        /*
-         * serviceList.addListener(new ChangeListener() {
-         * 
-         * @Override public void changed(ChangeEvent event, Actor actor) { if (serviceList.getSelectedIndex() == 3) { serviceList.clearItems(); orderedServiceList.remove(3);
-         * serviceList.setItems(orderedServiceList.toArray(new Template[orderedServiceList.size()])); serviceList.setSelectedIndex(4); } } });
-         */
 
         workspace.getStage().addActor(scrollPane);
         setupServiceListButtons();
@@ -58,8 +49,8 @@ public class ServiceList {
         setupToggleProcessingTypeButton();
         setupUpButton();
         setupDownButton();
-        setupStartStopAllButton();
-        // setupStopAllButton();
+        setupStartAllButton();
+        setupStopAllButton();
     }
 
     private void setupToggleProcessingTypeButton() {
@@ -77,16 +68,11 @@ public class ServiceList {
 
     private boolean toggleProcessingTypes(Event event) {
         if (event.toString().equals("touchDown")) {
-            System.out.println("Looks like I am being clicked/toggled. " + event.toString());
             for (Template selection : serviceList.getSelection()) {
                 if (selection.getProcessingType() == ProcessingType.SEQ)
                     selection.setProcessingType(ProcessingType.PAR);
                 else
                     selection.setProcessingType(ProcessingType.SEQ);
-            }
-
-            for (Template template : orderedServiceList) {
-                System.out.println(template.getProcessingType());
             }
             return true;
         }
@@ -112,7 +98,6 @@ public class ServiceList {
             for (Template selection : serviceList.getSelection()) {
                 for (int i = 0; i < orderedServiceList.size(); i++) {
                     if (selection.getUuid() == orderedServiceList.get(i).getUuid()) {
-                        System.out.println("*** Found");
                         if (i != 0) {
                             Template temp = orderedServiceList.get(i);
                             orderedServiceList.set(i, orderedServiceList.get(i - 1));
@@ -149,7 +134,6 @@ public class ServiceList {
             for (Template selection : serviceList.getSelection()) {
                 for (int i = 0; i < orderedServiceList.size(); i++) {
                     if (selection.getUuid() == orderedServiceList.get(i).getUuid()) {
-                        System.out.println("*** Found");
                         if (i != orderedServiceList.size() - 1) {
                             Template temp = orderedServiceList.get(i);
                             orderedServiceList.set(i, orderedServiceList.get(i + 1));
@@ -167,40 +151,41 @@ public class ServiceList {
         return false;
     }
 
-    private void setupStartStopAllButton() {
-        Button startStopAllButton = new TextButton("Start/Stop All", workspace.getSkin());
-        startStopAllButton.addListener(new EventListener() {
+    private void setupStartAllButton() {
+        Button startAllButton = new TextButton("Start All", workspace.getSkin());
+        startAllButton.addListener(new EventListener() {
 
             @Override
             public boolean handle(Event event) {
-                return startStopAll(event);
+                return startAll(event);
             }
         });
-        startStopAllButton.setPosition(1340, 690);
-        startStopAllButton.setWidth(140);
-        startStopAllButton.setHeight(57);
-        workspace.getStage().addActor(startStopAllButton);
+        startAllButton.setPosition(1340, 720);
+        startAllButton.setWidth(140);
+        workspace.getStage().addActor(startAllButton);
     }
 
-    /*
-     * private void setupStopAllButton() { Button stopAllButton = new TextButton("Stop All", workspace.getSkin()); stopAllButton.addListener(new EventListener() {
-     * 
-     * @Override public boolean handle(Event event) { return startStopAll(event); } }); stopAllButton.setPosition(1340, 690); stopAllButton.setWidth(140); workspace.getStage().addActor(stopAllButton);
-     * }
-     */
+    private void setupStopAllButton() {
+        Button stopAllButton = new TextButton("Stop All", workspace.getSkin());
+        stopAllButton.addListener(new EventListener() {
 
-    private boolean startStopAll(Event event) {
+            @Override
+            public boolean handle(Event event) {
+                return stopAll(event);
+            }
+        });
+        stopAllButton.setPosition(1340, 690);
+        stopAllButton.setWidth(140);
+        workspace.getStage().addActor(stopAllButton);
+    }
+
+    private boolean startAll(Event event) {
         if (event.toString().equals("touchDown")) {
-            System.out.println("* Start all services");
             new Thread(() -> {
                 for (Template template : orderedServiceList) {
-                    if (template.getServiceStatus() == ServiceStatus.RUNNING) {
-                        template.startStopService();
-                        continue;
-                    }
-
                     if (template.getServiceStatus() == ServiceStatus.SHUTDOWN) {
-                        template.startStopService();
+                        template.setServiceStatus(ServiceStatus.LOADING);
+                        template.spawnServiceInstance();
                         while (template.getServiceStatus() != ServiceStatus.RUNNING && template.getProcessingType() == ProcessingType.SEQ) {
                             try {
                                 Thread.sleep(50);
@@ -208,6 +193,23 @@ public class ServiceList {
                                 e.printStackTrace();
                             }
                         }
+                    }
+                }
+            }).start();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean stopAll(Event event) {
+        if (event.toString().equals("touchDown")) {
+            new Thread(() -> {
+
+                for (ListIterator<Template> iterator = orderedServiceList.listIterator(orderedServiceList.size()); iterator.hasPrevious();) {
+                    final Template template = iterator.previous();
+                    if (template.getServiceStatus() == ServiceStatus.RUNNING) {
+                        template.destroyServiceInstance();
+                        continue;
                     }
                 }
             }).start();
@@ -243,7 +245,24 @@ public class ServiceList {
         serviceList.setItems(orderedServiceList.toArray(new Template[orderedServiceList.size()]));
     }
 
+    public void refreshOrderedServiceList() {
+        serviceList.clearItems();
+        serviceList.setItems(orderedServiceList.toArray(new Template[orderedServiceList.size()]));
+    }
+
     public List<Template> getTemplateInstances() {
         return templateInstances;
+    }
+
+    public List<Template> getOrderedServiceList() {
+        return orderedServiceList;
+    }
+
+    public void setOrderedServiceList(List<Template> orderedServiceList) {
+        this.orderedServiceList = orderedServiceList;
+    }
+
+    public void setTemplateInstances(List<Template> templateInstances) {
+        this.templateInstances = templateInstances;
     }
 }

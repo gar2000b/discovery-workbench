@@ -1,9 +1,5 @@
 package com.onlineinteract.core;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
@@ -13,6 +9,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -20,12 +18,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.onlineinteract.core.component.ServiceList;
+import com.onlineinteract.core.dialog.InstructionsDialog;
+import com.onlineinteract.core.dialog.OpenDialog;
+import com.onlineinteract.core.dialog.SaveDialog;
 import com.onlineinteract.core.processor.DeviceInputProcessor;
 import com.onlineinteract.core.render.WorkspaceRenderer;
 import com.onlineinteract.core.type.TemplateType;
 import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.WorkbenchItem;
 import com.onlineinteract.core.workbench.WorkbenchOutline;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class Workspace extends ScreenAdapter {
 
@@ -37,7 +42,7 @@ public class Workspace extends ScreenAdapter {
     private int worldHeight;
 
     @SuppressWarnings("unused")
-    private final MsOrchestrator msOrchestrator;
+    private final DiscoveryWorkbench discoveryWorkbench;
     private OrthographicCamera camera;
     private Viewport viewport;
     private SpriteBatch batch;
@@ -50,6 +55,7 @@ public class Workspace extends ScreenAdapter {
     private WorkspaceRenderer workspaceRenderer;
     private List<WorkbenchItem> workbenchItems = new ArrayList<WorkbenchItem>();
     private DeviceInputProcessor deviceInputProcessor;
+    private String instructions;
     ServiceList serviceListComponent;
 
     private boolean toggleFSFlag = false;
@@ -57,8 +63,8 @@ public class Workspace extends ScreenAdapter {
     private Skin skin;
     private Stage stage;
 
-    public Workspace(MsOrchestrator msOrchestrator, int worldWidth, int worldHeight) {
-        this.msOrchestrator = msOrchestrator;
+    public Workspace(DiscoveryWorkbench discoverWorkbench, int worldWidth, int worldHeight) {
+        this.discoveryWorkbench = discoverWorkbench;
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;
 
@@ -73,6 +79,72 @@ public class Workspace extends ScreenAdapter {
         stage = new Stage();
         serviceListComponent = new ServiceList(this);
         setupInputProcessors();
+        setupWorkspaceButtons();
+    }
+
+    private void setupWorkspaceButtons() {
+        setupLoadButton();
+        setupSaveButton();
+        setupInstructionsButton();
+    }
+
+    private void setupInstructionsButton() {
+        Button instructionsButton = new TextButton("Instructions", getSkin());
+        instructionsButton.addListener(new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event.toString().equals("touchDown")) {
+                    Gdx.input.setInputProcessor(stage);
+                    InstructionsDialog instructionsDialog = new InstructionsDialog("Instructions", skin, Workspace.this);
+                    instructionsDialog.getInstructionsTextArea().setText(instructions);
+                    stage.act();
+                    instructionsDialog.show(stage);
+                    setDialogToggleFlag(true);
+                }
+                return false;
+            }
+        });
+        instructionsButton.setPosition(15, 15);
+        instructionsButton.setWidth(100);
+        stage.addActor(instructionsButton);
+    }
+
+    private void setupLoadButton() {
+        Button loadButton = new TextButton("Load", getSkin());
+        loadButton.addListener(new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event.toString().equals("touchDown")) {
+                    Gdx.input.setInputProcessor(stage);
+                    OpenDialog openDialog = new OpenDialog("Open workspace", skin, Workspace.this);
+                    stage.act();
+                    openDialog.show(stage);
+                }
+                return false;
+            }
+        });
+        loadButton.setPosition(145, 45);
+        loadButton.setWidth(60);
+        stage.addActor(loadButton);
+    }
+
+    private void setupSaveButton() {
+        Button saveButton = new TextButton("Save", getSkin());
+        saveButton.addListener(new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event.toString().equals("touchDown")) {
+                    Gdx.input.setInputProcessor(stage);
+                    SaveDialog saveDialog = new SaveDialog("Save workspace", skin, Workspace.this);
+                    stage.act();
+                    saveDialog.show(stage);
+                }
+                return false;
+            }
+        });
+        saveButton.setPosition(145, 15);
+        saveButton.setWidth(60);
+        stage.addActor(saveButton);
     }
 
     private void setupInputProcessors() {
@@ -119,7 +191,6 @@ public class Workspace extends ScreenAdapter {
     private void update(float delta) {
         Input input = Gdx.input;
         if (input.getInputProcessor().getClass().getSimpleName().equals("DeviceInputProcessor")) {
-            // fullScreenToggle();
             cameraZoom();
             updateCameraPan();
         }
@@ -220,6 +291,10 @@ public class Workspace extends ScreenAdapter {
         return deviceInputProcessor;
     }
 
+    public void setDeviceInputProcessor(DeviceInputProcessor deviceInputProcessor) {
+        this.deviceInputProcessor = deviceInputProcessor;
+    }
+
     public Skin getSkin() {
         return skin;
     }
@@ -238,5 +313,13 @@ public class Workspace extends ScreenAdapter {
 
     public void setDialogToggleFlag(boolean dialogToggleFlag) {
         this.dialogToggleFlag = dialogToggleFlag;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
     }
 }

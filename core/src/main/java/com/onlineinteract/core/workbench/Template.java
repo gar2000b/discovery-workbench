@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.dialog.DeleteServiceDialog;
 import com.onlineinteract.core.dialog.ServiceDialog;
@@ -44,6 +45,8 @@ public class Template implements WorkbenchItem {
     private Color color2;
     private String label;
     private String startupCommand;
+    private String shutdownCommand;
+    private String shutdown2Command;
     private String runningClause;
     private String servicePortNo;
     private ServiceDialog serviceDialog;
@@ -51,6 +54,7 @@ public class Template implements WorkbenchItem {
     private Skin skin;
     private Stage stage;
     private Process exec;
+    private Process shutDownExec;
     private Runtime runtime;
     private TemplateType templateType;
     private ProcessingType processingType;
@@ -98,13 +102,13 @@ public class Template implements WorkbenchItem {
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rect(x + 1, y + 1, BOX_WIDTH - 2, BOX_HEIGHT - 2);
         drawServiceStatus();
-        
+
         if (serviceStatus == ServiceStatus.RUNNING) {
-        	shapeRenderer.begin(ShapeType.Line);
-        	shapeRenderer.setColor(color1);
-        	shapeRenderer.rect(x + 60, y + 110, 120, 25);
-        	shapeRenderer.line(x + 120, y + 100, x + 120, y + 110);
-        	shapeRenderer.end();
+            shapeRenderer.begin(ShapeType.Line);
+            shapeRenderer.setColor(color1);
+            shapeRenderer.rect(x + 60, y + 110, 120, 25);
+            shapeRenderer.line(x + 120, y + 100, x + 120, y + 110);
+            shapeRenderer.end();
             batch.setProjectionMatrix(camera.combined);
             batch.begin();
             font.setColor(Color.FOREST);
@@ -160,7 +164,7 @@ public class Template implements WorkbenchItem {
         float clickX = x;
         float clickY = y;
 
-        if (clickX >= this.x + 10 && clickX <= (this.x + 30) && clickY >= this.y + 10 && clickY <= (this.y + 30))
+        if (clickX >= this.x + 10 && clickX <= (this.x + 30) && clickY >= this.y + 10 && clickY <= (this.y + 30) && !workspace.isDialogToggleFlag())
             determineStartStop();
     }
 
@@ -178,15 +182,20 @@ public class Template implements WorkbenchItem {
                 serviceStatus = ServiceStatus.LOADING;
                 destroyServiceInstance();
                 break;
+            case LOADING:
+                destroyServiceInstance();
+                break;
             default:
                 break;
         }
     }
 
-    /**
-     * TODO: wire up command and started hooks. ensure env variables are parsed appropriately. save. load. start all.
-     */
-    private void spawnServiceInstance() {
+    public void spawnServiceInstance() {
+        if ((startupCommand == null || runningClause == null || startupCommand.isEmpty() || runningClause.isEmpty()) && templateType != TemplateType.SCRIPT) {
+            System.out.println("Startup command or running clause not set");
+            serviceStatus = ServiceStatus.SHUTDOWN;
+            return;
+        }
         String launchCommand = replaceEnvVars(startupCommand);
         try {
             exec = runtime.exec(launchCommand);
@@ -207,10 +216,15 @@ public class Template implements WorkbenchItem {
                 String line = "";
                 while ((line = bufferedReader.readLine()) != null) {
                     System.out.println(line);
-                    if (line.contains(runningClause)) {
-                        System.out.println("Application launched successfully!");
-                        serviceStatus = ServiceStatus.RUNNING;
+                    if (templateType != TemplateType.SCRIPT) {
+                        if (line.contains(runningClause)) {
+                            System.out.println("Application launched successfully!");
+                            serviceStatus = ServiceStatus.RUNNING;
+                        }
                     }
+                }
+                if (templateType == TemplateType.SCRIPT) {
+                    destroyServiceInstance();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -234,20 +248,55 @@ public class Template implements WorkbenchItem {
         }).start();
     }
 
-    private void destroyServiceInstance() {
+    public void destroyServiceInstance() {
         exec.destroy();
-        System.out.println("Process destroyed, exiting.");
+        System.out.println(label + " Destroyed");
+        executeShutdownCommand(shutdownCommand);
+        executeShutdownCommand(shutdown2Command);
         serviceStatus = ServiceStatus.SHUTDOWN;
     }
 
-    protected String replaceEnvVars(String startupCommand) {
-        String launchCommand = startupCommand;
+    private void executeShutdownCommand(String shutdownCommand) {
+        if (shutdownCommand == null || shutdownCommand.isEmpty()) {
+            return;
+        }
+        String launchShutdownCommand = replaceEnvVars(shutdownCommand);
+        System.out.println("*** Shutdown command is: " + launchShutdownCommand);
+        try {
+            shutDownExec = runtime.exec(launchShutdownCommand);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        processShutdownInputStream();
+    }
+
+    private void processShutdownInputStream() {
+        try {
+            InputStream inputStream = shutDownExec.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+
+            String line = "";
+            while ((line = bufferedReader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(label + " shutdown successfully STDOUT");
+    }
+
+    protected String replaceEnvVars(String command) {
+        String launchCommand = command;
         while (launchCommand.indexOf("%") != -1) {
             int startIndex = launchCommand.indexOf("%");
             int endIndex = launchCommand.indexOf("%", startIndex + 1);
             if (endIndex == -1)
                 break;
             String envVar = launchCommand.substring(startIndex + 1, endIndex);
+            if (envVar.isEmpty()) {
+                return command;
+            }
             launchCommand = launchCommand.replace("%" + envVar + "%", System.getenv(envVar));
         }
         return launchCommand;
@@ -261,8 +310,12 @@ public class Template implements WorkbenchItem {
         else
             serviceDialog.getLabelTextField().setText(label);
         serviceDialog.getStartupCommandTextField().setText(startupCommand);
-        serviceDialog.getRunningClauseTextField().setText(runningClause);
-        serviceDialog.getServicePortNoTextField().setText(servicePortNo);
+        if (templateType != TemplateType.SCRIPT) {
+            serviceDialog.getShutdown1CommandTextField().setText(shutdownCommand);
+            serviceDialog.getShutdown2CommandTextField().setText(shutdown2Command);
+            serviceDialog.getRunningClauseTextField().setText(runningClause);
+            serviceDialog.getServicePortNoTextField().setText(servicePortNo);
+        }
         stage.act();
         serviceDialog.show(stage);
         workspace.setDialogToggleFlag(true);
@@ -335,6 +388,22 @@ public class Template implements WorkbenchItem {
         this.startupCommand = startupCommand;
     }
 
+    public String getShutdownCommand() {
+        return shutdownCommand;
+    }
+
+    public void setShutdownCommand(String shutdownCommand) {
+        this.shutdownCommand = shutdownCommand;
+    }
+
+    public void setShutdown2Command(String shutdownCommand) {
+        this.shutdown2Command = shutdownCommand;
+    }
+
+    public String getShutdown2Command() {
+        return shutdown2Command;
+    }
+
     public String getRunningClause() {
         return runningClause;
     }
@@ -363,6 +432,10 @@ public class Template implements WorkbenchItem {
         return uuid;
     }
 
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
     public ProcessingType getProcessingType() {
         return processingType;
     }
@@ -374,4 +447,97 @@ public class Template implements WorkbenchItem {
     public ServiceStatus getServiceStatus() {
         return serviceStatus;
     }
+
+    public void setServiceStatus(ServiceStatus serviceStatus) {
+        this.serviceStatus = serviceStatus;
+    }
+
+    public Color getColor1() {
+        return color1;
+    }
+
+    public void setColor1(Color color1) {
+        this.color1 = color1;
+    }
+
+    public Color getColor2() {
+        return color2;
+    }
+
+    public void setColor2(Color color2) {
+        this.color2 = color2;
+    }
+
+    public Workspace getWorkspace() {
+        return workspace;
+    }
+
+    @JsonIgnore
+    public void setWorkspace(Workspace workspace) {
+        this.workspace = workspace;
+    }
+
+    public ShapeRenderer getShapeRenderer() {
+        return shapeRenderer;
+    }
+
+    @JsonIgnore
+    public void setShapeRenderer(ShapeRenderer shapeRenderer) {
+        this.shapeRenderer = shapeRenderer;
+    }
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    @JsonIgnore
+    public void setBatch(SpriteBatch batch) {
+        this.batch = batch;
+    }
+
+    public BitmapFont getFont() {
+        return font;
+    }
+
+    @JsonIgnore
+    public void setFont(BitmapFont font) {
+        this.font = font;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    @JsonIgnore
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    @JsonIgnore
+    public void setSkin(Skin skin) {
+        this.skin = skin;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    @JsonIgnore
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Runtime getRuntime() {
+        return runtime;
+    }
+
+    @JsonIgnore
+    public void setRuntime(Runtime runtime) {
+        this.runtime = runtime;
+    }
+
 }

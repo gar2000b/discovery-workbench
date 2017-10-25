@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.13" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+<class-diagram version="1.2.0" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="com.onlineinteract.java.DesktopLauncher" project="ms-orchestrator-desktop" 
-    file="/ms-orchestrator-desktop/src/main/java/com/onlineinteract/java/DesktopLauncher.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="73" y="206"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="2" language="java" name="com.onlineinteract.core.MsOrchestrator" project="ms-orchestrator-core" 
+  <class id="1" language="java" name="com.onlineinteract.core.MsOrchestrator" project="ms-orchestrator-core" 
     file="/ms-orchestrator-core/src/main/java/com/onlineinteract/core/MsOrchestrator.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="320" y="96"/>    
@@ -21,7 +11,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="com.onlineinteract.core.Workspace" project="ms-orchestrator-core" 
+  <class id="2" language="java" name="com.onlineinteract.core.Workspace" project="ms-orchestrator-core" 
     file="/ms-orchestrator-core/src/main/java/com/onlineinteract/core/Workspace.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="729" y="341"/>    
@@ -31,7 +21,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="com.onlineinteract.core.processor.DeviceInputProcessor" 
+  <class id="3" language="java" name="com.onlineinteract.core.processor.DeviceInputProcessor" 
     project="ms-orchestrator-core" 
     file="/ms-orchestrator-core/src/main/java/com/onlineinteract/core/processor/DeviceInputProcessor.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -42,7 +32,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="com.onlineinteract.core.render.WorkspaceRenderer" project="ms-orchestrator-core" 
+  <class id="4" language="java" name="com.onlineinteract.core.render.WorkspaceRenderer" project="ms-orchestrator-core" 
     file="/ms-orchestrator-core/src/main/java/com/onlineinteract/core/render/WorkspaceRenderer.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1139" y="390"/>    
@@ -52,7 +42,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="com.onlineinteract.core.LoadingScreen" project="ms-orchestrator-core" 
+  <class id="5" language="java" name="com.onlineinteract.core.LoadingScreen" project="ms-orchestrator-core" 
     file="/ms-orchestrator-core/src/main/java/com/onlineinteract/core/LoadingScreen.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="317" y="439"/>    
@@ -62,66 +52,66 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="7">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="8" name="msOrchestrator">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="9" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="10">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="11" name="workspaceRenderer">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="12" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="13">    
-    <bendpoint x="421" y="342"/>    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="14" name="workspace">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="15" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="16">    
+  <association id="6">    
     <bendpoint x="589" y="96"/>    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="17" name="msOrchestrator">        
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="7" name="msOrchestrator">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="18" minimum="0" maximum="1">        
+      <multiplicity id="8" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="9">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="10" name="msOrchestrator">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="11" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="12">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="13" name="workspace">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="14" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="19">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="20" name="workspace">        
+  <association id="15">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="16" name="workspaceRenderer">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="21" minimum="0" maximum="1">        
+      <multiplicity id="17" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="18">    
+    <bendpoint x="421" y="342"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="19" name="workspace">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="20" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

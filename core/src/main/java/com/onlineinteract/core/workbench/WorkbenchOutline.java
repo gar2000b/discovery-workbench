@@ -27,9 +27,6 @@ public class WorkbenchOutline implements WorkbenchItem {
 
         boxHeight = this.worldHeight - (BOX_Y * 2);
         boxWidth = this.worldWidth - 80;
-        System.out.println("boxHeight: " + boxHeight);
-        System.out.println("boxWidth: " + boxWidth);
-        System.out.println("boxHeight + boxY: " + (boxHeight + BOX_Y));
     }
 
     public void draw() {
