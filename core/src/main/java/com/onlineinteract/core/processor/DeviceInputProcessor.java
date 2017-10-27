@@ -103,6 +103,8 @@ public class DeviceInputProcessor {
             workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.CORAL, Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
         if (templateItem.getLabel().equals("Scripts"))
             workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.BLUE, Color.GRAY, "Scripts", TemplateType.SCRIPT, UUID.randomUUID()));
+        if (templateItem.getLabel().equals("Provisioning"))
+            workspace.getServiceListComponent().addTemplateInstance(new Template(workspace, x, y, Color.WHITE, Color.WHITE, "Provisioning", TemplateType.PROVISIONING, UUID.randomUUID()));
     }
 
     protected void processTouchUp(InputEvent evt) {

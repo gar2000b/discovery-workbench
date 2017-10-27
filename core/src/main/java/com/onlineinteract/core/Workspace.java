@@ -37,6 +37,7 @@ public class Workspace extends ScreenAdapter {
     private static final int MICROSERVICE_TEMPLATE_HEIGHT_OFFSET = 120;
     private static final int INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET = 240;
     private static final int SCRIPTS_TEMPLATE_HEIGHT_OFFSET = 360;
+    private static final int PROVISIONING_TEMPLATE_HEIGHT_OFFSET = 480;
 
     private int worldWidth;
     private int worldHeight;
@@ -179,6 +180,7 @@ public class Workspace extends ScreenAdapter {
         workbenchItems.add(new Template(this, worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST, Color.FOREST, "Application/Service", TemplateType.MICROSERVICE, UUID.randomUUID()));
         workbenchItems.add(new Template(this, worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL, Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
         workbenchItems.add(new Template(this, worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY, "Scripts", TemplateType.SCRIPT, UUID.randomUUID()));
+        workbenchItems.add(new Template(this, worldHeight - PROVISIONING_TEMPLATE_HEIGHT_OFFSET, Color.WHITE, Color.WHITE, "Provisioning", TemplateType.PROVISIONING, UUID.randomUUID()));
     }
 
     @Override
