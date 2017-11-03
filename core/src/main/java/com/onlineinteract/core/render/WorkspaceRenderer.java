@@ -3,6 +3,7 @@ package com.onlineinteract.core.render;
 import java.util.ListIterator;
 
 import com.onlineinteract.core.Workspace;
+import com.onlineinteract.core.workbench.Arrow;
 import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.WorkbenchItem;
 
@@ -19,18 +20,19 @@ public class WorkspaceRenderer {
 	 */
 	public void draw() {
 		workspace.getCamera().update();
-
+		workspace.getArrow().draw();
 		for (WorkbenchItem workbenchItem : workspace.getWorkbenchItems()) {
 			workbenchItem.draw();
 		}
 
-		/**
-		 * Render template instances in reverse order
-		 */
 		for (ListIterator<Template> iterator = workspace.getServiceListComponent().getTemplateInstances().listIterator(
 				workspace.getServiceListComponent().getTemplateInstances().size()); iterator.hasPrevious();) {
-			final Template templateInstance = iterator.previous();
-			templateInstance.draw();
+			iterator.previous().draw();
+		}
+
+		for (ListIterator<Arrow> iterator = workspace.getArrowList()
+				.listIterator(workspace.getArrowList().size()); iterator.hasPrevious();) {
+			iterator.previous().draw();
 		}
 	}
 

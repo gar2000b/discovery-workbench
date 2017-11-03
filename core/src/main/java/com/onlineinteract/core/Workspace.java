@@ -24,6 +24,7 @@ import com.onlineinteract.core.dialog.SaveDialog;
 import com.onlineinteract.core.processor.DeviceInputProcessor;
 import com.onlineinteract.core.render.WorkspaceRenderer;
 import com.onlineinteract.core.type.TemplateType;
+import com.onlineinteract.core.workbench.Arrow;
 import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.WorkbenchItem;
 import com.onlineinteract.core.workbench.WorkbenchOutline;
@@ -55,9 +56,11 @@ public class Workspace extends ScreenAdapter {
     private Template scriptTemplate;
     private WorkspaceRenderer workspaceRenderer;
     private List<WorkbenchItem> workbenchItems = new ArrayList<WorkbenchItem>();
+    private Arrow arrow;
     private DeviceInputProcessor deviceInputProcessor;
     private String instructions;
     ServiceList serviceListComponent;
+    private List<Arrow> arrowList;
 
     private boolean toggleFSFlag = false;
     private boolean dialogToggleFlag = false;
@@ -76,9 +79,11 @@ public class Workspace extends ScreenAdapter {
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         instantiateTemplates(worldWidth, worldHeight);
+        instantiateArrow();
         workspaceRenderer = new WorkspaceRenderer(this);
         stage = new Stage();
         serviceListComponent = new ServiceList(this);
+        arrowList = new ArrayList<>();
         setupInputProcessors();
         setupWorkspaceButtons();
     }
@@ -181,6 +186,10 @@ public class Workspace extends ScreenAdapter {
         workbenchItems.add(new Template(this, worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL, Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
         workbenchItems.add(new Template(this, worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY, "Scripts", TemplateType.SCRIPT, UUID.randomUUID()));
         workbenchItems.add(new Template(this, worldHeight - PROVISIONING_TEMPLATE_HEIGHT_OFFSET, Color.WHITE, Color.WHITE, "Provisioning", TemplateType.PROVISIONING, UUID.randomUUID()));
+    }
+    
+    private void instantiateArrow() {
+    	arrow = new Arrow(camera);
     }
 
     @Override
@@ -346,4 +355,12 @@ public class Workspace extends ScreenAdapter {
     public void setInstructions(String instructions) {
         this.instructions = instructions;
     }
+
+	public Arrow getArrow() {
+		return arrow;
+	}
+
+	public List<Arrow> getArrowList() {
+		return arrowList;
+	}
 }
