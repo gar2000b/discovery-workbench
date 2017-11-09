@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class DataStore implements WorkbenchItem {
-    public static final int X_OFFSET = 70;
+    public static final int X_OFFSET = 80;
     public static final int Y_OFFSET = 280;
 
     private ShapeRenderer shapeRenderer;
@@ -67,7 +67,7 @@ public class DataStore implements WorkbenchItem {
         float clickX = x;
         float clickY = y;
 
-        if (clickX >= this.x && clickX <= (this.x + 40) && clickY <= this.y && clickY >= (this.y - 100)) {
+        if (clickX >= this.x && clickX <= (this.x + 120) && clickY <= this.y && clickY >= (this.y - 100)) {
             instanceOffsetX = clickX - this.x;
             instanceOffsetY = clickY - this.y;
             return true;

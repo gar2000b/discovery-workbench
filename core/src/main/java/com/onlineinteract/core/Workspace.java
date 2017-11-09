@@ -66,6 +66,7 @@ public class Workspace extends ScreenAdapter {
     ServiceList serviceListComponent;
     private List<Arrow> arrowList;
     private List<Topic> topicList;
+    private List<DataStore> dataStoreList;
 
     private boolean toggleFSFlag = false;
     private boolean dialogToggleFlag = false;
@@ -92,6 +93,7 @@ public class Workspace extends ScreenAdapter {
         serviceListComponent = new ServiceList(this);
         arrowList = new ArrayList<>();
         topicList = new ArrayList<>();
+        dataStoreList = new ArrayList<>();
         setupInputProcessors();
         setupWorkspaceButtons();
     }
@@ -399,4 +401,13 @@ public class Workspace extends ScreenAdapter {
     public DataStore getDataStore() {
         return dataStore;
     }
+
+	public List<DataStore> getDataStoreList() {
+		return dataStoreList;
+	}
+
+	public void setDataStoreList(List<DataStore> dataStoreList) {
+		this.dataStoreList = dataStoreList;
+	}
+    
 }

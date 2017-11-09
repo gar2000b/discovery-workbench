@@ -8,6 +8,7 @@ import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.type.TemplateType;
 import com.onlineinteract.core.util.ListTypeRetainer;
 import com.onlineinteract.core.workbench.Arrow;
+import com.onlineinteract.core.workbench.DataStore;
 import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.Topic;
 import com.onlineinteract.core.workbench.WorkbenchItem;
@@ -24,9 +25,11 @@ public class DeviceInputProcessor {
     private boolean instanceDragFlag = false;
     private boolean arrowDragFlag = false;
     private boolean topicDragFlag = false;
+    private boolean dataStoreDragFlag = false;
     private Template currentInstanceItem;
     private Arrow currentInstanceArrow;
     private Topic currentInstanceTopic;
+    private DataStore currentInstanceDataStore;
 
     public DeviceInputProcessor(Workspace workspace) {
         this.workspace = workspace;
@@ -47,8 +50,10 @@ public class DeviceInputProcessor {
             detectClickTemplateInstances(evt.getStageX(), evt.getStageY());
             detectClickArrow(evt.getStageX(), evt.getStageY());
             detectClickTopic(evt.getStageX(), evt.getStageY());
+            detectClickDataStore(evt.getStageX(), evt.getStageY());
             detectClickArrowInstances(evt.getStageX(), evt.getStageY());
             detectClickTopicInstances(evt.getStageX(), evt.getStageY());
+            detectClickDataStoreInstances(evt.getStageX(), evt.getStageY());
         }
 
         if (evt.getButton() == Input.Buttons.RIGHT) {
@@ -56,6 +61,12 @@ public class DeviceInputProcessor {
         }
     }
 
+    private void detectClickDataStore(float x, float y) {
+    	DataStore dataStore = workspace.getDataStore();
+    	if (dataStore.isClickWithinBoundary(x, y))
+    		createDataStoreInstance();
+    }
+    
     private void detectClickTopic(float x, float y) {
         Topic topic = workspace.getTopic();
         if (topic.isClickWithinBoundary(x, y))
@@ -99,6 +110,17 @@ public class DeviceInputProcessor {
         }
     }
 
+    private void detectClickDataStoreInstances(float x, float y) {
+        for (DataStore dataStore : workspace.getDataStoreList()) {
+            if (dataStore.isClickWithinBoundary(x, y)) {
+                putInstanceToBeginningOfList(dataStore, workspace.getDataStoreList());
+                dataStoreDragFlag = true;
+                currentInstanceDataStore = dataStore;
+                break;
+            }
+        }
+    }
+    
     private void detectClickTopicInstances(float x, float y) {
         for (Topic topic : workspace.getTopicList()) {
             if (topic.isClickWithinBoundary(x, y)) {
@@ -132,6 +154,7 @@ public class DeviceInputProcessor {
             instanceDragFlag = false;
             arrowDragFlag = false;
             topicDragFlag = false;
+            dataStoreDragFlag = false;
             currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
         }
         currentInstanceItem.setPreviousTimeMillis(currentTimeMillis);
@@ -163,6 +186,13 @@ public class DeviceInputProcessor {
         workspace.getArrowList().add(new Arrow(x, y, workspace.getCamera()));
     }
 
+    private void createDataStoreInstance() {
+    	WorkbenchOutline workbenchOutline = workspace.getWorkbenchOutline();
+    	float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
+    	float y = workbenchOutline.getBoxHeight() - 20;
+    	workspace.getDataStoreList().add(new DataStore(x, y, workspace.getCamera()));
+    }
+    
     private void createTopicInstance() {
         WorkbenchOutline workbenchOutline = workspace.getWorkbenchOutline();
         float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
@@ -175,6 +205,7 @@ public class DeviceInputProcessor {
             instanceDragFlag = false;
             arrowDragFlag = false;
             topicDragFlag = false;
+            dataStoreDragFlag = false;
             currentInstanceItem = null;
         }
     }
@@ -193,6 +224,11 @@ public class DeviceInputProcessor {
         if (topicDragFlag && !workspace.isDialogToggleFlag()) {
             currentInstanceTopic.setX(evt.getStageX() - currentInstanceTopic.getInstanceOffsetX());
             currentInstanceTopic.setY(evt.getStageY() - currentInstanceTopic.getInstanceOffsetY());
+        }
+        
+        if (dataStoreDragFlag && !workspace.isDialogToggleFlag()) {
+            currentInstanceDataStore.setX(evt.getStageX() - currentInstanceDataStore.getInstanceOffsetX());
+            currentInstanceDataStore.setY(evt.getStageY() - currentInstanceDataStore.getInstanceOffsetY());
         }
     }
 
