@@ -52,3 +52,4 @@ Luckily they have created a maven architype for setting up skeleton libGDX proje
 ^ you'll find instructions on this page. Note: this is a one time setup for new libGDX projects and is here for reference only. The more usefull parts are in how to run the app or to package it up as a jar.
 
 Note: a pass thorugh of the main pom was required to update the project to the latest version of libGDX.
+...
