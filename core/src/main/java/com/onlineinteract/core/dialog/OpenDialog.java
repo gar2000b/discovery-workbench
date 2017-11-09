@@ -1,5 +1,13 @@
 package com.onlineinteract.core.dialog;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -11,16 +19,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.component.ServiceList;
 import com.onlineinteract.core.workbench.Arrow;
+import com.onlineinteract.core.workbench.DataStore;
 import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.Topic;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class OpenDialog extends Dialog {
 
@@ -68,6 +69,7 @@ public class OpenDialog extends Dialog {
             List<Template> templateInstances = readInTemplateInstances(mapper, br);
             List<Arrow> arrowList = readInArrowList(mapper, br);
             List<Topic> topicList = readInTopicList(mapper, br);
+            List<DataStore> dataStoreList = readInDataStoreList(mapper, br);
             br.close();
             serviceListComponent.setTemplateInstances(templateInstances);
             workspace.getDeviceInputProcessor().setTemplateInstances(templateInstances);
@@ -76,6 +78,7 @@ public class OpenDialog extends Dialog {
             serviceListComponent.refreshOrderedServiceList();
             workspace.setArrowList(arrowList);
             workspace.setTopicList(topicList);
+            workspace.setDataStoreList(dataStoreList);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -91,6 +94,17 @@ public class OpenDialog extends Dialog {
         return orderedServiceList;
     }
 
+    private List<DataStore> readInDataStoreList(ObjectMapper mapper, BufferedReader br) throws IOException {
+    	String readLine;
+    	List<DataStore> dataStoreList = new ArrayList<>();
+    	while ((readLine = br.readLine()) != null && !readLine.equals("#endDataStores")) {
+    		DataStore dataStore = mapper.readValue(readLine, DataStore.class);
+    		dataStore.instantiateRenderersAndCamera(workspace.getCamera());
+    		dataStoreList.add(dataStore);
+    	}
+    	return dataStoreList;
+    }
+    
     private List<Topic> readInTopicList(ObjectMapper mapper, BufferedReader br) throws IOException {
         String readLine;
         List<Topic> topicList = new ArrayList<>();
