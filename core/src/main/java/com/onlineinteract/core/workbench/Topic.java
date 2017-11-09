@@ -69,6 +69,7 @@ public class Topic implements WorkbenchItem {
         font.draw(batch, "i", x + 16, y - 67);
         font.draw(batch, "c", x + 15, y - 80);
         batch.end();
+        shapeRenderer.end();
     }
 
     public boolean isClickWithinBoundary(float x, float y) {
