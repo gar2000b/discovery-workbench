@@ -22,6 +22,7 @@ import com.onlineinteract.core.workbench.Arrow;
 import com.onlineinteract.core.workbench.DataStore;
 import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.Topic;
+import com.onlineinteract.core.workbench.WorkbenchItem;
 
 public class OpenDialog extends Dialog {
 
@@ -67,9 +68,9 @@ public class OpenDialog extends Dialog {
             readLine = br.readLine();
             List<String> orderedList = mapper.readValue(readLine, List.class);
             List<Template> templateInstances = readInTemplateInstances(mapper, br);
-            List<Arrow> arrowList = readInArrowList(mapper, br);
-            List<Topic> topicList = readInTopicList(mapper, br);
-            List<DataStore> dataStoreList = readInDataStoreList(mapper, br);
+            List<WorkbenchItem> arrowList = readInArrowList(mapper, br);
+            List<WorkbenchItem> topicList = readInTopicList(mapper, br);
+            List<WorkbenchItem> dataStoreList = readInDataStoreList(mapper, br);
             br.close();
             serviceListComponent.setTemplateInstances(templateInstances);
             workspace.getDeviceInputProcessor().setTemplateInstances(templateInstances);
@@ -94,9 +95,9 @@ public class OpenDialog extends Dialog {
         return orderedServiceList;
     }
 
-    private List<DataStore> readInDataStoreList(ObjectMapper mapper, BufferedReader br) throws IOException {
+    private List<WorkbenchItem> readInDataStoreList(ObjectMapper mapper, BufferedReader br) throws IOException {
     	String readLine;
-    	List<DataStore> dataStoreList = new ArrayList<>();
+    	List<WorkbenchItem> dataStoreList = new ArrayList<>();
     	while ((readLine = br.readLine()) != null && !readLine.equals("#endDataStores")) {
     		DataStore dataStore = mapper.readValue(readLine, DataStore.class);
     		dataStore.instantiateRenderersAndCamera(workspace.getCamera());
@@ -105,9 +106,9 @@ public class OpenDialog extends Dialog {
     	return dataStoreList;
     }
     
-    private List<Topic> readInTopicList(ObjectMapper mapper, BufferedReader br) throws IOException {
+    private List<WorkbenchItem> readInTopicList(ObjectMapper mapper, BufferedReader br) throws IOException {
         String readLine;
-        List<Topic> topicList = new ArrayList<>();
+        List<WorkbenchItem> topicList = new ArrayList<>();
         while ((readLine = br.readLine()) != null && !readLine.equals("#endTopics")) {
             Topic topic = mapper.readValue(readLine, Topic.class);
             topic.instantiateRenderersAndCamera(workspace.getCamera());
@@ -116,9 +117,9 @@ public class OpenDialog extends Dialog {
         return topicList;
     }
 
-    private List<Arrow> readInArrowList(ObjectMapper mapper, BufferedReader br) throws IOException {
+    private List<WorkbenchItem> readInArrowList(ObjectMapper mapper, BufferedReader br) throws IOException {
         String readLine;
-        List<Arrow> arrowList = new ArrayList<>();
+        List<WorkbenchItem> arrowList = new ArrayList<>();
         while ((readLine = br.readLine()) != null && !readLine.equals("#endArrows")) {
             Arrow arrow = mapper.readValue(readLine, Arrow.class);
             arrow.instantiateRenderersAndCamera(workspace.getCamera());

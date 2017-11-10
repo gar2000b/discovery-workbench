@@ -27,9 +27,9 @@ public class DeviceInputProcessor {
     private boolean topicDragFlag = false;
     private boolean dataStoreDragFlag = false;
     private Template currentInstanceItem;
-    private Arrow currentInstanceArrow;
-    private Topic currentInstanceTopic;
-    private DataStore currentInstanceDataStore;
+    private WorkbenchItem currentInstanceArrow;
+    private WorkbenchItem currentInstanceTopic;
+    private WorkbenchItem currentInstanceDataStore;
 
     public DeviceInputProcessor(Workspace workspace) {
         this.workspace = workspace;
@@ -57,7 +57,7 @@ public class DeviceInputProcessor {
         }
 
         if (evt.getButton() == Input.Buttons.RIGHT) {
-            removeTemplateInstance(evt.getStageX(), evt.getStageY());
+            removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), templateInstances);
         }
     }
 
@@ -100,7 +100,7 @@ public class DeviceInputProcessor {
     }
 
     private void detectClickArrowInstances(float x, float y) {
-        for (Arrow arrow : workspace.getArrowList()) {
+        for (WorkbenchItem arrow : workspace.getArrowList()) {
             if (arrow.isClickWithinBoundary(x, y)) {
                 putInstanceToBeginningOfList(arrow, workspace.getArrowList());
                 arrowDragFlag = true;
@@ -111,7 +111,7 @@ public class DeviceInputProcessor {
     }
 
     private void detectClickDataStoreInstances(float x, float y) {
-        for (DataStore dataStore : workspace.getDataStoreList()) {
+        for (WorkbenchItem dataStore : workspace.getDataStoreList()) {
             if (dataStore.isClickWithinBoundary(x, y)) {
                 putInstanceToBeginningOfList(dataStore, workspace.getDataStoreList());
                 dataStoreDragFlag = true;
@@ -122,7 +122,7 @@ public class DeviceInputProcessor {
     }
     
     private void detectClickTopicInstances(float x, float y) {
-        for (Topic topic : workspace.getTopicList()) {
+        for (WorkbenchItem topic : workspace.getTopicList()) {
             if (topic.isClickWithinBoundary(x, y)) {
                 putInstanceToBeginningOfList(topic, workspace.getTopicList());
                 topicDragFlag = true;
@@ -132,10 +132,10 @@ public class DeviceInputProcessor {
         }
     }
 
-    private void removeTemplateInstance(float x, float y) {
-        for (Template instanceItem : templateInstances) {
+    private void removeWorkbenchItemInstance(float x, float y, List<? extends WorkbenchItem> workbenchItems) {
+        for (WorkbenchItem instanceItem : workbenchItems) {
             if (instanceItem.isClickWithinBoundary(x, y))
-                instanceItem.renderDeleteServiceDialog();
+                instanceItem.renderDeleteDialog();
         }
     }
 
@@ -190,7 +190,7 @@ public class DeviceInputProcessor {
     	WorkbenchOutline workbenchOutline = workspace.getWorkbenchOutline();
     	float x = (WorkbenchOutline.BOX_X * 2) + WorkbenchOutline.COLUMN_WIDTH;
     	float y = workbenchOutline.getBoxHeight() - 20;
-    	workspace.getDataStoreList().add(new DataStore(x, y, workspace.getCamera()));
+    	workspace.getDataStoreList().add(new DataStore(workspace, x, y, workspace.getCamera()));
     }
     
     private void createTopicInstance() {

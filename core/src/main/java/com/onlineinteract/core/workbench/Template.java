@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.onlineinteract.core.Workspace;
-import com.onlineinteract.core.dialog.DeleteServiceDialog;
+import com.onlineinteract.core.dialog.DeleteDialog;
 import com.onlineinteract.core.dialog.ServiceDialog;
 import com.onlineinteract.core.type.ProcessingType;
 import com.onlineinteract.core.type.ServiceStatus;
@@ -50,7 +50,7 @@ public class Template implements WorkbenchItem {
     private String runningClause;
     private String servicePortNo;
     private ServiceDialog serviceDialog;
-    private DeleteServiceDialog deleteServiceDialog;
+    private DeleteDialog deleteServiceDialog;
     private Skin skin;
     private Stage stage;
     private Process exec;
@@ -321,9 +321,9 @@ public class Template implements WorkbenchItem {
         workspace.setDialogToggleFlag(true);
     }
 
-    public void renderDeleteServiceDialog() {
+    public void renderDeleteDialog() {
         Gdx.input.setInputProcessor(stage);
-        deleteServiceDialog = new DeleteServiceDialog("Really Delete Instance: " + label + "?", skin, workspace, this);
+        deleteServiceDialog = new DeleteDialog("Really Delete Instance: " + label + "?", skin, workspace, this);
         stage.act();
         deleteServiceDialog.show(stage);
     }
