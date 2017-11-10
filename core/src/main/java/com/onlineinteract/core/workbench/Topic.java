@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.onlineinteract.core.Workspace;
 
 public class Topic implements WorkbenchItem {
     public static final int X_OFFSET = 20;
@@ -109,9 +111,14 @@ public class Topic implements WorkbenchItem {
         this.y = y;
     }
 
-	@Override
+    @JsonIgnore
+    @Override
+    public void setWorkspace(Workspace workspace) {
+    	// TODO Auto-generated method stub
+    }
+
+    @Override
 	public void renderDeleteDialog() {
 		// TODO Auto-generated method stub
-		
 	}
 }

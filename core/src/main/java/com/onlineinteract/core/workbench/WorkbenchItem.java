@@ -1,5 +1,7 @@
 package com.onlineinteract.core.workbench;
 
+import com.onlineinteract.core.Workspace;
+
 public interface WorkbenchItem {
     public void draw();
     public boolean isClickWithinBoundary(float x, float y);
@@ -8,5 +10,5 @@ public interface WorkbenchItem {
     public float getInstanceOffsetY();
     public void setX(float x);
     public void setY(float y);
-    // public UUID getUuid();
+    public void setWorkspace(Workspace workspace);
 }

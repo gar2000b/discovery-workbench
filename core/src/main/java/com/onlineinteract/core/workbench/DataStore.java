@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.dialog.DeleteDialog;
 
@@ -105,6 +106,12 @@ public class DataStore implements WorkbenchItem {
         this.y = y;
     }
 
+    @JsonIgnore
+    @Override
+    public void setWorkspace(Workspace workspace) {
+    	this.workspace = workspace;
+    }
+    
 	@Override
 	public void renderDeleteDialog() {
         Gdx.input.setInputProcessor(workspace.getStage());
@@ -112,5 +119,4 @@ public class DataStore implements WorkbenchItem {
         workspace.getStage().act();
         deleteServiceDialog.show(workspace.getStage());
 	}
-
 }

@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.onlineinteract.core.Workspace;
 
 public class WorkbenchOutline implements WorkbenchItem {
 
@@ -77,5 +79,11 @@ public class WorkbenchOutline implements WorkbenchItem {
 	@Override
 	public void setY(float y) {
 		// TODO Need to re-factor inheritance as to not override
+	}
+
+	@JsonIgnore
+	@Override
+	public void setWorkspace(Workspace workspace) {
+		// TODO Auto-generated method stub
 	}
 }

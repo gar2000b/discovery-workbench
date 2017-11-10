@@ -100,6 +100,7 @@ public class OpenDialog extends Dialog {
     	List<WorkbenchItem> dataStoreList = new ArrayList<>();
     	while ((readLine = br.readLine()) != null && !readLine.equals("#endDataStores")) {
     		DataStore dataStore = mapper.readValue(readLine, DataStore.class);
+    		dataStore.setWorkspace(workspace);
     		dataStore.instantiateRenderersAndCamera(workspace.getCamera());
     		dataStoreList.add(dataStore);
     	}
@@ -111,6 +112,7 @@ public class OpenDialog extends Dialog {
         List<WorkbenchItem> topicList = new ArrayList<>();
         while ((readLine = br.readLine()) != null && !readLine.equals("#endTopics")) {
             Topic topic = mapper.readValue(readLine, Topic.class);
+            topic.setWorkspace(workspace);
             topic.instantiateRenderersAndCamera(workspace.getCamera());
             topicList.add(topic);
         }
@@ -122,6 +124,7 @@ public class OpenDialog extends Dialog {
         List<WorkbenchItem> arrowList = new ArrayList<>();
         while ((readLine = br.readLine()) != null && !readLine.equals("#endArrows")) {
             Arrow arrow = mapper.readValue(readLine, Arrow.class);
+            arrow.setWorkspace(workspace);
             arrow.instantiateRenderersAndCamera(workspace.getCamera());
             arrowList.add(arrow);
         }
