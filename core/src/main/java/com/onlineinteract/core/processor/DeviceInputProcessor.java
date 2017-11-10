@@ -58,6 +58,7 @@ public class DeviceInputProcessor {
 
         if (evt.getButton() == Input.Buttons.RIGHT) {
             removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), templateInstances);
+            removeWorkbenchItemInstance(evt.getStageX(), evt.getStageY(), workspace.getDataStoreList());
         }
     }
 
