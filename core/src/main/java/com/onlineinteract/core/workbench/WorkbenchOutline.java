@@ -84,6 +84,6 @@ public class WorkbenchOutline implements WorkbenchItem {
 	@JsonIgnore
 	@Override
 	public void setWorkspace(Workspace workspace) {
-		// TODO Auto-generated method stub
+		// TODO Need to re-factor inheritance as to not override
 	}
 }
