@@ -11,4 +11,8 @@ public interface WorkbenchItem {
     public void setX(float x);
     public void setY(float y);
     public void setWorkspace(Workspace workspace);
+    public void renderDialog();
+    public void setPreviousTimeMillis(long previousTimeMillis);
+    public void startStopService(float x, float y);
+    public long getPreviousTimeMillis();
 }

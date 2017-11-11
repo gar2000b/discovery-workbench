@@ -122,4 +122,27 @@ public class Arrow implements WorkbenchItem {
         workspace.getStage().act();
         deleteServiceDialog.show(workspace.getStage());
 	}
+
+	@Override
+	public void renderDialog() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setPreviousTimeMillis(long previousTimeMillis) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void startStopService(float x, float y) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public long getPreviousTimeMillis() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
