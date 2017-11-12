@@ -26,10 +26,10 @@ public class Arrow implements WorkbenchItem {
 	private float instanceOffsetX;
 	private float instanceOffsetY;
 	private Compass rotatePosition = Compass.EAST;
-	private Workspace workspace;
 
-	public Arrow(){}
-	
+	public Arrow() {
+	}
+
 	public Arrow(OrthographicCamera camera) {
 		this(X_OFFSET, Y_OFFSET, camera);
 	}
@@ -41,7 +41,7 @@ public class Arrow implements WorkbenchItem {
 		lineShapeRenderer = new ShapeRenderer();
 		arrowHeadShapeRenderer = new ShapeRenderer();
 	}
-	
+
 	public void instantiateRenderersAndCamera(OrthographicCamera camera) {
 		this.camera = camera;
 		lineShapeRenderer = new ShapeRenderer();
@@ -112,27 +112,28 @@ public class Arrow implements WorkbenchItem {
 	@JsonIgnore
 	@Override
 	public void setWorkspace(Workspace workspace) {
-		this.workspace = workspace;
+		// TODO: revisit
 	}
-	
+
 	@Override
 	public void renderDeleteDialog() {
-        Gdx.input.setInputProcessor(workspace.getStage());
-        DeleteDialog deleteServiceDialog = new DeleteDialog("Really Delete Arrow?", workspace.getSkin(), workspace, this);
-        workspace.getStage().act();
-        deleteServiceDialog.show(workspace.getStage());
+		Gdx.input.setInputProcessor(Workspace.getInstance().getStage());
+		DeleteDialog deleteServiceDialog = new DeleteDialog("Really Delete Arrow?", Workspace.getInstance().getSkin(),
+				this);
+		Workspace.getInstance().getStage().act();
+		deleteServiceDialog.show(Workspace.getInstance().getStage());
 	}
 
 	@Override
 	public void renderDialog() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setPreviousTimeMillis(long previousTimeMillis) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public long getPreviousTimeMillis() {

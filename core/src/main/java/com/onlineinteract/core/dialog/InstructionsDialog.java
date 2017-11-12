@@ -8,7 +8,6 @@ import com.onlineinteract.core.Workspace;
 
 public class InstructionsDialog extends Dialog {
 
-    private Workspace workspace;
     TextArea instructionsTextArea;
     Label instructionsLabel;
 
@@ -16,9 +15,8 @@ public class InstructionsDialog extends Dialog {
         super(title, skin, windowStyleName);
     }
 
-    public InstructionsDialog(String title, Skin skin, Workspace workspace) {
+    public InstructionsDialog(String title, Skin skin) {
         super(title, skin);
-        this.workspace = workspace;
     }
 
     {
@@ -33,9 +31,9 @@ public class InstructionsDialog extends Dialog {
     @Override
     protected void result(Object object) {
         if (object.getClass().getSimpleName().equals("Boolean") && object == Boolean.TRUE) {
-            workspace.setInstructions(instructionsTextArea.getText());
+            Workspace.getInstance().setInstructions(instructionsTextArea.getText());
         }
-        workspace.setDialogToggleFlag(false);
+        Workspace.getInstance().setDialogToggleFlag(false);
     }
 
     public TextArea getInstructionsTextArea() {
