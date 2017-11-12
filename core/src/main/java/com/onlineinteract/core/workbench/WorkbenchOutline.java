@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.onlineinteract.core.Workspace;
 
 public class WorkbenchOutline implements WorkbenchRenderer {
 
