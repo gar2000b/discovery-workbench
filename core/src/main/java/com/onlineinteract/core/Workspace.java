@@ -34,6 +34,7 @@ import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.Topic;
 import com.onlineinteract.core.workbench.WorkbenchItem;
 import com.onlineinteract.core.workbench.WorkbenchOutline;
+import com.onlineinteract.core.workbench.WorkbenchRenderer;
 
 public class Workspace extends ScreenAdapter {
 
@@ -57,7 +58,7 @@ public class Workspace extends ScreenAdapter {
 	private Template infrastructureTemplate;
 	private Template scriptTemplate;
 	private WorkspaceRenderer workspaceRenderer;
-	private List<WorkbenchItem> workbenchItems = new ArrayList<WorkbenchItem>();
+	private List<WorkbenchRenderer> workbenchRenderItems = new ArrayList<WorkbenchRenderer>();
 	private Arrow arrow;
 	private Topic topic;
 	private DataStore dataStore;
@@ -193,14 +194,14 @@ public class Workspace extends ScreenAdapter {
 	}
 
 	private void instantiateTemplates(int worldWidth, int worldHeight) {
-		workbenchItems.add(workbenchOutline = new WorkbenchOutline(worldWidth, worldHeight, shapeRenderer, camera));
-		workbenchItems.add(new Template(this, worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST,
+		workbenchRenderItems.add(workbenchOutline = new WorkbenchOutline(worldWidth, worldHeight, shapeRenderer, camera));
+		workbenchRenderItems.add(new Template(this, worldHeight - MICROSERVICE_TEMPLATE_HEIGHT_OFFSET, Color.FOREST,
 				Color.FOREST, "Application/Service", TemplateType.MICROSERVICE, UUID.randomUUID()));
-		workbenchItems.add(new Template(this, worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL,
+		workbenchRenderItems.add(new Template(this, worldHeight - INFRASTRUCTURE_TEMPLATE_HEIGHT_OFFSET, Color.CORAL,
 				Color.CORAL, "Infrastructure", TemplateType.INFRASTRUCTURE, UUID.randomUUID()));
-		workbenchItems.add(new Template(this, worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY,
+		workbenchRenderItems.add(new Template(this, worldHeight - SCRIPTS_TEMPLATE_HEIGHT_OFFSET, Color.BLUE, Color.GRAY,
 				"Scripts", TemplateType.SCRIPT, UUID.randomUUID()));
-		workbenchItems.add(new Template(this, worldHeight - PROVISIONING_TEMPLATE_HEIGHT_OFFSET, Color.WHITE,
+		workbenchRenderItems.add(new Template(this, worldHeight - PROVISIONING_TEMPLATE_HEIGHT_OFFSET, Color.WHITE,
 				Color.WHITE, "Provisioning", TemplateType.PROVISIONING, UUID.randomUUID()));
 	}
 
@@ -324,8 +325,8 @@ public class Workspace extends ScreenAdapter {
 		return workbenchOutline;
 	}
 
-	public List<WorkbenchItem> getWorkbenchItems() {
-		return workbenchItems;
+	public List<WorkbenchRenderer> getWorkbenchItems() {
+		return workbenchRenderItems;
 	}
 
 	public ShapeRenderer getShapeRenderer() {

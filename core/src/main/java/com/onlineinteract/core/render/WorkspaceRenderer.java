@@ -5,6 +5,7 @@ import java.util.ListIterator;
 import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.workbench.Template;
 import com.onlineinteract.core.workbench.WorkbenchItem;
+import com.onlineinteract.core.workbench.WorkbenchRenderer;
 
 public class WorkspaceRenderer {
 
@@ -22,8 +23,8 @@ public class WorkspaceRenderer {
         workspace.getArrow().draw();
         workspace.getTopic().draw();
         workspace.getDataStore().draw();
-        for (WorkbenchItem workbenchItem : workspace.getWorkbenchItems()) {
-            workbenchItem.draw();
+        for (WorkbenchRenderer workbenchRenderItem : workspace.getWorkbenchItems()) {
+        	workbenchRenderItem.draw();
         }
 
         for (ListIterator<Template> iterator = workspace.getServiceListComponent().getTemplateInstances().listIterator(
