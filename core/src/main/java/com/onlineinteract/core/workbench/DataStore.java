@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.dialog.DataStoreDialog;
 
@@ -89,12 +88,6 @@ public class DataStore extends WorkbenchItem {
 		Workspace.getInstance().getStage().act();
 		dataStoreDialog.show(Workspace.getInstance().getStage());
 		Workspace.getInstance().setDialogToggleFlag(true);
-	}
-
-	@JsonIgnore
-	@Override
-	public void setWorkspace(Workspace workspace) {
-		// TODO: revisit
 	}
 
 	@Override
