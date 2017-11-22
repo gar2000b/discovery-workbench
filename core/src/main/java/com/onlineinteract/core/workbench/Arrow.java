@@ -18,8 +18,6 @@ public class Arrow extends WorkbenchItem {
 	private ShapeRenderer lineShapeRenderer;
 	private ShapeRenderer arrowHeadShapeRenderer;
 	private OrthographicCamera camera;
-	private float x;
-	private float y;
 	private float length = 50;
 	private Compass rotatePosition = Compass.EAST;
 
@@ -80,22 +78,6 @@ public class Arrow extends WorkbenchItem {
 		}
 
 		return false;
-	}
-
-	public float getX() {
-		return x;
-	}
-
-	public float getY() {
-		return y;
-	}
-
-	public void setX(float x) {
-		this.x = x;
-	}
-
-	public void setY(float y) {
-		this.y = y;
 	}
 
 	@JsonIgnore

@@ -17,8 +17,6 @@ public class Topic extends WorkbenchItem {
 	private BitmapFont font;
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
-	private float x;
-	private float y;
 
 	public Topic() {
 	}
@@ -85,22 +83,6 @@ public class Topic extends WorkbenchItem {
 		}
 
 		return false;
-	}
-
-	public float getX() {
-		return x;
-	}
-
-	public float getY() {
-		return y;
-	}
-
-	public void setX(float x) {
-		this.x = x;
-	}
-
-	public void setY(float y) {
-		this.y = y;
 	}
 
 	@JsonIgnore
