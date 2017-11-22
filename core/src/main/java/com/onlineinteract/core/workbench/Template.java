@@ -57,9 +57,6 @@ public class Template extends WorkbenchItem {
 
 	private ServiceStatus serviceStatus = ServiceStatus.SHUTDOWN;
 
-	private float instanceOffsetX;
-	private float instanceOffsetY;
-
 	private long previousTimeMillis = -DOUBLE_CLICK_RANGE - 1;
 
 	public Template() {
@@ -345,14 +342,6 @@ public class Template extends WorkbenchItem {
 
 	public void setY(float y) {
 		this.y = y;
-	}
-
-	public float getInstanceOffsetX() {
-		return instanceOffsetX;
-	}
-
-	public float getInstanceOffsetY() {
-		return instanceOffsetY;
 	}
 
 	public long getPreviousTimeMillis() {

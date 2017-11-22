@@ -19,8 +19,6 @@ public class Topic extends WorkbenchItem {
 	private OrthographicCamera camera;
 	private float x;
 	private float y;
-	private float instanceOffsetX;
-	private float instanceOffsetY;
 
 	public Topic() {
 	}
@@ -87,14 +85,6 @@ public class Topic extends WorkbenchItem {
 		}
 
 		return false;
-	}
-
-	public float getInstanceOffsetX() {
-		return instanceOffsetX;
-	}
-
-	public float getInstanceOffsetY() {
-		return instanceOffsetY;
 	}
 
 	public float getX() {

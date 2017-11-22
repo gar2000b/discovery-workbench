@@ -22,8 +22,6 @@ public class DataStore extends WorkbenchItem {
 	private OrthographicCamera camera;
 	private float x;
 	private float y;
-	private float instanceOffsetX;
-	private float instanceOffsetY;
 	private String label;
 	private long previousTimeMillis = -DOUBLE_CLICK_RANGE - 1;
 
@@ -93,14 +91,6 @@ public class DataStore extends WorkbenchItem {
 		Workspace.getInstance().getStage().act();
 		dataStoreDialog.show(Workspace.getInstance().getStage());
 		Workspace.getInstance().setDialogToggleFlag(true);
-	}
-
-	public float getInstanceOffsetX() {
-		return instanceOffsetX;
-	}
-
-	public float getInstanceOffsetY() {
-		return instanceOffsetY;
 	}
 
 	public float getX() {
