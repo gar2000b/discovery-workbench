@@ -6,19 +6,18 @@ import com.onlineinteract.core.dialog.DeleteDialog;
 
 public abstract class WorkbenchItem implements WorkbenchRenderer {
 
+	public static final int DOUBLE_CLICK_RANGE = 400;
+	
 	String label;
 	float instanceOffsetX;
 	float instanceOffsetY;
 	float x;
 	float y;
+	long previousTimeMillis = -DOUBLE_CLICK_RANGE - 1;
 
 	public abstract boolean isClickWithinBoundary(float x, float y);
 
 	public abstract void renderDialog();
-
-	public abstract void setPreviousTimeMillis(long previousTimeMillis);
-
-	public abstract long getPreviousTimeMillis();
 
 	public void renderDeleteDialog() {
 		Gdx.input.setInputProcessor(Workspace.getInstance().getStage());
@@ -49,6 +48,14 @@ public abstract class WorkbenchItem implements WorkbenchRenderer {
 
 	public void setY(float y) {
 		this.y = y;
+	}
+	
+	public long getPreviousTimeMillis() {
+		return previousTimeMillis;
+	}
+
+	public void setPreviousTimeMillis(long previousTimeMillis) {
+		this.previousTimeMillis = previousTimeMillis;
 	}
 
 	public String getLabel() {

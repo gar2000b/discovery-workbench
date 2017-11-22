@@ -233,15 +233,15 @@ public class Workspace extends ScreenAdapter {
 	}
 
 	private void instantiateArrow() {
-		arrow = new Arrow(camera);
+		arrow = new Arrow();
 	}
 
 	private void instantiateTopic() {
-		topic = new Topic(camera);
+		topic = new Topic();
 	}
 
 	private void instantiateDataStore() {
-		dataStore = new DataStore(camera);
+		dataStore = new DataStore();
 	}
 
 	@Override

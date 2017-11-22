@@ -1,11 +1,11 @@
 package com.onlineinteract.core.workbench;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.onlineinteract.core.Workspace;
 
 public class Topic extends WorkbenchItem {
 	public static final int X_OFFSET = 20;
@@ -14,17 +14,12 @@ public class Topic extends WorkbenchItem {
 	private ShapeRenderer shapeRenderer;
 	private BitmapFont font;
 	private SpriteBatch batch;
-	private OrthographicCamera camera;
 
 	public Topic() {
+		this(X_OFFSET, Y_OFFSET);
 	}
 
-	public Topic(OrthographicCamera camera) {
-		this(X_OFFSET, Y_OFFSET, camera);
-	}
-
-	public Topic(float x, float y, OrthographicCamera camera) {
-		this.camera = camera;
+	public Topic(float x, float y) {
 		this.x = x;
 		this.y = y;
 		shapeRenderer = new ShapeRenderer();
@@ -33,8 +28,7 @@ public class Topic extends WorkbenchItem {
 		this.label = "Topic";
 	}
 
-	public void instantiateRenderersAndCamera(OrthographicCamera camera) {
-		this.camera = camera;
+	public void instantiateRenderers() {
 		shapeRenderer = new ShapeRenderer();
 		font = new BitmapFont();
 		batch = new SpriteBatch();
@@ -43,7 +37,7 @@ public class Topic extends WorkbenchItem {
 	@Override
 	public void draw() {
 		shapeRenderer.begin(ShapeType.Line);
-		shapeRenderer.setProjectionMatrix(camera.combined);
+		shapeRenderer.setProjectionMatrix(Workspace.getInstance().getCamera().combined);
 		shapeRenderer.identity();
 		shapeRenderer.translate(x, y, 0);
 		shapeRenderer.setColor(Color.ORANGE);
@@ -57,7 +51,7 @@ public class Topic extends WorkbenchItem {
 		shapeRenderer.line(5, -10, 5, -90);
 		shapeRenderer.line(35, -10, 35, -90);
 		shapeRenderer.end();
-		batch.setProjectionMatrix(camera.combined);
+		batch.setProjectionMatrix(Workspace.getInstance().getCamera().combined);
 		batch.begin();
 		font.setColor(Color.ORANGE);
 		font.getData().setScale(1);
@@ -85,17 +79,6 @@ public class Topic extends WorkbenchItem {
 
 	@Override
 	public void renderDialog() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void setPreviousTimeMillis(long previousTimeMillis) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public long getPreviousTimeMillis() {
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO require dialog TBD.
 	}
 }

@@ -2,7 +2,6 @@ package com.onlineinteract.core.workbench;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -18,19 +17,13 @@ public class DataStore extends WorkbenchItem {
 	private ShapeRenderer shapeRenderer;
 	private BitmapFont font;
 	private SpriteBatch batch;
-	private OrthographicCamera camera;
 	private String label;
-	private long previousTimeMillis = -DOUBLE_CLICK_RANGE - 1;
 
 	public DataStore() {
+		this(X_OFFSET, Y_OFFSET);
 	}
 
-	public DataStore(OrthographicCamera camera) {
-		this(X_OFFSET, Y_OFFSET, camera);
-	}
-
-	public DataStore(float x, float y, OrthographicCamera camera) {
-		this.camera = camera;
+	public DataStore(float x, float y) {
 		this.x = x;
 		this.y = y;
 		shapeRenderer = new ShapeRenderer();
@@ -39,8 +32,7 @@ public class DataStore extends WorkbenchItem {
 		this.label = "Data Store";
 	}
 
-	public void instantiateRenderersAndCamera(OrthographicCamera camera) {
-		this.camera = camera;
+	public void instantiateRenderers() {
 		shapeRenderer = new ShapeRenderer();
 		font = new BitmapFont();
 		batch = new SpriteBatch();
@@ -49,7 +41,7 @@ public class DataStore extends WorkbenchItem {
 	@Override
 	public void draw() {
 		shapeRenderer.begin(ShapeType.Line);
-		shapeRenderer.setProjectionMatrix(camera.combined);
+		shapeRenderer.setProjectionMatrix(Workspace.getInstance().getCamera().combined);
 		shapeRenderer.identity();
 		shapeRenderer.translate(x, y, 0);
 		shapeRenderer.setColor(Color.ORANGE);
@@ -59,7 +51,7 @@ public class DataStore extends WorkbenchItem {
 		shapeRenderer.curve(0, 0, 10, 20, 110, 20, 120, 0, 100);
 		shapeRenderer.curve(0, -100, 10, -120, 110, -120, 120, -100, 100);
 		shapeRenderer.end();
-		batch.setProjectionMatrix(camera.combined);
+		batch.setProjectionMatrix(Workspace.getInstance().getCamera().combined);
 		batch.begin();
 		font.setColor(Color.ORANGE);
 		font.getData().setScale(1);
@@ -88,15 +80,5 @@ public class DataStore extends WorkbenchItem {
 		Workspace.getInstance().getStage().act();
 		dataStoreDialog.show(Workspace.getInstance().getStage());
 		Workspace.getInstance().setDialogToggleFlag(true);
-	}
-
-	@Override
-	public long getPreviousTimeMillis() {
-		return previousTimeMillis;
-	}
-
-	@Override
-	public void setPreviousTimeMillis(long previousTimeMillis) {
-		this.previousTimeMillis = previousTimeMillis;
 	}
 }
