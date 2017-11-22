@@ -10,9 +10,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.onlineinteract.core.Workspace;
 import com.onlineinteract.core.dialog.DataStoreDialog;
-import com.onlineinteract.core.dialog.DeleteDialog;
 
-public class DataStore implements WorkbenchItem {
+public class DataStore extends WorkbenchItem {
 	public static final int X_OFFSET = 80;
 	public static final int Y_OFFSET = 280;
 	public static final int DOUBLE_CLICK_RANGE = 400;
@@ -42,6 +41,7 @@ public class DataStore implements WorkbenchItem {
 		shapeRenderer = new ShapeRenderer();
 		font = new BitmapFont();
 		batch = new SpriteBatch();
+		this.label = "Data Store";
 	}
 
 	public void instantiateRenderersAndCamera(OrthographicCamera camera) {
@@ -123,15 +123,6 @@ public class DataStore implements WorkbenchItem {
 	@Override
 	public void setWorkspace(Workspace workspace) {
 		// TODO: revisit
-	}
-
-	@Override
-	public void renderDeleteDialog() {
-		Gdx.input.setInputProcessor(Workspace.getInstance().getStage());
-		DeleteDialog deleteServiceDialog = new DeleteDialog("Really Delete Data Store?",
-				Workspace.getInstance().getSkin(), this);
-		Workspace.getInstance().getStage().act();
-		deleteServiceDialog.show(Workspace.getInstance().getStage());
 	}
 
 	@Override

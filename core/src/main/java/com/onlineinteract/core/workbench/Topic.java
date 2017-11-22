@@ -1,6 +1,5 @@
 package com.onlineinteract.core.workbench;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -9,9 +8,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.onlineinteract.core.Workspace;
-import com.onlineinteract.core.dialog.DeleteDialog;
 
-public class Topic implements WorkbenchItem {
+public class Topic extends WorkbenchItem {
 	public static final int X_OFFSET = 20;
 	public static final int Y_OFFSET = 280;
 
@@ -38,6 +36,7 @@ public class Topic implements WorkbenchItem {
 		shapeRenderer = new ShapeRenderer();
 		font = new BitmapFont();
 		batch = new SpriteBatch();
+		this.label = "Topic";
 	}
 
 	public void instantiateRenderersAndCamera(OrthographicCamera camera) {
@@ -118,15 +117,6 @@ public class Topic implements WorkbenchItem {
 	@Override
 	public void setWorkspace(Workspace workspace) {
 		// TODO: revisit
-	}
-
-	@Override
-	public void renderDeleteDialog() {
-		Gdx.input.setInputProcessor(Workspace.getInstance().getStage());
-		DeleteDialog deleteServiceDialog = new DeleteDialog("Really Delete Topic?", Workspace.getInstance().getSkin(),
-				this);
-		Workspace.getInstance().getStage().act();
-		deleteServiceDialog.show(Workspace.getInstance().getStage());
 	}
 
 	@Override

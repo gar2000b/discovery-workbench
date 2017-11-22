@@ -17,13 +17,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.onlineinteract.core.Workspace;
-import com.onlineinteract.core.dialog.DeleteDialog;
 import com.onlineinteract.core.dialog.ServiceDialog;
 import com.onlineinteract.core.type.ProcessingType;
 import com.onlineinteract.core.type.ServiceStatus;
 import com.onlineinteract.core.type.TemplateType;
 
-public class Template implements WorkbenchItem {
+public class Template extends WorkbenchItem {
 
 	UUID uuid;
 
@@ -42,14 +41,12 @@ public class Template implements WorkbenchItem {
 	private float y;
 	private Color color1;
 	private Color color2;
-	private String label;
 	private String startupCommand;
 	private String shutdownCommand;
 	private String shutdown2Command;
 	private String runningClause;
 	private String servicePortNo;
 	private ServiceDialog serviceDialog;
-	private DeleteDialog deleteServiceDialog;
 	private Skin skin;
 	private Stage stage;
 	private Process exec;
@@ -322,13 +319,6 @@ public class Template implements WorkbenchItem {
 		Workspace.getInstance().setDialogToggleFlag(true);
 	}
 
-	public void renderDeleteDialog() {
-		Gdx.input.setInputProcessor(stage);
-		deleteServiceDialog = new DeleteDialog("Really Delete Instance: " + label + "?", skin, this);
-		stage.act();
-		deleteServiceDialog.show(stage);
-	}
-
 	@Override
 	public String toString() {
 		String tempLabel = "";
@@ -339,14 +329,6 @@ public class Template implements WorkbenchItem {
 			tempLabel = label;
 
 		return "(" + processingType + ") " + tempLabel;
-	}
-
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
 	}
 
 	public float getX() {
