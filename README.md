@@ -4,7 +4,7 @@
 
 **LICENSE**: https://github.com/gar2000b/discovery-workbench/blob/master/LICENSE.md
 
-![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/social-insurance-workflow-service.png "Social Insurance Workflow")
+![alt text](https://github.com/gar2000b/discovery-workbench/blob/master/images/social-insurance-workflow-service.png "Social Insurance Workflow")
 
 ^ please click to enlarge and get a clear view of the example topology.
 
