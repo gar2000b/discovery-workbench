@@ -1,0 +1,477 @@
+<!-- 
+
+DISCOVERY TOPOLOGY LICENSE
+Version 1.0, 20/10/2018
+Author Gary Black
+
+Details:
+
+Permission to use this file 'discovery-topology-skeleton.html' (together with its HTML, CSS and Javascript components) must be granted by the author before use. Once permission has been granted, any and all parts may be modified as seen fit. Permission may be granted in the form of an email from gar2000b@yahoo.com.
+
+This is not an open source licence. There are no restrictions on the use of this file 'discovery-topology-skeleton.html' once permission has been granted by the author.
+
+This licence applies to this file only 'discovery-topology-skeleton.html'. It does not apply to the larger 'Discovery Workbench' project at large. 
+
+Please refer to main licence at: https://github.com/gar2000b/discovery-workbench/blob/master/LICENSE.md for complete distributions of the discovery workbench as a whole.
+
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Discovery Topology</title>
+
+<style type="text/css">
+body {
+	color: #FFFFFF;
+	background-color: #f0f0f5;
+	margin: 0px;
+}
+
+#header {
+	width: 100%;
+	height: 159px;
+	background-color: #152026;
+	position: fixed;
+	z-index:100000000;
+	margin: 0px;
+}
+
+#container {
+	top: 0px;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	border-width: 2px;
+	border-style: solid;
+	border-color: blue;
+}
+
+#microservice {
+	width: 100px;
+	height: 100px;
+	background-color: #FF0000;
+	border-width: 2px;
+	border-style: solid;
+	border-color: white;
+	position: absolute;
+	top: 400px;
+	left: 400px;
+}
+
+.microservice-instance {
+	width: 200px;
+	position: absolute;
+	z-index: 9;
+	background-color: #f1f1f1;
+	text-align: center;
+	border: 1px solid #d3d3d3;
+	color: black;
+}
+
+#microservice-template {
+    top:180px;
+	width: 200px;
+	position: absolute;
+	z-index: 9;
+	background-color: #f1f1f1;
+	text-align: center;
+	border: 1px solid #d3d3d3;
+	color: black;
+	margin: 30px;
+}
+
+#topic-template {
+    top: 300px;
+    background-color: transparent;
+    border: none;
+	width: 200px;
+	position: absolute;
+	z-index: 9;
+	text-align: center;
+	color: black;
+	margin: 30px;
+}
+
+#datastore-template {
+    top: 380px;
+    background-color: transparent;
+    border: none;
+	width: 200px;
+	position: absolute;
+	z-index: 9;
+	text-align: center;
+	color: black;
+	margin: 30px;
+}
+
+#line-template {
+    top: 510px;
+    background-color: transparent;
+    border: none;
+	width: 200px;
+	position: absolute;
+	z-index: 9;
+	text-align: center;
+	color: black;
+	margin: 30px;
+}
+
+#arrow-template {
+    top: 570px;
+    background-color: transparent;
+    border: none;
+	width: 200px;
+	position: absolute;
+	z-index: 9;
+	text-align: center;
+	color: black;
+	margin: 30px;
+}
+
+#partition-template {
+    top: 630px;
+    background-color: transparent;
+    border: none;
+	width: 200px;
+	position: absolute;
+	z-index: 9;
+	text-align: center;
+	color: black;
+	margin: 30px;
+}
+
+#service-template {
+    top: 690px;
+    background-color: transparent;
+    border: none;
+	width: 200px;
+	position: absolute;
+	z-index: 9;
+	text-align: center;
+	color: black;
+	margin: 30px;
+}
+
+#text-template {
+    top: 820px;
+    background-color: transparent;
+    border: none;
+	width: 200px;
+	position: absolute;
+	z-index: 9;
+	text-align: center;
+	color: black;
+	margin: 30px;
+}
+
+.topic-instance {
+    width: 125px;
+    height: 51px;
+    position: absolute;
+    z-index: 9;
+    background-color: transparent;
+    text-align: center;
+    border: none;
+    color: black;
+}
+
+.datastore-instance {
+    width: 111px;
+    height: 111px;
+    position: absolute;
+    z-index: 9;
+    background-color: transparent;
+    text-align: center;
+    border: none;
+    color: black;
+}
+
+.line-instance {
+    width: 121px;
+    height: 30px;
+    position: absolute;
+    z-index: 9;
+    background-color: transparent;
+    text-align: center;
+    border: none;
+    color: black;
+}
+
+.arrow-instance {
+    width: 41px;
+    height: 53px;
+    position: absolute;
+    z-index: 9;
+    background-color: transparent;
+    text-align: center;
+    border: none;
+    color: black;
+}
+
+.partition-instance {
+    width: 121px;
+    height: 35px;
+    position: absolute;
+    z-index: 9;
+    background-color: transparent;
+    text-align: center;
+    border: none;
+    color: black;
+}
+
+.service-instance {
+    width: 108px;
+    height: 108px;
+    position: absolute;
+    z-index: 9;
+    background-color: transparent;
+    text-align: center;
+    border: none;
+    color: black;
+}
+
+.text-instance {
+    width: 50px;
+    height: 26px;
+    position: absolute;
+    z-index: 9;
+    background-color: transparent;
+    text-align: center;
+    border: none;
+    color: black;
+}
+
+.microservice-instance-header {
+	padding: 10px;
+	cursor: move;
+	z-index: 10;
+	background-color: #2196F3;
+	color: #fff;
+}
+
+#microservice-template-header {
+	padding: 10px;
+	cursor: pointer;
+	z-index: 10;
+	background-color: #2196F3;
+	color: #fff;
+}
+
+#toolbar {
+	width: 260px;
+	height: 100%;
+	position: fixed;
+	background-color: #2a424f;
+	margin: 0px;
+}
+
+#logo {
+	padding: 8px;
+}
+
+.header-text {
+	font-family: Calibri;
+	font-size: 30px;
+	width: 100%;
+}
+</style>
+</head>
+
+<body>
+	<div id="header" align="center">
+		<span class="header-text">Discovery Topology</span>
+        <p class="header-text">(Please insert logo here etc.)</p>
+	</div>
+	<div id="toolbar"></div>
+	<div id="microservice-template" onclick="createMicroserviceInstance();">
+		<div id="microservice-template-header">Service</div>
+		<p id="xy">Enter Service Name</p>
+	</div>
+	<div id="topic-template" onclick="createTopicInstance();">
+        <img src="images/topic.png" alt="" />
+	</div>
+	<div id="datastore-template" onclick="createDatastoreInstance();">
+        <img src="images/datastore.png" alt="" />
+	</div>
+	<div id="line-template" onclick="createLineInstance();">
+        <img src="images/line-in-box.png" alt="" />
+	</div>
+	<div id="arrow-template" onclick="createArrowInstance();">
+        <img src="images/arrow-in-box.png" alt="" />
+	</div>
+	<div id="partition-template" onclick="createPartitionInstance();">
+        <img src="images/partition-in-box.png" alt="" />
+	</div>
+	<div id="service-template" onclick="createServiceInstance();">
+        <img src="images/service.png" alt="" />
+	</div>
+	<div id="text-template" onclick="createTextInstance();">
+        <img src="images/text-in-box.png" alt="" />
+	</div>
+	<script>
+        var microserviceInstanceCounter = 0;
+        var topicInstanceCounter = 0;
+        var datastoreInstanceCounter = 0;
+        var lineInstanceCounter = 0;
+        var arrowInstanceCounter = 0;
+        var partitionInstanceCounter = 0;
+        var serviceInstanceCounter = 0;
+        var textInstanceCounter = 0;
+        var zIndex = 10;
+        var lastElement;
+        var deg = 0;
+        
+		document.addEventListener("keydown", keyDownTextField, false);
+		
+		function keyDownTextField(e) {
+		var keyCode = e.keyCode;
+		  if(keyCode==82) {
+		      // r key for rotate
+		      if (lastElement) {
+		          if (deg == 360) {
+		              deg = 90;
+		          } else {
+		              deg += 90;
+		          }
+			      lastElement.style.webkitTransform = 'rotate('+ deg +'deg)';
+			      lastElement.style.mozTransform    = 'rotate('+ deg +'deg)';
+			      lastElement.style.msTransform     = 'rotate('+ deg +'deg)';
+			      lastElement.style.oTransform      = 'rotate('+ deg +'deg)';
+			      lastElement.style.transform       = 'rotate('+ deg +'deg)';
+		      }
+		  }
+		  if(keyCode==37) {
+		      lastElement.style.left = (parseInt(lastElement.style.left) - 1) + "px";
+		  }
+		  if(keyCode==39) {
+		      lastElement.style.left = (parseInt(lastElement.style.left) + 1) + "px";
+		  }
+		  if(keyCode==38) {
+		      lastElement.style.top = (parseInt(lastElement.style.top) - 1) + "px";
+		  }
+		  if(keyCode==40) {
+		      lastElement.style.top = (parseInt(lastElement.style.top) + 1) + "px";
+		  }
+		  if(keyCode==187) {
+		      lastElement.style.width = (parseInt(lastElement.offsetWidth) + 1) + "px";
+		  }
+		  if(keyCode==189) {
+		      lastElement.style.width = (parseInt(lastElement.offsetWidth) - 1) + "px";
+		  }
+		  if(keyCode==68) {
+		      var result = confirm("Are you sure you wish to remove selected instance '" + lastElement.id + "'?");
+		      if (result) {
+		          lastElement.parentElement.removeChild(lastElement);
+		      }
+		  }
+		}
+        
+		function createMicroserviceInstance() {
+			document.body.innerHTML += "<div class=\"microservice-instance\" id=\"microservice-instance" + microserviceInstanceCounter + "\" onmouseover=\"dragElement(document.getElementById('microservice-instance" + microserviceInstanceCounter + "'));\"><div class=\"microservice-instance-header\" id='microservice-instance" + microserviceInstanceCounter + "-header'\">Service</div><p id='microservice-instance" + microserviceInstanceCounter + "-xy'\">X = 0.00, Y = 0.00</p></div>";
+ 			dragElement(document.getElementById("microservice-instance" + microserviceInstanceCounter));
+ 			document.getElementById('microservice-instance' + microserviceInstanceCounter).style.top = "200px";
+ 			document.getElementById('microservice-instance' + microserviceInstanceCounter).style.left = "320px";
+			microserviceInstanceCounter++;
+		}
+		
+		function createTopicInstance() {
+			document.body.innerHTML += "<div class=\"topic-instance\" id=\"topic-instance" + topicInstanceCounter + "\"onmouseover=\"dragElement(document.getElementById('topic-instance" + topicInstanceCounter + "'));\"><img src=\"images/topic.png\" width=\"100%\" height=\"51px\" /></div>";
+ 			dragElement(document.getElementById("topic-instance" + topicInstanceCounter));
+            document.getElementById('topic-instance' + topicInstanceCounter).style.top = "200px";
+            document.getElementById('topic-instance' + topicInstanceCounter).style.left = "320px";
+			topicInstanceCounter++;
+		}
+		
+		function createDatastoreInstance() {
+			document.body.innerHTML += "<div class=\"datastore-instance\" id=\"datastore-instance" + datastoreInstanceCounter + "\"onmouseover=\"dragElement(document.getElementById('datastore-instance" + datastoreInstanceCounter + "'));\"><img src=\"images/datastore.png\" width=\"100%\" height=\"111px\" /></div>";
+ 			dragElement(document.getElementById("datastore-instance" + datastoreInstanceCounter));
+            document.getElementById('datastore-instance' + datastoreInstanceCounter).style.top = "200px";
+            document.getElementById('datastore-instance' + datastoreInstanceCounter).style.left = "320px";
+			datastoreInstanceCounter++;
+		}
+		
+		function createLineInstance() {
+			document.body.innerHTML += "<div class=\"line-instance\" id=\"line-instance" + lineInstanceCounter + "\"onmouseover=\"dragElement(document.getElementById('line-instance" + lineInstanceCounter + "'));\"><img src=\"images/line.png\" width=\"100%\" height=\"30px\" /></div>";
+ 			dragElement(document.getElementById("line-instance" + lineInstanceCounter));
+            document.getElementById('line-instance' + lineInstanceCounter).style.top = "200px";
+            document.getElementById('line-instance' + lineInstanceCounter).style.left = "320px";
+			lineInstanceCounter++;
+		}
+		
+		function createArrowInstance() {
+			document.body.innerHTML += "<div class=\"arrow-instance\" id=\"arrow-instance" + arrowInstanceCounter + "\"onmouseover=\"dragElement(document.getElementById('arrow-instance" + arrowInstanceCounter + "'));\"><img src=\"images/arrow.png\" width=\"100%\" height=\"53px\" /></div>";
+ 			dragElement(document.getElementById("arrow-instance" + arrowInstanceCounter));
+            document.getElementById('arrow-instance' + arrowInstanceCounter).style.top = "200px";
+            document.getElementById('arrow-instance' + arrowInstanceCounter).style.left = "320px";
+			arrowInstanceCounter++;
+		}
+		
+		function createPartitionInstance() {
+			document.body.innerHTML += "<div class=\"partition-instance\" id=\"partition-instance" + partitionInstanceCounter + "\"onmouseover=\"dragElement(document.getElementById('partition-instance" + partitionInstanceCounter + "'));\"><img src=\"images/partition.png\" width=\"100%\" height=\"35px\" /></div>";
+ 			dragElement(document.getElementById("partition-instance" + partitionInstanceCounter));
+            document.getElementById('partition-instance' + partitionInstanceCounter).style.top = "200px";
+            document.getElementById('partition-instance' + partitionInstanceCounter).style.left = "320px";
+			partitionInstanceCounter++;
+		}
+		
+		function createServiceInstance() {
+			document.body.innerHTML += "<div class=\"service-instance\" id=\"service-instance" + serviceInstanceCounter + "\"onmouseover=\"dragElement(document.getElementById('service-instance" + serviceInstanceCounter + "'));\"><img src=\"images/service.png\" width=\"100%\" height=\"108px\" /></div>";
+ 			dragElement(document.getElementById("service-instance" + serviceInstanceCounter));
+            document.getElementById('service-instance' + serviceInstanceCounter).style.top = "200px";
+            document.getElementById('service-instance' + serviceInstanceCounter).style.left = "320px";
+			serviceInstanceCounter++;
+		}
+		
+		function createTextInstance() {
+			document.body.innerHTML += "<div class=\"text-instance\" id=\"text-instance" + textInstanceCounter + "\"onmouseover=\"dragElement(document.getElementById('text-instance" + textInstanceCounter + "'));\"><img src=\"images/text.png\" width=\"100%\" height=\"26px\" /></div>";
+ 			dragElement(document.getElementById("text-instance" + textInstanceCounter));
+            document.getElementById('text-instance' + textInstanceCounter).style.top = "200px";
+            document.getElementById('text-instance' + textInstanceCounter).style.left = "320px";
+			textInstanceCounter++;
+		}
+
+		function dragElement(elmnt) {
+		
+			var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+			if (document.getElementById(elmnt.id + "header")) {
+				document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+			} else {
+				elmnt.onmousedown = dragMouseDown;
+			}
+
+			function dragMouseDown(e) {
+				e = e || window.event;
+				e.preventDefault();
+				pos3 = e.clientX;
+				pos4 = e.clientY;
+				document.onmouseup = closeDragElement;
+				document.onmousemove = elementDrag;
+			}
+
+			function elementDrag(e) {
+			    elmnt.style.zIndex = zIndex + 1;
+				e = e || window.event;
+				e.preventDefault();
+				pos1 = pos3 - e.clientX;
+				pos2 = pos4 - e.clientY;
+				pos3 = e.clientX;
+				pos4 = e.clientY;
+				elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+				elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+				if(document.getElementById(elmnt.id + "-xy")) {
+				document.getElementById(elmnt.id + "-xy").innerHTML = "X = "
+						+ elmnt.style.top + ", Y = " + elmnt.style.left;
+				}
+			}
+
+			function closeDragElement() {
+				document.onmouseup = null;
+				document.onmousemove = null;
+			    zIndex++;
+			    lastElement = elmnt;
+			}
+		}
+	</script>
+</body>
+</html>
