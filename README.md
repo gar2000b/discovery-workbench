@@ -4,7 +4,7 @@
 
 **LICENSE**: https://github.com/gar2000b/discovery-workbench/blob/master/LICENSE.md
 
-![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/social-insurance-workflow-service.png "Social Insurance Workflow")
+![alt text](https://github.com/gar2000b/discovery-workbench/blob/master/images/social-insurance-workflow-service.png "Social Insurance Workflow")
 
 ^ please click to enlarge and get a clear view of the example topology.
 
@@ -31,7 +31,7 @@ The **workspaces** are simply saved as files and you can find some examples unde
 
 Loading an existing workspace is as simple as clicking **'Load'**, enter the path to your workspace e.g: C:\work\my-workspaces\social-insurance-workflow-service and click open.
 
-![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/open-dialog.png "Open Social Insurance Workflow Service")
+![alt text](https://github.com/gar2000b/discovery-workbench/blob/master/images/open-dialog.png "Open Social Insurance Workflow Service")
 
 ## Provisioning Instructions
 
@@ -41,7 +41,7 @@ Currently, the provisioning functionality is under development, so the following
 2. Once you have gone through the instructions, shutdown, restart the workbench and open the project back up - this is so that it picks up on any env vars you may have set. **Note**: env vars will be getting overridden with internal config vars soon, then you will not have to do this in future.
 3. You should now be good to run and spin up all your services.
 
-![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/instructions-dialog.png "Instructions")
+![alt text](https://github.com/gar2000b/discovery-workbench/blob/master/images/instructions-dialog.png "Instructions")
 
 ## Running your services
 
@@ -73,7 +73,7 @@ Once you have constructed your topology roughly the way you envisage, you are re
 
 Starting with Infrastructure, double-click to open up the dialog box as shown:
 
-![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/service-dialog.png "Instructions")
+![alt text](https://github.com/gar2000b/discovery-workbench/blob/master/images/service-dialog.png "Instructions")
 
 1. Enter a **'Service Name'**.
 2. The **'Startup Command'** should reflect the same command you would use as if launching it from a cmd line terminal. (in windows) although you can target bat files direct, it is recommended that you use cmd /c in front of OS specific commands that only the Windows Command Intepreter would be able to process. Things like rd... Startup command example for zookeeper: **%CONFLUENT_HOME%\bin\windows\zookeeper-server-start.bat %CONFLUENT_HOME%\etc\kafka\zookeeper.properties**
@@ -86,7 +86,7 @@ Starting with Infrastructure, double-click to open up the dialog box as shown:
 9. Note: It is recommended that you experiment with these commands from a console before wiring this up into Discovery Workbench. It is important that apps get shutdown and cleaned up properly as to not leave it in an inconsistent state.
 10. Configuring **Scripts** are easier, simply add a **name + command**.
 
-![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/scripts-dialog.png "Scripts")
+![alt text](https://github.com/gar2000b/discovery-workbench/blob/master/images/scripts-dialog.png "Scripts")
 
 ### Updating Start/Stop order
 
@@ -110,7 +110,7 @@ When you select an item from the list and then click **'Toggle Processing Type'*
 
 Saving the workspace is as simple as clicking the **'Save'** button.
 
-![alt text](https://raw.githubusercontent.com/gar2000b/discovery-workbench/master/images/save-workspace-dialog.png "Save workspace")
+![alt text](https://github.com/gar2000b/discovery-workbench/blob/master/images/save-workspace-dialog.png "Save workspace")
 
 Simply enter the path to the file to wish to save, e.g: **C:\work\ms-orchestrator\workspaces\deposit-transaction-eod-flow**
 

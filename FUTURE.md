@@ -43,6 +43,11 @@ The following list illustrates all of the phase 2 goals of this project:
 6. The end user should have the ability to inject random payloads manually from the insertion tool box, capturing the data at all of the listener and assertion tool boxes.  
 7. The end user should have the ability to fire pre-determined load via an insertion tool box and monitor performance metrics at the assertion toolbox.
 
+Phase 3 and beyond:
+
+This involves cloudification. One of the main goals is to port everything over to become a graphical single page web application (employing javascript/html5). This will include all of the functionality of the previous workbench + provide all of the monitoring hooks into the app using things like Springs actuator (if Java app) to health check metrics (however, done in a generic way).
+The other main goal is to have the apps themselves be deployed to various cloud environments and provide generic functionality to orchestrate them (start/stop), monitoring including tracking of payloads via logs etc... A lot of this is going to require a fair bit of design + test.
+
 The core graphics libraries are libGDX.
 
 It was decided that this be set up as a maven project as this allows one to integrate in spaces not equipped to execute gradle.
